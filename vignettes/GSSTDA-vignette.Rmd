@@ -1,8 +1,8 @@
 ---
-title: "mapperTDA Vignette: Topological Data Analysis using Mapper"
+title: "GSSTDA Vignette: Gene Structure Survival using Topological Data Analysis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{mapperTDA-vignette}
+  %\VignetteIndexEntry{GSSTDA-vignette}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -16,10 +16,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette represents an introduction to the use of the package MapperTDA. 
+This vignette represents an introduction to the use of the package G-SS-TDA. 
 
 ```{r setup}
-library(mapperTDA)
+library(GSSTDA)
 ```
 
 Create full data set:

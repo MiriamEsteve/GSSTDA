@@ -1,6 +1,6 @@
 library(testthat)
-library(SurvMap)
+library(GSSTDA)
 
-test_check("SurvMap")
+test_check("GSSTDA")
 
 
