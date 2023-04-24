@@ -1,0 +1,64 @@
+---
+title: "mapperTDA Vignette: Topological Data Analysis using Mapper"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{mapperTDA-vignette}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette represents an introduction to the use of the package MapperTDA. 
+
+```{r setup}
+library(mapperTDA)
+```
+
+Create full data set:
+```{r}
+num_rows <- 100
+full_data <- data.frame( x=2*cos(1:num_rows), y=sin(1:num_rows) )
+row.names(full_data) <- 1:num_rows
+
+```
+
+Filter values:
+```{r}
+filter_values <- c(2*cos(1:num_rows))
+names(filter_values) <- row.names(full_data)
+```
+
+Create the mapper object with full dataset and the function which filter the dataset.
+```{r}
+num_intervals <- 5
+percent_overlap <- 0.4
+distance_type <- "euclidean"
+clustering_type <- "hierarchical"
+linkage_type <- "single"
+num_bins_when_clustering <- 10
+
+
+mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type)
+
+
+```
+
+Obtain information from the mapper object created in the previous step.
+```{r}
+mapper_infor <- get_information_from_results(mapper_obj)
+
+print(mapper_infor)
+```
+
+Plot the mapper graph.
+```{r}
+plot_mapper(mapper_obj)
+```

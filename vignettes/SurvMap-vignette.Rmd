@@ -1,0 +1,529 @@
+---
+title: "SurvMap-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{SurvMap-vignette}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette represents and introduction to the use of the package SurvMap. $\frac{m}{n}$ First we will show some aspects linked to matrix the denoising function implemented in the package, that is derived from (10.1109/TIT.2014.2323359). It allows to remove the noise part of matrices that are assumed to be composed by the addition of a signal matrix and a gaussian noise matrix.
+
+```{r setup}
+library(SurvMap)
+```
+
+Let's first create a signal matrix for testing.
+
+```{r,fig.dim = c(5,7),fig.align = 'center'}
+t <- seq(-3,3,0.01)
+Utrue <- cbind(cos(17*t) * exp(-t^2), sin(11*t))
+Strue <- cbind(c(2,0),c(0,0.5))
+Vtrue <- cbind(sin(5*t)* exp(-t^2),cos(13*t))
+X <- Utrue %*% Strue %*% t(Vtrue)
+image(t(X))
+```
+
+Then add some gaussian noise to our matrix with $\sigma = 1$ and $\mu = 0$.
+
+```{r,fig.dim = c(5,7),fig.align = 'center'}
+sigma <- 1
+noise <- matrix(rnorm(601 * 601),ncol = 601)
+Xnoisy <- X + noise
+image(t(Xnoisy))
+```
+
+Since we will work with rectangular matrices in most applications let's get a rectangular noisy matrix by removing some columns of our original noisy matrix.
+
+
+```{r,fig.dim = c(5,7),fig.align = 'center'}
+Xnoisy_r <- Xnoisy[,1:400]
+dim(Xnoisy_r)
+image(t(Xnoisy_r))
+```
+
+And lets do the same with the  signal matrix.
+
+```{r,fig.dim = c(5,7),fig.align = 'center'}
+X_r <- X[,1:400]
+dim(X_r)
+image(t(X_r))
+```
+
+Now let's  denoise our rectangular noisy matrix. 
+
+```{r,fig.dim = c(5,7),fig.align = 'center'}
+omega_found <- get_omega(ncol(Xnoisy_r)/nrow(Xnoisy_r))
+svd_Xnoisy_r <- svd(Xnoisy_r)
+D <- diag(svd_Xnoisy_r$d)
+U <- svd_Xnoisy_r$u
+V <- svd_Xnoisy_r$v
+Xnoisy_reconstructed <- U %*% D %*% t(V)
+image(t(Xnoisy_reconstructed))
+```
+
+```{r,fig.dim = c(5,7),fig.align = 'center'}
+omega_found <- get_omega(ncol(Xnoisy_r)/nrow(Xnoisy_r))
+svd_Xnoisy_r <- svd(Xnoisy_r)
+D <- diag(svd_Xnoisy_r$d)
+U <- svd_Xnoisy_r$u
+V <- svd_Xnoisy_r$v
+threshold_singular <- median(svd_Xnoisy_r$d)*omega_found
+up_to_sv <- length(svd_Xnoisy_r$d[svd_Xnoisy_r$d > threshold_singular])
+D_filt <- D
+diag(D_filt)[(up_to_sv + 1):length(diag(D_filt))] <- 0
+Xnoisy_denoised_A <- U %*% D_filt %*% t(V)
+dim(Xnoisy_denoised_A)
+image(t(Xnoisy_denoised_A))
+```
+
+New way of denoising. 
+```{r}
+omega_found <- get_omega(ncol(Xnoisy_r)/nrow(Xnoisy_r))
+svd_Xnoisy_r <- svd(Xnoisy_r)
+D <- diag(svd_Xnoisy_r$d)
+U <- svd_Xnoisy_r$u
+V <- svd_Xnoisy_r$v
+threshold_singular <- median(svd_Xnoisy_r$d)*omega_found
+up_to_sv <- length(svd_Xnoisy_r$d[svd_Xnoisy_r$d > threshold_singular])
+D_filt <- D
+
+Xnoisy_denoised_B <- U[,1:up_to_sv] %*% D_filt[1:up_to_sv,1:up_to_sv] %*% t(V[,1:up_to_sv])
+
+dim(Xnoisy_denoised_A) == dim(Xnoisy_denoised_B)
+table(Xnoisy_denoised_A == Xnoisy_denoised_B)
+
+abs(Xnoisy_denoised_A[Xnoisy_denoised_A != Xnoisy_denoised_B] - Xnoisy_denoised_B[Xnoisy_denoised_A != Xnoisy_denoised_B])
+
+
+diag(D_filt)[(up_to_sv + 1):length(diag(D_filt))] <- 0
+Xnoisy_denoised <- U %*% D_filt %*% t(V)
+dim(Xnoisy_denoised)
+image(t(Xnoisy_denoised_B))
+#dev.off()
+```
+
+
+
+```{r,fig.dim = c(5,7),fig.align = 'center'}
+denoised_matrix <- denoise_rectangular_matrix(Xnoisy_r)
+
+image(t(Xnoisy_r))
+image(t(denoised_matrix))
+is.matrix("t")
+```
+
+The data included in this Vignette is derived from GSE42568. The dataset is composed by 121 samples, where 104 are derived from breast cancer samples and 17 are derived from healthy breast mammary tissues. 
+
+```{r,eval=FALSE}
+library(SurvMap)
+library(devtools)
+
+#Loading data.
+
+data("pData_FRMA")
+data("GEO_Eset_Norm_frma_Collapsed")
+
+bool_filt <- pData_FRMA$pCh_Status == "NT"
+Exp_NT <- GEO_Eset_Norm_frma_Collapsed[,bool_filt]
+pData_NT <- pData_FRMA[bool_filt,]
+Exp_T <- GEO_Eset_Norm_frma_Collapsed[,!bool_filt]
+pData_T <- pData_FRMA[!bool_filt,]
+
+#Generating the healthy tissue model.
+Exp_NT_f <- flatten_normal_tiss(Exp_NT)
+Exp_NT_f_d <- denoise_rectangular_matrix(Exp_NT_f)
+
+#Compute disease free survival cox proportional hazard models for all genes based on their expression levels.
+cox_all <- cox_all_genes(Exp_T, pData_T$pCh_DFS_T, pData_T$pCh_DFS_E)
+
+#Creating the disease component matrix.
+Disease_component <- generate_disease_component(GEO_Eset_Norm_frma_Collapsed,Exp_NT_f_d)
+
+Disease_component_tumors <- Disease_component[,!bool_filt]
+
+#Selecting genes.
+variable_genes <- gene_selection(Disease_component_tumors,0.99) #Top variable genes in tumor samples.
+
+survival_related_genes <- get_survival_related_genes(cox_all,c(0.005,0.995)) #Genes showing the stringest association  with disease-free survival in univariate proportional hazar models analysis. (cox.)
+
+selected_genes <- unique(c(survival_related_genes,variable_genes))
+```
+
+```{r,eval=FALSE}
+Ds_for_an <- Disease_component[selected_genes,]
+
+#filt_data <- lp_norm_k_powers(Ds_for_an,p = 2,k = 1)
+
+filter_function <- lp_norm_k_powers_surv(Ds_for_an,2,1,cox_all)
+
+out_one_D <- one_D_Mapper(Ds_for_an,filter_function,n_int = 10,p = 0.3,distance_type = "cor",clust_type = "hierarchical",linkage_type = "complete",optimal_clust_mode =  "standard",n_bins_clust = 10)
+
+plot_mapper(out_one_D,trans_node_size = FALSE)
+
+out_one_D <- one_D_Mapper(Ds_for_an,filter_function,n_int = 10,p = 0.2,distance_type = "cor",clust_type = "PAM",linkage_type = "complete",optimal_clust_mode =  "standard",n_bins_clust = 10)
+plot_mapper(out_one_D,trans_node_size = FALSE)
+
+
+test_a <- lapply(out_one_D$node_samples,function(x,y)y[,x],Ds_for_an)
+test_b <- lapply(test_a,function(x) prcomp(t(x),center =T)$rotation[,1])
+test_c <- out_one_D$node_samples
+reasigned_nodes <- c()
+for(i in 1:nrow(pData_FRMA)){
+  sample_temp <- rownames(pData_FRMA)[i]
+  print(sample_temp)
+  which_nodes <- unlist(lapply(test_c,function(x,y) y %in% x,sample_temp)) 
+  nodes_temp <- names(which_nodes[which_nodes == TRUE])
+  print(nodes_temp)
+  cors_to_nodes <- c()
+  for(j in 1:length(nodes_temp)){
+    cors_to_nodes <- c(cors_to_nodes,cor(test_b[[nodes_temp[j]]],Ds_for_an[,sample_temp]))
+  }
+  reasigned_nodes <- c(reasigned_nodes,print(nodes_temp[which.max(abs(cors_to_nodes))]))
+}
+pData_FRMA$reasigned_nodes <- reasigned_nodes
+View(pData_FRMA)
+
+
+
+
+help(prcomp)
+
+test_b <- prcomp(t(test_a$Node_12)[,1])
+test_b$rotation
+prcomp(t(test_a$Node_13))
+
+split()
+
+
+
+#int_data <- get_intervals_One_D(Ds_for_an,filter_function,n_int = 10,p = 0.3)
+
+#sam_in_lev <- samples_in_levels(int_data,filter_function)
+
+#test_clust_all_levels <- clust_all_levels(Dis_Est_Mod = Ds_for_an,samp_in_lev = sam_in_lev,distance_type = "cor",optimal_clust_mode =  "standard",n_bins_clust = 10)
+
+#node_samples <- levels_to_nodes(test_clust_all_levels)
+
+#adj_matrix_out <- compute_node_adjacency(node_samples)
+install()
+library(SurvMap)
+
+hclust(Ds_for_an)
+level_dist <- stats::as.dist(1-stats::cor(Ds_for_an))
+test <- hclust(level_dist)
+test_2 <- cluster::silhouette(stats::cutree(test,2),level_dist)
+test_3 <- cluster::pam(x =level_dist,diss = TRUE,k = 2)
+test_3$clustering
+test_4 <- cluster::silhouette(test_3$clustering,level_dist)
+a_mean <- mean(test_4[test_4[,2] == 2,3])
+b_mean <- mean(test_4[test_4[,2] == 1,3])
+(a_mean + b_mean)/2
+mean(test_4[,3])
+
+
+test_aa <- clust_lev(Ds_for_an,distance_type = "euclidean",clust_type = "PAM",linkage_type = "single",optimal_clust_mode = "standard",n_bins_clust = 40)
+
+
+test_bb <- clust_lev(Ds_for_an,distance_type = "euclidean",clust_type = "hierarchical",linkage_type = "single",optimal_clust_mode = "standard",n_bins_clust = 40)
+
+names(test_aa) == names(test_bb)
+
+
+if("test" %in% c("test","toast")){
+  print("yes")
+}
+
+
+warnings()
+
+out_one_D$clust_all_levels
+plot_mapper(out_one_D,trans_node_size = FALSE)
+install(SurvMap)
+library(cluster)
+pam(t(Ds_for_an),k = 4)
+help(pam)
+#arr_ind <- which(arr.ind = TRUE,out_one_D$adj_matrix == 1)
+#df_out <- data.frame(rownames(out_one_D$adj_matrix)[arr_ind[,1]],colnames(out_one_D$adj_matrix)[arr_ind[,2]])
+#df_out_b <- cbind(arr_ind,df_out)
+#rownames(df_out_b) <- 1:nrow(df_out_b)
+#colnames(df_out_b) <- c("from","to","from_Name","to_Name")
+#nodes_to_net <- unique(data.frame(c(df_out_b[,1]-1,df_out_b[,2]-1),c(df_out_b[,3],df_out_b[,4])))
+#nodes_to_net$node_size <- out_one_D$node_sizes
+#colnames(nodes_to_net) <- c("id","label","size")
+#nodes_to_net$color <- map_to_color(log2(unlist(out_one_D$node_av_filt) + 100))
+
+#edges_to_net <- test_data[,c(1,2)]-1
+#colnames(edges_to_net) <- c("from","to")
+#colnames(edges_to_net) <- c("from","to")
+
+#visNetwork(nodes_to_net,edges_to_net[!edges_to_net$from == edges_to_net$to,],)
+
+#colnames(df_out) <- c()
+
+#library(igraph)
+#install.packages("igraph")
+#install.packages("igraph")
+
+#igraph_test <- graph_from_adjacency_matrix(out_one_D$adj_matrix,mode = "undirected",diag = TRUE)
+
+#test_data <- as_long_data_frame(igraph_test)
+#class(test_data)
+
+#nodes_to_net <- unique(data.frame(c(test_data[,1]-1,test_data[,2]-1),c(test_data[,3],test_data[,4])))
+#nodes_to_net$node_size <- out_one_D$node_sizes
+#colnames(nodes_to_net) <- c("id","label","size")
+
+#edges_to_net <- test_data[,c(1,2)]-1
+#colnames(edges_to_net) <- c("from","to")
+
+#help("colorRampPalette")
+#mypal <- colorRampPalette(colors = c("blue","red"))(100)
+
+#map_to_color<-function(x,pallette,limits=NULL){
+    #if(is.null(limits)) limits=range(x)
+    #pal[findInterval(x,seq(limits[1],limits[2],length.out=length(pallette)+1), all.inside=TRUE)]
+#}
+
+#nodes_to_net$color <- map_to_color(log2(unlist(out_one_D$node_av_filt) + 100))
+
+#install.packages("visNetwork")
+#library(visNetwork)
+#visNetwork(nodes_to_net,edges_to_net[!edges_to_net$from == edges_to_net$to,],)
+
+
+#plot(igraph_test)
+
+#View(out_one_D$adj_matrix)
+
+#help("simpleNetwork")
+
+#View(out_one_D$adj_matrix)
+
+#as_long_data_frame(igraph_test)
+
+#simpleNetwork(as_long_data_frame(igraph_test))
+#vertex(igraph_test)
+#out_one_D$node_sizes
+#sum(out_one_D$node_sizes)
+
+###############
+###############
+#Protofunction#
+###############
+
+igraph_test <- graph_from_adjacency_matrix(out_one_D$adj_matrix,mode = "undirected",diag = TRUE)
+
+test_data <- as_long_data_frame(igraph_test)
+
+nodes_to_net <- unique(data.frame(c(test_data[,1]-1,test_data[,2]-1),c(test_data[,3],test_data[,4])))
+nodes_to_net$node_size <- out_one_D$node_sizes
+colnames(nodes_to_net) <- c("id","label","size")
+
+edges_to_net <- test_data[,c(1,2)]-1
+colnames(edges_to_net) <- c("from","to")
+
+#forceNetwork(Links = edges_to_net,Nodes = nodes_to_net,Source = "from", Target = "to",NodeID = "label",Group = "id",charge = -1,zoom = TRUE,Nodesize = "node_size", fontSize = 16,opacity = 1)
+#dev.off()
+#help("forceNetwork")
+
+visNetwork
+##################
+##################
+#useSe
+#install.packages("networkD3")
+#library(networkD3)
+
+#library(tidyverse)
+#library("navdata")
+#data("phone.call2")
+#nodes <- phone.call2$nodes
+#edges <- phone.call2$edges
+#install_github("kassambara/navdata")
+
+#nodes_d3 <- mutate(nodes, id = id - 1)
+#edges_d3 <- mutate(edges, from = from - 1, to = to - 1)
+
+
+#mypal <- colorRampPalette(colors = c("blue","red"))(100)
+
+#map2color<-function(x,pal,limits=NULL){
+    #if(is.null(limits)) limits=range(x)
+    #pal[findInterval(x,seq(limits[1],limits[2],length.out=length(pal)+1), all.inside=TRUE)]
+}
+
+#nodes_to_net$color <- map2color(out_one_D$node_av_filt,mypal)
+
+#install.packages("visNetwork")
+#library(visNetwork)
+#visNetwork(nodes_to_net,edges_to_net[!edges_to_net$from == edges_to_net$to,],)
+
+
+#out_one_D$node_samples
+#out_one_D$samp_in_lev
+#out_one_D$clust_all_levels
+
+#https://www.cyclismo.org/tutorial/R/s4Classes.html#creating-methods Working with classes.
+
+#library(igraph)
+
+#igraph_test <- graph_from_adjacency_matrix(adj_matrix_out,mode = "undirected")
+#plot(igraph_test)
+
+#Find samples at each level.
+
+#filter_function[filter_function >= int_data[[1]][1] & filter_function < int_data[[1]][2]]
+
+#which(filter_function >= int_data[[3]][1] & filter_function < int_data[[3]][2])
+
+#lapply(int_data,function(x,y) names(which(y >= x[1] & y < x[2])),filter_function)
+
+
+
+
+#number_of_bins <- 100
+
+
+#test_ds_for_ann <- Ds_for_an[,lapply(int_data,function(x,y) names(which(y >= x[1] & y < x[2])),filter_function)[[5]]]
+#3
+##length(test_ds_for_ann)
+
+#load_all()
+
+
+#clust_lev(test_ds_for_ann,distance_type = "cor",optimal_clust_mode = "standard",n_bins_clust = 10)
+#clust_lev(test_ds_for_ann,distance_type = "cor",optimal_clust_mode = "silhouette",n_bins_clust = 10)
+
+
+
+
+
+
+
+###<- as.dist(1-cor(test_ds_for_ann))
+#level_hcluster_ouput <- hclust(level_dist,method="single")
+
+#for(i in 2:(ncol(test_ds_for_ann)-1)){
+#  print(cluster::silhouette(cutree(level_hcluster_ouput,4),level_dist))
+#}
+
+
+#cutree(level_hcluster_ouput,1)
+
+
+##
+
+
+#level_dist <- dist(test_ds_for_ann,method = "euclidean")
+
+
+#library(cluster)
+
+#level_max_dist <- max(level_dist)
+#level_hcluster_ouput <- hclust(level_dist,method="single")
+#length(level_hcluster_ouput$order)
+
+#n_clust <- c()
+#av_sil <- c()
+#for(i in 2:(length(level_hcluster_ouput$order)-1)){
+  #n_clust <- c(n_clust,i)
+  #test <- silhouette(cutree(level_hcluster_ouput,i),level_dist)
+  #av_sil <- c(av_sil,mean(test[,3]))
+#}
+
+#plot(n_clust,av_sil)
+#cutree(level_hcluster_ouput,2)
+
+
+
+
+#0.71-1.0
+#A strong structure has been found
+
+#0.51-0.70
+#A reasonable structure has been found
+
+#0.26-0.50
+#The structure is weak and could be artificial. Try additional methods of data analysis.
+
+#< 0.25
+#No substantial structure has been found
+
+#https://stats.stackexchange.com/questions/10540/how-to-interpret-mean-of-silhouette-plot
+#test <- silhouette(cutree(level_hcluster_ouput,103),level_dist)
+#plot(test)
+#mean(test[,3])
+#silhouette
+#cluster:::silhouette
+
+#help(silhouette)
+
+
+#level_hcluster_ouput$
+#plot(level_hcluster_ouput)
+#help("hclust")
+#heights <- level_hcluster_ouput$height
+#level_hcluster_ouput$order
+#level_hcluster_ouput$labels
+#hist(heights)
+
+library(cluster)
+plot(silhouette(cutree(level_hcluster_ouput, h=0.45),level_dist))
+
+
+#help("hclust")
+
+#bin_breaks <- seq(from=min(heights), to=level_max_dist, by=(level_max_dist - min(heights))/number_of_bins)
+
+#myhist <- hist(c(heights,level_max_dist), breaks=bin_breaks, plot=FALSE)
+#plot(myhist)
+#level_hcluster_ouput$height
+#myhist$counts == 0
+
+
+
+
+
+#z <- (myhist$counts == 0)
+
+#cutoff <- myhist$mids[min(which(z == TRUE))]
+
+#level_hcluster_ouput$height
+#cluster_indices_within_level <- as.vector( cutree(level_hcluster_ouput, h=cutoff) )
+
+
+
+#One_D_Mapper <- function(point_cloud,filter_data,n_intervals,percent_overlap){
+ # if(all(colnames(point_cloud) == names(filter_data))){
+  #  min_val <- min(filter_data)
+   # max_val <- max(filter_data)
+  #  interval_width <- (max_val - min_val)/n_intervals
+  #  print(interval_width)
+#  }else{
+ #   print("point cloud data columns and filter data values present different orders")
+  #  }
+#}
+
+
+#One_D_Mapper(Ds_for_an,filt_data,5)
+
+#prod(5)
+
+
+
+#https://github.com/paultpearson/TDAmapper
+
+#library(graphics)
+#graphics::co.intervals
+```
+
+
