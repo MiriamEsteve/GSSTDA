@@ -1,21 +1,32 @@
-#' @title Gene selection based on variability
+#' @title Survival analysis based on gene expression levels.
 #'
-#' @param disease_component A matrix with the disease component data of the entire dataset obtained by \code{generate_disease_component} function.
-#' @param percentile Percentile for gene selection.
+#' @description Carries out univariate cox protportional hazard models for the expression levels of each gene included in the dataset and its link with relapse-free or overall survival.
 #'
-#' @return A vector containing the names of the selected genes.
+#' @param expression_vector_disease Expression data for disease samples
+#' @param time_vector Vector including time to relapse or time to death information
+#' @param event_vector Numeric vector indicating if relapse or death have been produced.
+#'
+#' @return A matrix with the results of the application of proportional hazard models using the expression levels of eahc gene as covariate.
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' gene_selection(disease_component, 0.99)
+#' cox_all_genes(expression_vector_disease,time_vector,event_vector)
 #' }
-gene_selection <- function(disease_component, percentile = 0.85){
-  max_abs_5_95 <- apply(disease_component, 1, function(x) base::max(base::abs(stats::quantile(x, c(0.05,0.95)))))
-  selected_genes <- names(max_abs_5_95[max_abs_5_95 > stats::quantile(max_abs_5_95, percentile)])
-  return(selected_genes)
+cox_all_genes <- function(expression_vector_disease, time_vector, event_vector){
+  pb <- utils::txtProgressBar(min = 0, max = nrow(expression_vector_disease), style = 3)
+  list_out <- list()
+  for(i in 1:nrow(expression_vector_disease)){
+    utils::setTxtProgressBar(pb, i)
+    temp <- summary(survival::coxph(survival::Surv(time_vector,as.numeric(event_vector))~expression_vector_disease[i,]))$coefficients[1,]
+    list_out[[i]] <- temp
+  }
+  df_out <- data.frame(do.call("rbind",list_out))
+  colnames(df_out) <-  c("coef","exp_coef","se_coef","z","Pr_z")
+  rownames(df_out) <- rownames(expression_vector_disease)
+  df_out <- as.matrix(df_out)
+  return(df_out)
 }
-
 
 
 #' @title gene_selection_surv
@@ -57,38 +68,6 @@ gene_selection_surv <- function(disease_component, p_Data, status_Col_Name, stat
   }
   return(selected_probes)
 }
-
-
-#' @title Survival analysis based on gene expression levels.
-#'
-#' @description Carries out univariate cox protportional hazard models for the expression levels of each gene included in the dataset and its link with relapse-free or overall survival.
-#'
-#' @param expression_vector_disease Expression data for disease samples
-#' @param time_vector Vector including time to relapse or time to death information
-#' @param event_vector Numeric vector indicating if relapse or death have been produced.
-#'
-#' @return A matrix with the results of the application of proportional hazard models using the expression levels of eahc gene as covariate.
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' cox_all_genes(expression_vector_disease,time_vector,event_vector)
-#' }
-cox_all_genes <- function(expression_vector_disease, time_vector, event_vector){
-  pb <- utils::txtProgressBar(min = 0, max = nrow(expression_vector_disease), style = 3)
-  list_out <- list()
-  for(i in 1:nrow(expression_vector_disease)){
-    utils::setTxtProgressBar(pb, i)
-    temp <- summary(survival::coxph(survival::Surv(time_vector,as.numeric(event_vector))~expression_vector_disease[i,]))$coefficients[1,]
-    list_out[[i]] <- temp
-  }
-  df_out <- data.frame(do.call("rbind",list_out))
-  colnames(df_out) <-  c("coef","exp_coef","se_coef","z","Pr_z")
-  rownames(df_out) <- rownames(expression_vector_disease)
-  df_out <- as.matrix(df_out)
-  return(df_out)
-}
-
 
 
 #' @title Gene selector based on association to survival.
