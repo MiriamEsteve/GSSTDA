@@ -54,18 +54,21 @@ GSSTDA <- function(full_data, num_intervals, percent_overlap, distance_type, clu
 
   # Control tag
   control_tag <- readline(prompt="What is the tag of control patient?")
+  #Filter by control patient
+  NT_data <- full_data
+  T_data <- full_data
 
+  GSSTDA_object_ini <- list("full_data" = full_data,
+                            "control_tag" = control_tag,
+                               "filter_values" = filter_values,
+                               "num_intervals" = num_intervals,
+                               "percent_overlap" = percent_overlap,
+                               "distance_type" = distance_type,
+                               "optimal_clustering_mode" = optimal_clustering_mode,
+                               "num_bins_when_clustering" = num_bins_when_clustering,
+                               "clustering_type" = clustering_type,
+                               "linkage_type" = linkage_type)
 
-  #mapper_object_ini <- list("full_data" = full_data,
-  #                             "filter_values" = filter_values,
-  #                             "num_intervals" = num_intervals,
-  #                             "percent_overlap" = percent_overlap,
-  #                             "distance_type" = distance_type,
-  #                             "optimal_clustering_mode" = optimal_clustering_mode,
-  #                             "num_bins_when_clustering" = num_bins_when_clustering,
-  #                             "clustering_type" = clustering_type,
-  #                             "linkage_type" = linkage_type)
-
-  #class(mapper_object_ini) <- "mapper_initialization"
-  #return(mapper_object)
+  class(GSSTDA_object_ini) <- "GSSTDA_initialization"
+  return(GSSTDA_object_ini)
 }
