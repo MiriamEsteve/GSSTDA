@@ -1,0 +1,50 @@
+Package: SurvMap
+Title: Mapper Survival Analysis for Transcriptomic Data
+Version: 0.0.1
+Authors@R: 
+    c(
+    person(given = "Miriam", 
+           family = "Esteve", 
+           role = c("aut", "cre"),
+           email = "miriam.estevecampello@uchceu.es",
+           comment = c(ORCID = "0000-0002-5908-0581")),
+    person(given = "Jaume", 
+           family = "Forés", 
+           role = c("aut"),
+		   email = "fores.martos.jaume@gmail.com",
+           comment = c(ORCID = "0000-0002-9025-4877")),
+    person(given = "Antonio", 
+           family = "Falco", 
+           role = c("aut"),
+           comment = c(ORCID = "")),
+    person(given = "Raquel", 
+           family = "Bosch", 
+           role = c("aut"),
+           comment = c(ORCID = ""))
+           )
+Description: Mapper-based survival analysis with transcriptomic data is designed to carry out. 
+			Mapper-based survival analysis is a modification of Progression Analysis of Disease (PAD) where survival data is taken into account in the filtering function.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+LazyData: true
+LazyDataCompression: xz
+DependsNote: BioC (>= 3.2)
+Imports: 
+    base,
+    cluster,
+    stats,
+    survival,
+    utils
+Suggests: 
+    rmarkdown,
+    knitr,
+    testthat (>= 3.0.0)
+SuggestsNote: BioC (>= 3.0), Recommended: affy, oligoClasses, oligo, GEOquery, DupChecker,
+				   arrayQualityMetrics, vctrs, frma, a4Preproc,
+				   genefu, plyr, preprocessCore, hgu133plus2.db
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+Depends: 
+    R (>= 3.5.0)
