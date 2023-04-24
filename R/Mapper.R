@@ -121,7 +121,7 @@ mapper <- function(full_data, filter_values, num_intervals, percent_overlap, dis
 
   class(mapper_object_ini) <- "mapper_initialization"
 
-  mapper_object <- one_D_Mapper(mapper_object_ini)
+  #mapper_object <- one_D_Mapper(mapper_object_ini)
 
   return(mapper_object)
 }

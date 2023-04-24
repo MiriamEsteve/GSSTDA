@@ -1,4 +1,4 @@
-#' @title GSSTDA
+#' @title GSSTDA_obj
 #'
 #' @description Gene Structure Survival using Topological Data Analysis
 #' @param full_data Matrix with the columns of the input matrix
@@ -31,44 +31,48 @@
 #' num_rows <- 100
 #' full_data <- data.frame( x=2*cos(1:num_rows), y=sin(1:num_rows) )
 #' filter_values <- list(2*cos(1:num_rows))
-#' GSSTDA_obj <- GSSTDA(full_data, num_intervals = 4,
+#' GSSTDA_obj <- GSSTDA_obj(full_data, num_intervals = 4,
 #'                      percent_overlap = 0.5, distance_type = "euclidean",
 #'                      num_bins_when_clustering = 8,
 #'                      clustering_type = "hierarchical",
 #'                      linkage_type = "single")}
-GSSTDA <- function(full_data, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
-  #Read the data set
-  yes_no <- readline(prompt="Are the columns of the data set the subjects and the rows the features?: yes/no ")
-  if(yes_no == "no" | yes_no == "n" | yes_no == ""){
-    #Transpose the data set
-    full_data <- t(full_data)
-  }
-  #Convert full_data to matrix type
-  full_data <- as.matrix(full_data)
-
-  #Omit NAN's values
-  if (na.rm == TRUE){
-    full_data <- stats::na.omit(full_data)
-    print("Missing values and NaN's are omitted")
-  }
+GSSTDA_obj <- function(full_data, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
+  # Create mapper object where the arguments are checked
+  mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type)
 
   # Control tag
-  control_tag <- readline(prompt="What is the tag of control patient?")
-  #Filter by control patient
-  NT_data <- full_data
-  T_data <- full_data
+  control_column <- readline(prompt="What is the column name of control patient?")
 
-  GSSTDA_object_ini <- list("full_data" = full_data,
-                            "control_tag" = control_tag,
-                               "filter_values" = filter_values,
-                               "num_intervals" = num_intervals,
-                               "percent_overlap" = percent_overlap,
-                               "distance_type" = distance_type,
-                               "optimal_clustering_mode" = optimal_clustering_mode,
-                               "num_bins_when_clustering" = num_bins_when_clustering,
-                               "clustering_type" = clustering_type,
-                               "linkage_type" = linkage_type)
+  control_tag <- readline(prompt="What is the tag of control patient?")
+
+
+  GSSTDA_object_ini <- list( unlist(mapper_obj),
+                             "control_column" = control_column,
+                             "control_tag" = control_tag,
+                             )
 
   class(GSSTDA_object_ini) <- "GSSTDA_initialization"
   return(GSSTDA_object_ini)
+}
+
+
+#' @title GSSTDA
+#'
+#' @description Gene Structure Survival using Topological Data Analysis
+#' @param GSSTDA_obj G-SS-TDA object return by \code{GSSTDA_obj} function.
+#' @return A \code{GSSTDA} output.
+#' @export
+#' @examples
+#' \dontrun{
+#' GSSTDA_obj <- GSSTDA_obj(full_data, num_intervals = 4,
+#'                      percent_overlap = 0.5, distance_type = "euclidean",
+#'                      num_bins_when_clustering = 8,
+#'                      clustering_type = "hierarchical",
+#'                      linkage_type = "single")}
+#' GSSTDA <- GSSTDA(GSSTDA_obj)
+GSSTDA <- function(GSSTDA_obj){
+
+  #Generating the healthy tissue model.
+
+
 }

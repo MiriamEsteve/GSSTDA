@@ -46,19 +46,18 @@ linkage_type <- "single"
 num_bins_when_clustering <- 10
 
 
-mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type)
-
+#mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type)
 
 ```
 
 Obtain information from the mapper object created in the previous step.
 ```{r}
-mapper_infor <- get_information_from_results(mapper_obj)
+#mapper_infor <- get_information_from_results(mapper_obj)
 
-print(mapper_infor)
+#print(mapper_infor)
 ```
 
 Plot the mapper graph.
 ```{r}
-plot_mapper(mapper_obj)
+#plot_mapper(mapper_obj)
 ```
