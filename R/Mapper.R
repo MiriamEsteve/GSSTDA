@@ -62,12 +62,6 @@ mapper <- function(full_data, filter_values, num_intervals, percent_overlap, dis
   #Convert full_data to matrix type
   full_data <- as.matrix(full_data)
 
-  #Omit NAN's values
-  if (na.rm == TRUE){
-    full_data <- stats::na.omit(full_data)
-    print("Missing values and NaN's are omitted")
-  }
-
   #Check if filter_values is a vector
   if(!is.vector(filter_values)){
     stop("filter_values must be a valid values vector")
@@ -80,6 +74,17 @@ mapper <- function(full_data, filter_values, num_intervals, percent_overlap, dis
     stop("The name of the filter_values must be the same as the subject name of the full_data.")
   }
 
+  #Omit NAN's values
+  if (na.rm == TRUE){
+    # Remove colums (subjects) and their filter values with NA's values
+    full_data <- full_data[,colSums(is.na(full_data))==0]
+    filter_values <- filter_values[colnames(full_data)]
+    # Remove filter values and respective columns with NA's values
+    filter_values <- stats::na.omit(filter_values)
+    full_data <- full_data[,names(filter_values)]
+    print("Missing values and NaN's are omitted")
+  }
+  
   #Check distance_type
   distances <- c("cor","euclidean")
   if(!distance_type %in% distances){
@@ -212,7 +217,7 @@ get_information_from_results <- function(mapper_object){
   n_ramifications <- sum(n_ramifications)
 
   #Generating the object of the output data
-  mapper_information <- list("node_sizes" = n_nodes,
+  mapper_information <- list("n_nodes" = n_nodes,
                                 "average_nodes"= av_node_size,
                                 "standard_desviation_nodes " = sd_node_size,
                                 "number_connections" = n_connections,
