@@ -1,4 +1,4 @@
-#' @title Mapper
+#' @title Mapper object
 #'
 #' @description TDA are persistent homology and mapper. Persistent homology
 #' borrows ideas from abstract algebra to identify particular aspects
@@ -53,66 +53,13 @@
 #'                      clustering_type = "hierarchical",
 #'                      linkage_type = "single")}
 mapper <- function(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
-  #Read the data set
-  yes_no <- readline(prompt="Are the columns of the data set the subjects and the rows the features?: yes/no ")
-  if(yes_no == "no" | yes_no == "n" | yes_no == ""){
-    #Transpose the data set
-    full_data <- t(full_data)
+  # Don't call by GSSTDA function
+  if (na.rm != "checked"){
+    # Check the full_data introduces
+    check_full_data()
+    # Check mapper arguments
+    optimal_clustering_mode <- check_arg_mapper(filter_values, distance_type, clustering_type, linkage_type)
   }
-  #Convert full_data to matrix type
-  full_data <- as.matrix(full_data)
-
-  #Check if filter_values is a vector
-  if(!is.vector(filter_values)){
-    stop("filter_values must be a valid values vector")
-  }
-
-  #Check if there are more of two rows in the full_data
-
-  #Check if the names of the filter_values are the same as the columns of full_data.
-  if(!setequal(names(filter_values), colnames(full_data))){
-    stop("The name of the filter_values must be the same as the subject name of the full_data.")
-  }
-
-  #Omit NAN's values
-  if (na.rm == TRUE){
-    # Remove colums (subjects) and their filter values with NA's values
-    full_data <- full_data[,colSums(is.na(full_data))==0]
-    filter_values <- filter_values[colnames(full_data)]
-    # Remove filter values and respective columns with NA's values
-    filter_values <- stats::na.omit(filter_values)
-    full_data <- full_data[,names(filter_values)]
-    print("Missing values and NaN's are omitted")
-  }
-  
-  #Check distance_type
-  distances <- c("cor","euclidean")
-  if(!distance_type %in% distances){
-    stop(paste("Invalid distance selected. Choose one of the folowing:", paste(distances, collapse = ", ")))
-  }
-
-  #Check clustering_type
-  clust_types <- c("hierarchical","PAM")
-  if(!clustering_type %in% clust_types){
-    stop(paste("Invalid clustering method selected. Choose one of the folowing:", paste(clust_types,collapse = ", ")))
-  }
-
-  optimal_clustering_mode <- "silhouette"
-
-  if(clustering_type == "hierarchical"){
-    opt_clust_modes <- c("standard","silhouette")
-    option <- readline(prompt="Choose one of the folowing optimal cluster number method: standard/silhouette ")
-    if(option == "standard" | option == ""){
-      optimal_clustering_mode <- "standard"
-    }
-  }
-
-  #Check linkage_type
-  link_types <- c("single","average","complete")
-  if(!linkage_type %in% link_types){
-    stop(paste("Invalid linkage method selected. Choose one of the folowing:", paste(link_types,collapse = ", ")))
-  }
-
 
   mapper_object_ini <- list("full_data" = full_data,
                                "filter_values" = filter_values,
@@ -126,7 +73,9 @@ mapper <- function(full_data, filter_values, num_intervals, percent_overlap, dis
 
   class(mapper_object_ini) <- "mapper_initialization"
 
-  #mapper_object <- one_D_Mapper(mapper_object_ini)
+  if (na.rm != "checked"){
+    mapper_object <- one_D_Mapper(mapper_object_ini)
+  }
 
   return(mapper_object)
 }
@@ -175,7 +124,7 @@ one_D_Mapper <- function(mapper_object_ini){
                            "sample_in_level" = samp_in_lev,
                            "clustering_all_levels" = test_clust_all_levels,
                            "node_samples" = node_samples,
-                           "node_sizes" = unlist(lapply(node_samples,length)),
+                           "n_nodes" = unlist(lapply(node_samples,length)),
                            "node_average_filt" = lapply(node_samples,function(x,y) mean(y[x]),filter_values),
                            "adj_matrix" = adj_matrix_out)
 
