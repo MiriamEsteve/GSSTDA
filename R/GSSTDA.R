@@ -3,6 +3,9 @@
 #' @description Gene Structure Survival using Topological Data Analysis
 #' @param full_data Matrix with the columns of the input matrix
 #' corresponding to the individuals belonging to the level.
+#' @param survival_time Time between disease diagnosis and death (if not dead until the end of follow-up).
+#' @param survival_event \code{logical}. Whether the patient has died or not.
+#' @param case_tag The tag of the healthy patient (healthy or not).
 #' @param num_intervals Number of intervals used to create the first sample
 #' partition based on filtering values.
 #' @param percent_overlap Percentage of overlap between intervals. Expressed
@@ -31,24 +34,29 @@
 #' num_rows <- 100
 #' full_data <- data.frame( x=2*cos(1:num_rows), y=sin(1:num_rows) )
 #' filter_values <- list(2*cos(1:num_rows))
-#' GSSTDA_obj <- GSSTDA_obj(full_data, num_intervals = 4,
+#' GSSTDA_obj <- GSSTDA_obj(full_data,  survival_time, survival_event, case_tag, num_intervals = 4,
 #'                      percent_overlap = 0.5, distance_type = "euclidean",
 #'                      num_bins_when_clustering = 8,
 #'                      clustering_type = "hierarchical",
 #'                      linkage_type = "single")}
-GSSTDA_obj <- function(full_data, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
+GSSTDA_obj <- function(full_data, survival_time, survival_event, case_tag, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
+  #Check the arguments introduces in the function
+  check_full_data(full_data)
+  check_vectors()
+  optimal_clustering_mode <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type, linkage_type)
+
+  # Pre-process. DGSA
+
+
   # Create mapper object where the arguments are checked
-  mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type)
-
-  # Control tag
-  control_column <- readline(prompt="What is the column name of control patient?")
-
-  control_tag <- readline(prompt="What is the tag of control patient?")
+  mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm = "checked")
 
 
+  # Create the object
   GSSTDA_object_ini <- list( unlist(mapper_obj),
-                             "control_column" = control_column,
-                             "control_tag" = control_tag,
+                             "survival_time" = survival_time,
+                             "survival_event" = survival_event,
+                             "case_tag" = case_tag
                              )
 
   class(GSSTDA_object_ini) <- "GSSTDA_initialization"
@@ -72,7 +80,6 @@ GSSTDA_obj <- function(full_data, num_intervals, percent_overlap, distance_type,
 #' GSSTDA <- GSSTDA(GSSTDA_obj)
 GSSTDA <- function(GSSTDA_obj){
 
-  #Generating the healthy tissue model.
 
 
 }
