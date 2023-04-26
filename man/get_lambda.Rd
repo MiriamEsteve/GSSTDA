@@ -7,13 +7,15 @@
 get_lambda(bet)
 }
 \arguments{
-\item{bet}{numeric}
+\item{bet}{Beta value. Aspect ratio of the input matrix.  \deqn{\frac{m}{n}},
+were m is the number of rows of the input matrix and n the number of columns.}
 }
 \value{
-A numeric lambda value.
+Numeric. Lambda value.
 }
 \description{
-Computes the value of lambda as defined in: The Optimal Hard Threshold for Singular Values is \eqn{\sqrt(4/ 3)}
+Computes the value of lambda as defined in: "The Optimal
+Hard Threshold for Singular Values is \eqn{\sqrt(4/ 3)}".
 }
 \examples{
 get_lambda(0.3)

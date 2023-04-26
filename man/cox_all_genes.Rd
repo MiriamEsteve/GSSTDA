@@ -9,15 +9,19 @@ cox_all_genes(expression_vector_disease, time_vector, event_vector)
 \arguments{
 \item{expression_vector_disease}{Expression data for disease samples}
 
-\item{time_vector}{Vector including time to relapse or time to death information}
+\item{time_vector}{Numeric vector that includes time to the event information}
 
-\item{event_vector}{Numeric vector indicating if relapse or death have been produced.}
+\item{event_vector}{Numeric vector that indicates if relapse or death
+have been produced (0 and 1s).}
 }
 \value{
-A matrix with the results of the application of proportional hazard models using the expression levels of eahc gene as covariate.
+A matrix with the results of the application of proportional
+hazard models using the expression levels of each gene as covariate.
 }
 \description{
-Carries out univariate cox protportional hazard models for the expression levels of each gene included in the dataset and its link with relapse-free or overall survival.
+It carries out univariate cox proportional hazard models for
+the expression levels of each gene included in the provided dataset (eData)
+and their link with relapse-free or overall survival.
 }
 \examples{
 \dontrun{

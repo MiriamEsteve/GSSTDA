@@ -1,15 +1,14 @@
 #' @title Flatten normal tissues
-#'
-#' @description Given a matrix which contains the expression values of \code{n} healthy tissue samples produces the flattened vector matrix
-#' as reported in Disease-specific genomic analysis: identifying the signature of pathological biology.
-#'
+#' @description Given a matrix containing the expression values of
+#' \code{n} healthy tissue samples, it produces the flattened vector matrix
+#' as reported in "Disease-specific genomic analysis: identifying
+#' the signature of pathologic biology".
 #' @param normal_tiss A normal tissue data gene expression matrix.
-#'
-#' @return A gene expression matrix containing the flattened version of the vectors.
-#' @export
-#'
+#' The columns should be the samples and the rows should be the genes.
+#' @return A gene expression matrix containing the flattened
+#' version of the vectors.
 #' @examples
-#' normal_tissue_matrix <- matrix(stats::rnorm(36),nrow=6)
+#' normal_tissue_matrix <- matrix(stats::rnorm(36), nrow=6)
 #' flatten_normal_tiss(normal_tissue_matrix)
 flatten_normal_tiss <- function(normal_tiss){
   df_out <- normal_tiss
@@ -21,14 +20,11 @@ flatten_normal_tiss <- function(normal_tiss){
 
 
 #' @title Computes lambda
-#'
-#' @description Computes the value of lambda as defined in: The Optimal Hard Threshold for Singular Values is \eqn{\sqrt(4/ 3)}
-#'
-#' @param bet numeric
-#'
-#' @return A numeric lambda value.
-#' @export
-#'
+#' @description Computes the value of lambda as defined in: "The Optimal
+#' Hard Threshold for Singular Values is \eqn{\sqrt(4/ 3)}".
+#' @param bet Beta value. Aspect ratio of the input matrix.  \deqn{\frac{m}{n}},
+#' were m is the number of rows of the input matrix and n the number of columns.
+#' @return Numeric. Lambda value.
 #' @examples
 #' get_lambda(0.3)
 get_lambda <- function(bet){
@@ -39,15 +35,15 @@ get_lambda <- function(bet){
 
 
 #' @title Marcenko-Pastur distribution to integrate.
-#'
-#' @description This function is an auxiliary function includes  the marcenco-pastur function that was to be integrated to find the upper integration bound that produces and area of 1/2.
-#'
-#' @param t Parameter t
-#' @param bet Beta value. Aspect ratio of the input matrix.  \eqn{\frac{m}{n}}, were m is the number  of rows of the input matrix and n the number of columns.
-#'
-#' @return returns the function value for a specific t and a particular aspect ration m/n.
-#' @export
-#'
+#' @description This function is an auxiliary function that includes
+#' the Marcenco-Pastur function that has to be integrated to find the
+#' upper bound of integration that produces and area of 1/2.
+#' @param t Parameter t.
+#' @param bet Beta value. Aspect ratio of the input matrix,
+#' \eqn{\frac{m}{n}}, were m is the number of rows of the input
+#' matrix and n the number of columns.
+#' @return It returns the function value for a specific t and a particular
+#' aspect ration m/n.
 #' @examples fun_to_int(1,0.3)
 fun_to_int <- function(t,bet){
   b_p <- (1 + sqrt(bet))^2
@@ -60,17 +56,19 @@ fun_to_int <- function(t,bet){
 
 
 
-#' @title Get mu_beta
-#'
-#' @description This function identifies the upper integration bound of the Marcenko-Pastur distribution. It explores 100 values in a given interval. The selects the values clusest to 1/2 on the left and right. As the upper integration boued
-#' if the distance between the left and right approximations is lower than a given threshold 1e-10 it converges and the upper bound producing an area of 1/2 is defined as the average of the left and right
-#' approximations.
-#'
-#' @param bet Beta value. Aspect ratio of the input matrix.  \deqn{\frac{m}{n}}, were m is the number of rows of the input matrix and n the number of columns.
-#'
-#' @return Returns the mu beta value. This is the upper limit of integration where the Marcenko-Pastur distribution is equal to 1/2.
-#' @export
-#'
+#' @title Get mu sub beta
+#' @description This function identifies the upper bound of integration of the
+#' Marcenko-Pastur distribution, as described in "The Optimal Hard
+#' Threshold for Singular Values is \eqn{\sqrt(4/ 3)}". It explores 100
+#' values in a given interval. Then it selects the values closest to 1/2
+#' on the left and on the right. As the upper bound of integration,
+#' if the distance between the left and right approximations is lower than
+#' a given threshold (1e-10), it converges and the upper bound that produces
+#' an area of 1/2 is defined as the mean of the left and right approximations.
+#' @param bet Beta value. Aspect ratio of the input matrix, \deqn{\frac{m}{n}},
+#' were m is the number of rows of the input matrix and n the number of columns.
+#' @return It returns the mu beta value. This is the upper limit of integration
+#' where the Marcenko-Pastur distribution is equal to 1/2.
 #' @examples
 #' get_mu_beta(0.3)
 get_mu_beta <- function(bet){
@@ -95,15 +93,12 @@ get_mu_beta <- function(bet){
 }
 
 
-#' @title Compute omega
-#'
-#' @description Computes the omega value as described in Add reference.
-#'
-#' @param bet Beta value. Aspect ratio of the input matrix.  \deqn{\frac{m}{n}}, were m is the number of rows of the input matrix and n the number of columns.
-#'
-#' @return omega. Returns the omega value.
-#' @export
-#'
+#' @title Compute the omega value
+#' @description It computes the omega value as described in "The Optimal Hard
+#' Threshold for Singular Values is \eqn{\sqrt(4/ 3)}".
+#' @param bet Beta value. Aspect ratio of the input matrix, \deqn{\frac{m}{n}},
+#' were m is the number of rows of the input matrix and n the number of columns.
+#' @return Numeric. Omega value.
 #' @examples
 #' get_omega(0.3)
 get_omega <- function(bet){
@@ -114,15 +109,16 @@ get_omega <- function(bet){
 }
 
 
-#' @title Rectangular matrix denoiser
-#'
-#' @description Takes a rectangular matrix composed by the addition of a signal and a gaussian noise matrix and returns a matrix of the same dimension that is denoised through a singular value truncation proccess.
-#'
-#' @param input_mat A noisy matrix to denoise.
-#'
-#' @return Returns a same dimension denoised version of the matrix.
-#' @export
-#'
+#' @title Rectangular Matrix Denoiser.
+#' @description It takes a rectangular matrix composed by the addition of
+#' a signal matrix and a gaussian noise matrix and returns a matrix of the same
+#' dimension that is denoised through a Singular Value Decomposition
+#' truncation proccess. The selection of the number of singular values is
+#' chosen following the proposal by "The optimal hard threshold
+#' for singular values is \eqn{\sqrt(4/ 3)}". It should be used after
+#' the function \code{flatten_normal_tiss}.
+#' @param input_mat A rectangular noisy matrix to denoise.
+#' @return A same dimension denoised version of the matrix.
 #' @examples
 #' denoise_rectangular_matrix(matrix(c(1,2,3,4,5,2,3,1,2,3),ncol = 2))
 denoise_rectangular_matrix <- function(input_mat){
@@ -142,15 +138,14 @@ denoise_rectangular_matrix <- function(input_mat){
 }
 
 #' @title Generate disease component matrix.
-#'
-#' @description This functions produces a disease component matrix from the complete dataset and the denoised flattened normal data.
-#'
-#' @param full_data Matrix containing the full dataset.
-#' @param normal_space Denoised flattened healthy tissue data.
-#'
-#' @return A matrix containing the disease component of the complete dataset.
-#' @export
-#'
+#' @description This function produces a disease component matrix
+#' from an expression matrix and the denoised flattened matrix constructed
+#' from "healthy tissue data".
+#' @param full_data Matrix that contains the expression data.
+#' @param normal_space Denoised flattened matrix constructed from
+#' "healthy tissue data". Output of the function \code{denoise_rectangular_matrix}.
+#' @return Disease component matrix that contains the disease component
+#' of the provided expression matrix.
 #' @examples
 #' full_data <- matrix(stats::rnorm(120),ncol=20)
 #' normal_tissue <- full_data[,11:20]

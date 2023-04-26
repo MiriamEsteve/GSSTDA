@@ -7,16 +7,20 @@
 flatten_normal_tiss(normal_tiss)
 }
 \arguments{
-\item{normal_tiss}{A normal tissue data gene expression matrix.}
+\item{normal_tiss}{A normal tissue data gene expression matrix.
+The columns should be the samples and the rows should be the genes.}
 }
 \value{
-A gene expression matrix containing the flattened version of the vectors.
+A gene expression matrix containing the flattened
+version of the vectors.
 }
 \description{
-Given a matrix which contains the expression values of \code{n} healthy tissue samples produces the flattened vector matrix
-as reported in Disease-specific genomic analysis: identifying the signature of pathological biology.
+Given a matrix containing the expression values of
+\code{n} healthy tissue samples, it produces the flattened vector matrix
+as reported in "Disease-specific genomic analysis: identifying
+the signature of pathologic biology".
 }
 \examples{
-normal_tissue_matrix <- matrix(stats::rnorm(36),nrow=6)
+normal_tissue_matrix <- matrix(stats::rnorm(36), nrow=6)
 flatten_normal_tiss(normal_tissue_matrix)
 }

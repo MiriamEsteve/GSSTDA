@@ -1,14 +1,14 @@
 #' @title Survival analysis based on gene expression levels.
-#'
-#' @description Carries out univariate cox protportional hazard models for the expression levels of each gene included in the dataset and its link with relapse-free or overall survival.
-#'
+#' @description It carries out univariate cox proportional hazard models for
+#' the expression levels of each gene included in the provided dataset (eData)
+#' and their link with relapse-free or overall survival.
 #' @param expression_vector_disease Expression data for disease samples
-#' @param time_vector Vector including time to relapse or time to death information
-#' @param event_vector Numeric vector indicating if relapse or death have been produced.
-#'
-#' @return A matrix with the results of the application of proportional hazard models using the expression levels of eahc gene as covariate.
-#' @export
-#'
+#' @param time_vector Numeric vector that includes time to the event information
+#' @param event_vector Numeric vector that indicates if relapse or death
+#' have been produced (0 and 1s).
+#' @return A matrix with the results of the application of proportional
+#' hazard models using the expression levels of each gene as covariate.
+#' @import survival
 #' @examples
 #' \dontrun{
 #' cox_all_genes(expression_vector_disease,time_vector,event_vector)
@@ -29,21 +29,33 @@ cox_all_genes <- function(expression_vector_disease, time_vector, event_vector){
 }
 
 
-#' @title gene_selection_surv
-#'
-#' @description Selects markers for mapper based on the product of standard deviation plus one times the Z score obtained through fitting a cox proportional hazard model to the expression of each gene.
-#'
-#' @param disease_component A matrix with the disease component data of the entire dataset obtained by \code{generate_disease_component} function.
+#' @title Gene selection based on variability and the relationship
+#' to survival.
+#' @description
+#' It selects genes for mapper based on the product of standard deviation
+#' of the rows (genes) in the disease component matrix
+#' plus one times the Z score obtained by fitting a cox proportional
+#' hazard model to the level of each gene. For further information see
+#' "Topology based data analysis identifies a subgroup of breast cancers
+#' with a unique mutational profile and excellent survival"
+#' @param disease_component Disease component matrix (output of the function
+#' \code{generate_disease_component}). The names of the rows must be the names
+#' of the genes.
 #' @param p_Data Data.frame with the phenotype data.
-#' @param status_Col_Name Column for sample filtering.
-#' @param status_Value Value for the sample filtering co-variate.
-#' @param cox_all Output from the \code{cox_all_genes} function.
-#' @param n_top Number of markers presenting the maximum values for the product.
-#' @param type_sel Select top from bottom and top or from absolute value.
-#'
-#' @return vector de los genes seleccionados
-#' @export
-#'
+#' @param status_Col_Name Column of p_Data for sample filtering.
+#' @param status_Value Value of Status_Col_Name for the sample filtering
+#' co-variate.
+#' @param cox_all Output from the \code{cox_all_genes} function. Data.frame with
+#' information on the relationship between genes and survival.
+#' @param n_top Number of genes to be selected (those with the highest
+#' product value).
+#' @param type_sel Option. Select the "Abs" option, which means that the
+#' genes with the highest absolute value are chosen, or the
+#' "Top_Bot" option, which means that half of the selected
+#' genes are those with the highest value (positive value, i.e.
+#' worst survival prognosis) and the other half are those with the
+#' lowest value (negative value, i.e. best prognosis).
+#' @return Character vector with the names of the selected genes.
 #' @examples
 #' \dontrun{
 #' gene_selection_surv(disease_component, p_Data, status_Col_Name, status_Value, cox_all, n_top)

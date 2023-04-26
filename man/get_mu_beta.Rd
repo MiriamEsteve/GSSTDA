@@ -2,20 +2,27 @@
 % Please edit documentation in R/DGSA.R
 \name{get_mu_beta}
 \alias{get_mu_beta}
-\title{Get mu_beta}
+\title{Get mu sub beta}
 \usage{
 get_mu_beta(bet)
 }
 \arguments{
-\item{bet}{Beta value. Aspect ratio of the input matrix.  \deqn{\frac{m}{n}}, were m is the number of rows of the input matrix and n the number of columns.}
+\item{bet}{Beta value. Aspect ratio of the input matrix, \deqn{\frac{m}{n}},
+were m is the number of rows of the input matrix and n the number of columns.}
 }
 \value{
-Returns the mu beta value. This is the upper limit of integration where the Marcenko-Pastur distribution is equal to 1/2.
+It returns the mu beta value. This is the upper limit of integration
+where the Marcenko-Pastur distribution is equal to 1/2.
 }
 \description{
-This function identifies the upper integration bound of the Marcenko-Pastur distribution. It explores 100 values in a given interval. The selects the values clusest to 1/2 on the left and right. As the upper integration boued
-if the distance between the left and right approximations is lower than a given threshold 1e-10 it converges and the upper bound producing an area of 1/2 is defined as the average of the left and right
-approximations.
+This function identifies the upper bound of integration of the
+Marcenko-Pastur distribution, as described in "The Optimal Hard
+Threshold for Singular Values is \eqn{\sqrt(4/ 3)}". It explores 100
+values in a given interval. Then it selects the values closest to 1/2
+on the left and on the right. As the upper bound of integration,
+if the distance between the left and right approximations is lower than
+a given threshold (1e-10), it converges and the upper bound that produces
+an area of 1/2 is defined as the mean of the left and right approximations.
 }
 \examples{
 get_mu_beta(0.3)

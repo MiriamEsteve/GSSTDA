@@ -2,7 +2,8 @@
 % Please edit documentation in R/gene_selection.R
 \name{gene_selection_surv}
 \alias{gene_selection_surv}
-\title{gene_selection_surv}
+\title{Gene selection based on variability and the relationship
+to survival.}
 \usage{
 gene_selection_surv(
   disease_component,
@@ -15,25 +16,40 @@ gene_selection_surv(
 )
 }
 \arguments{
-\item{disease_component}{A matrix with the disease component data of the entire dataset obtained by \code{generate_disease_component} function.}
+\item{disease_component}{Disease component matrix (output of the function
+\code{generate_disease_component}). The names of the rows must be the names
+of the genes.}
 
 \item{p_Data}{Data.frame with the phenotype data.}
 
-\item{status_Col_Name}{Column for sample filtering.}
+\item{status_Col_Name}{Column of p_Data for sample filtering.}
 
-\item{status_Value}{Value for the sample filtering co-variate.}
+\item{status_Value}{Value of Status_Col_Name for the sample filtering
+co-variate.}
 
-\item{cox_all}{Output from the \code{cox_all_genes} function.}
+\item{cox_all}{Output from the \code{cox_all_genes} function. Data.frame with
+information on the relationship between genes and survival.}
 
-\item{n_top}{Number of markers presenting the maximum values for the product.}
+\item{n_top}{Number of genes to be selected (those with the highest
+product value).}
 
-\item{type_sel}{Select top from bottom and top or from absolute value.}
+\item{type_sel}{Option. Select the "Abs" option, which means that the
+genes with the highest absolute value are chosen, or the
+"Top_Bot" option, which means that half of the selected
+genes are those with the highest value (positive value, i.e.
+worst survival prognosis) and the other half are those with the
+lowest value (negative value, i.e. best prognosis).}
 }
 \value{
-vector de los genes seleccionados
+Character vector with the names of the selected genes.
 }
 \description{
-Selects markers for mapper based on the product of standard deviation plus one times the Z score obtained through fitting a cox proportional hazard model to the expression of each gene.
+It selects genes for mapper based on the product of standard deviation
+of the rows (genes) in the disease component matrix
+plus one times the Z score obtained by fitting a cox proportional
+hazard model to the level of each gene. For further information see
+"Topology based data analysis identifies a subgroup of breast cancers
+with a unique mutational profile and excellent survival"
 }
 \examples{
 \dontrun{

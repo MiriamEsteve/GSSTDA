@@ -2,18 +2,20 @@
 % Please edit documentation in R/DGSA.R
 \name{get_omega}
 \alias{get_omega}
-\title{Compute omega}
+\title{Compute the omega value}
 \usage{
 get_omega(bet)
 }
 \arguments{
-\item{bet}{Beta value. Aspect ratio of the input matrix.  \deqn{\frac{m}{n}}, were m is the number of rows of the input matrix and n the number of columns.}
+\item{bet}{Beta value. Aspect ratio of the input matrix, \deqn{\frac{m}{n}},
+were m is the number of rows of the input matrix and n the number of columns.}
 }
 \value{
-omega. Returns the omega value.
+Numeric. Omega value.
 }
 \description{
-Computes the omega value as described in Add reference.
+It computes the omega value as described in "The Optimal Hard
+Threshold for Singular Values is \eqn{\sqrt(4/ 3)}".
 }
 \examples{
 get_omega(0.3)

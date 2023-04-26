@@ -2,27 +2,42 @@
 % Please edit documentation in R/Filter_Funct.R
 \name{lp_norm_k_powers_surv}
 \alias{lp_norm_k_powers_surv}
-\title{SurvPAD Filtering function}
+\title{PAD-S Filtering function}
 \usage{
 lp_norm_k_powers_surv(exp_matrix, p, k, cox_all)
 }
 \arguments{
-\item{exp_matrix}{Matrix including the fit residual of the dataset and the healthy state model.}
+\item{exp_matrix}{Disease component matrix (output of the function of
+\code{generate_disease_component}), after having selected the rows
+corresponding to the selected genes.}
 
-\item{p}{Integer}
+\item{p}{integer. It indicates the p norm to be calculated.
+If k = 1 and p = 2, the function computes the standard
+(Euclidean) vector magnitude of each column. For larger values of p the
+weight of genes with larger levels is greater.}
 
-\item{k}{Integer}
+\item{k}{integer. Powers of the vector magnitude. If k = 1 and p = 2,
+the function computes the standard (Euclidean) vector magnitude
+of each column.}
 
-\item{cox_all}{A matrix with the output of the \code{cox_all_genes} function that stores the information of all cox proportional hazard model tests for each gene in the dataset.}
+\item{cox_all}{A matrix with the output of the
+\code{cox_all_genes} function
+that stores the information of all cox proportional hazard model
+tests for each gene in the dataset.}
 }
 \value{
-A numeric vector including the values produced by the function for each sample in the dataset.
+A numeric vector including the values produced by the function
+for each sample in the dataset.
 }
 \description{
-A filtering function for mapper that projects $$R$^n$ into $R$ that
-}
-\examples{
-\dontrun{
-lp_norm_k_powers(disease_state,2,1, cox_data)}
-
+A filtering function for mapper that projects $$R$^n$ into $R$.
+It calculates for each colum of the matrix (each patient), its value
+of the filtering function. Specifically, it computes
+the vector magnitude in the [L_{p}] norm (as well
+as k powers of this magnitude) of the vector resulting of
+weighting each element of the column vector by the Z score obtained
+by fitting a cox proportional hazard model to the level of each gene.
+For further information see "Progression Analysis of Disease with Survival
+(PAD-S) by SurvMap identifies different prognostic subgroups of breast
+cancer in a large combined set of transcriptomics and methylation studies"
 }

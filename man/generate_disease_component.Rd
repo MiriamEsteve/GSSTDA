@@ -7,15 +7,19 @@
 generate_disease_component(full_data, normal_space)
 }
 \arguments{
-\item{full_data}{Matrix containing the full dataset.}
+\item{full_data}{Matrix that contains the expression data.}
 
-\item{normal_space}{Denoised flattened healthy tissue data.}
+\item{normal_space}{Denoised flattened matrix constructed from
+"healthy tissue data". Output of the function \code{denoise_rectangular_matrix}.}
 }
 \value{
-A matrix containing the disease component of the complete dataset.
+Disease component matrix that contains the disease component
+of the provided expression matrix.
 }
 \description{
-This functions produces a disease component matrix from the complete dataset and the denoised flattened normal data.
+This function produces a disease component matrix
+from an expression matrix and the denoised flattened matrix constructed
+from "healthy tissue data".
 }
 \examples{
 full_data <- matrix(stats::rnorm(120),ncol=20)
