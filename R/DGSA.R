@@ -78,24 +78,18 @@ get_mu_beta <- function(bet){
   lbond <- (1 - sqrt(bet))^2
   hbond <- (1 + sqrt(bet))^2
   seqvals <- seq(lbond,hbond,length.out = 100)
-  #end_loop <- FALSE
-  counter <- 1
-  while(T){ #end_loop == FALSE
-    #print(counter)
+  while(T){
     values_int <- c()
     for (i in 1:length(seqvals)){
       res <- stats::integrate(fun_to_int,lbond,seqvals[i],bet)$value
       values_int <- c(values_int,res)
     }
     if(abs(max(values_int[values_int < 0.5]) - 0.5) < thresh_diff & abs(min(values_int[values_int > 0.5]) - 0.5) < thresh_diff){
-      #print("Done")
       final_seqval <- (max(seqvals[values_int < 0.5]) + min(seqvals[values_int > 0.5]))/2
-      #end_loop <- TRUE
       break
     }else{
       seqvals <- seq(seqvals[max(which(values_int < 0.5))],seqvals[min(which(values_int > 0.5))],length.out = 100)
     }
-    counter <- counter + 1
   }
   return(final_seqval)
 }
@@ -132,25 +126,19 @@ get_omega <- function(bet){
 #' @examples
 #' denoise_rectangular_matrix(matrix(c(1,2,3,4,5,2,3,1,2,3),ncol = 2))
 denoise_rectangular_matrix <- function(input_mat){
-  if(base::is.matrix(input_mat) | (base::is.data.frame(input_mat) & all(base::sapply(input_mat, is.numeric)))){
-    if(base::is.data.frame(input_mat)){
-      input_mat <- base::as.matrix(input_mat)
-    }
-    omega_found <- get_omega(ncol(input_mat)/nrow(input_mat))
-    svd_input_mat <- base::svd(input_mat)
-    D <- diag(svd_input_mat$d)
-    U <- svd_input_mat$u
-    V <- svd_input_mat$v
-    threshold_singular <- stats::median(svd_input_mat$d)*omega_found
-    up_to_sv <- length(svd_input_mat$d[svd_input_mat$d > threshold_singular])
-    diag(D)[(up_to_sv + 1):length(diag(D))] <- 0
-    mat_denoised <- U %*% D %*% t(V)
-    rownames(mat_denoised) <- rownames(input_mat)
-    colnames(mat_denoised) <- colnames(input_mat)
-    return(mat_denoised)
-  }else{
-    print("Data must be provided in numeric matrix or data.frame formats...")
-  }
+  omega_found <- get_omega(ncol(input_mat)/nrow(input_mat))
+  svd_input_mat <- base::svd(input_mat)
+  D <- diag(svd_input_mat$d)
+  U <- svd_input_mat$u
+  V <- svd_input_mat$v
+  threshold_singular <- stats::median(svd_input_mat$d)*omega_found
+  up_to_sv <- length(svd_input_mat$d[svd_input_mat$d > threshold_singular])
+  diag(D)[(up_to_sv + 1):length(diag(D))] <- 0
+  mat_denoised <- U %*% D %*% t(V)
+  rownames(mat_denoised) <- rownames(input_mat)
+  colnames(mat_denoised) <- colnames(input_mat)
+
+  return(mat_denoised)
 }
 
 #' @title Generate disease component matrix.
