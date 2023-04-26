@@ -59,9 +59,7 @@ mapper <- function(full_data, filter_values, num_intervals, percent_overlap, dis
     check_full_data()
     # Check mapper arguments
     optimal_clustering_mode <- check_arg_mapper(filter_values, distance_type, clustering_type, linkage_type)
-
   }
-
 
   mapper_object_ini <- list("full_data" = full_data,
                                "filter_values" = filter_values,
@@ -126,7 +124,7 @@ one_D_Mapper <- function(mapper_object_ini){
                            "sample_in_level" = samp_in_lev,
                            "clustering_all_levels" = test_clust_all_levels,
                            "node_samples" = node_samples,
-                           "node_sizes" = unlist(lapply(node_samples,length)),
+                           "n_nodes" = unlist(lapply(node_samples,length)),
                            "node_average_filt" = lapply(node_samples,function(x,y) mean(y[x]),filter_values),
                            "adj_matrix" = adj_matrix_out)
 
@@ -168,7 +166,7 @@ get_information_from_results <- function(mapper_object){
   n_ramifications <- sum(n_ramifications)
 
   #Generating the object of the output data
-  mapper_information <- list("node_sizes" = n_nodes,
+  mapper_information <- list("n_nodes" = n_nodes,
                                 "average_nodes"= av_node_size,
                                 "standard_desviation_nodes " = sd_node_size,
                                 "number_connections" = n_connections,

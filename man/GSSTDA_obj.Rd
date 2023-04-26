@@ -22,6 +22,12 @@ GSSTDA_obj(
 \item{full_data}{Matrix with the columns of the input matrix
 corresponding to the individuals belonging to the level.}
 
+\item{survival_time}{Time between disease diagnosis and death (if not dead until the end of follow-up).}
+
+\item{survival_event}{\code{logical}. Whether the patient has died or not.}
+
+\item{case_tag}{The tag of the healthy patient (healthy or not).}
+
 \item{num_intervals}{Number of intervals used to create the first sample
 partition based on filtering values.}
 

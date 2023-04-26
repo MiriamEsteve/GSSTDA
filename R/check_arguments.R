@@ -18,9 +18,10 @@ check_full_data <- function(full_data, na.rm = TRUE){
   #Convert full_data to matrix type
   full_data <- as.matrix(full_data)
 
-  #Omit NAN's values (by columns)
+  #Omit NAN's values
   if (na.rm == TRUE){
-    full_data <- stats::na.omit(full_data)
+    # Remove colums (subjects) and their filter values with NA's values
+    full_data <- full_data[,colSums(is.na(full_data))==0]
     print("Missing values and NaN's are omitted")
   }
 
@@ -82,6 +83,16 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
   #Check if filter_values is a vector
   if(!is.vector(filter_values)){
     stop("filter_values must be a valid values vector")
+  }
+
+  #Omit NAN's values
+  if (na.rm == TRUE){
+    # Remove colums (subjects) and their filter values with NA's values
+    filter_values <- filter_values[colnames(full_data)]
+    # Remove filter values and respective columns with NA's values
+    filter_values <- stats::na.omit(filter_values)
+    full_data <- full_data[,names(filter_values)]
+    print("Missing values and NaN's are omitted")
   }
 
   #Check if the names of the filter_values are the same as the columns of full_data.
