@@ -9,7 +9,8 @@ check_arg_mapper(
   filter_values,
   distance_type,
   clustering_type,
-  linkage_type
+  linkage_type,
+  na.rm = TRUE
 )
 }
 \arguments{
@@ -33,6 +34,9 @@ Choose between "single" for single-linkage clustering, "complete" for
 complete-linkage clustering or "average" for average linkage clustering
 (or UPGMA). Only necessary for hierarchical clustering.
 "single" default option.}
+
+\item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
+If \code{FALSE}, an error occurs in case of \code{NA} rows.}
 }
 \value{
 \code{optimal_clustering_mode}

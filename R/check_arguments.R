@@ -75,11 +75,13 @@ check_vectors <- function(ncol_full_data, survival_time, survival_event, case_ta
 #' complete-linkage clustering or "average" for average linkage clustering
 #' (or UPGMA). Only necessary for hierarchical clustering.
 #' "single" default option.
+#' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
+#' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #'
 #' @return \code{optimal_clustering_mode}
 #' @examples
 #' \dontrun{check_arg_mapper(filter_values, distance_type, clustering_type, linkage_type)}
-check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type){
+check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type, na.rm = TRUE){
   #Check if filter_values is a vector
   if(!is.vector(filter_values)){
     stop("filter_values must be a valid values vector")

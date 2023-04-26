@@ -43,7 +43,7 @@ GSSTDA_obj <- function(full_data, survival_time, survival_event, case_tag, num_i
   #Check the arguments introduces in the function
   check_full_data(full_data)
   check_vectors()
-  optimal_clustering_mode <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type, linkage_type)
+  optimal_clustering_mode <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type, linkage_type, na.rm=na.rm)
 
   # Pre-process. DGSA
 
