@@ -64,7 +64,8 @@ gene_selection_surv <- function(disease_component, p_Data, status_Col_Name, stat
   cox_all <- cox_all[rownames(disease_component),]
   if(type_sel == "Top_Bot"){
     print("Is Top_Bot")
-    probes_test <- (apply(disease_component[,p_Data[,status_Col_Name] == status_Value],1,stats::sd)+1) * cox_all[,4]
+    probes_test <- (apply(disease_component[,p_Data[,status_Col_Name] == status_Value],
+                          1,stats::sd)+1) * cox_all[,4]
     if(n_top %% 2 == 0){
       n_top <- n_top/2
       print(n_top)
