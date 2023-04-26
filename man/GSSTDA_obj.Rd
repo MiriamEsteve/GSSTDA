@@ -6,6 +6,9 @@
 \usage{
 GSSTDA_obj(
   full_data,
+  survival_time,
+  survival_event,
+  case_tag,
   num_intervals,
   percent_overlap,
   distance_type,
@@ -58,7 +61,7 @@ Gene Structure Survival using Topological Data Analysis
 num_rows <- 100
 full_data <- data.frame( x=2*cos(1:num_rows), y=sin(1:num_rows) )
 filter_values <- list(2*cos(1:num_rows))
-GSSTDA_obj <- GSSTDA_obj(full_data, num_intervals = 4,
+GSSTDA_obj <- GSSTDA_obj(full_data,  survival_time, survival_event, case_tag, num_intervals = 4,
                      percent_overlap = 0.5, distance_type = "euclidean",
                      num_bins_when_clustering = 8,
                      clustering_type = "hierarchical",

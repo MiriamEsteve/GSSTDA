@@ -31,21 +31,30 @@
 #' num_rows <- 100
 #' full_data <- data.frame( x=2*cos(1:num_rows), y=sin(1:num_rows) )
 #' filter_values <- list(2*cos(1:num_rows))
-#' GSSTDA_obj <- GSSTDA_obj(full_data, num_intervals = 4,
+#' GSSTDA_obj <- GSSTDA_obj(full_data,  survival_time, survival_event, case_tag, num_intervals = 4,
 #'                      percent_overlap = 0.5, distance_type = "euclidean",
 #'                      num_bins_when_clustering = 8,
 #'                      clustering_type = "hierarchical",
 #'                      linkage_type = "single")}
-GSSTDA_obj <- function(full_data, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
-  # Create mapper object where the arguments are checked
-  mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type)
+GSSTDA_obj <- function(full_data, survival_time, survival_event, case_tag, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
+
 
   # Control tag
   control_column <- readline(prompt="What is the column name of control patient?")
 
   control_tag <- readline(prompt="What is the tag of control patient?")
 
+  # Pre-process. DGSA
+  #   Generating the healthy tissue model.
+  full_data_healthy <- filter(full_data, control_column == control_tag)
 
+
+
+  # Create mapper object where the arguments are checked
+  mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type)
+
+
+  # Create the object
   GSSTDA_object_ini <- list( unlist(mapper_obj),
                              "control_column" = control_column,
                              "control_tag" = control_tag,
@@ -72,7 +81,6 @@ GSSTDA_obj <- function(full_data, num_intervals, percent_overlap, distance_type,
 #' GSSTDA <- GSSTDA(GSSTDA_obj)
 GSSTDA <- function(GSSTDA_obj){
 
-  #Generating the healthy tissue model.
 
 
 }

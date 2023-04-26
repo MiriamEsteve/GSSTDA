@@ -2,7 +2,7 @@
 % Please edit documentation in R/Mapper.R
 \name{mapper}
 \alias{mapper}
-\title{Mapper}
+\title{Mapper object}
 \usage{
 mapper(
   full_data,
