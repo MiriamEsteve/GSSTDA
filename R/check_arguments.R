@@ -32,13 +32,24 @@ check_full_data <- function(full_data, na.rm = TRUE){
 #' @title check_vectors
 #' @description Checking the \code{survival_time}, \code{survival_event} and \code{case_tag} introduces in the \code{GSSTDA} object.
 #'
+#' @param ncol_full_data Number of columns (patients) of the full_data
 #' @param survival_time Time between disease diagnosis and death (if not dead until the end of follow-up).
 #' @param survival_event \code{logical}. Whether the patient has died or not.
 #' @param case_tag The tag of the healthy patient (healthy or not).
 #'
 #' @examples
-#' \dontrun{check_vector(full_data, na.rm = TRUE)}
-check_vectors <- function(survival_time, survival_event, case_tag, na.rm = TRUE){
+#' \dontrun{check_vectors(ncol_full_data, survival_time, survival_event, case_tag)}
+check_vectors <- function(ncol_full_data, survival_time, survival_event, case_tag){
+  # Check if the arguments are vectors; a valid type of data; and the vectors are the same dimension as a full_data
+  if(!is.vector(survival_time) & is.numeric(survival_time) & length(survival_time) != ncol_full_data){
+    stop("survival_time must be a valid values vector and its length must be the same as the number of patients (columns) of the full_data.")
+  }
+  if(!is.vector(survival_event) & !length(unique(survival_event)) & length(survival_event) != ncol_full_data){
+    stop("survival_event must be a valid values vector. Only two type of event. Also, its length must be the same as the number of patients (columns) of the full_data.")
+  }
+  if(!is.vector(case_tag) & !length(unique(case_tag))){
+    stop("case_tag must be a valid values vector. Only two type of tags.")
+  }
 
 }
 
@@ -47,6 +58,8 @@ check_vectors <- function(survival_time, survival_event, case_tag, na.rm = TRUE)
 #'
 #' @description Checking the arguments introduces in the \code{mapper} object.
 #'
+#' @param full_data Matrix with the columns of the input matrix
+#' corresponding to the individuals belonging to the level.
 #' @param filter_values Vector obtained after applying the filtering function
 #' to the input matrix, i.e, a vector with the filtering function
 #' values for each included sample.
@@ -62,9 +75,10 @@ check_vectors <- function(survival_time, survival_event, case_tag, na.rm = TRUE)
 #' (or UPGMA). Only necessary for hierarchical clustering.
 #' "single" default option.
 #'
+#' @return \code{optimal_clustering_mode}
 #' @examples
 #' \dontrun{check_arg_mapper(filter_values, distance_type, clustering_type, linkage_type)}
-check_arg_mapper <- function(filter_values, distance_type, clustering_type, linkage_type){
+check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type){
   #Check if filter_values is a vector
   if(!is.vector(filter_values)){
     stop("filter_values must be a valid values vector")
@@ -102,5 +116,5 @@ check_arg_mapper <- function(filter_values, distance_type, clustering_type, link
   if(!linkage_type %in% link_types){
     stop(paste("Invalid linkage method selected. Choose one of the folowing:", paste(link_types,collapse = ", ")))
   }
-
+  return(optimal_clustering_mode)
 }
