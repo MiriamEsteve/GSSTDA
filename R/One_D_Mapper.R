@@ -145,10 +145,8 @@ clust_lev <- function(full_data_i, distance_type, clustering_type, linkage_type,
         names(cluster_indices_level) <- base::colnames(full_data_i)
         return(cluster_indices_level)
       }else{
-        trheshold_value_a <- histogram$mids[min(which(hist_gap == TRUE))]
-        trheshold_value_b <- histogram$mids[min(which(hist_gap == TRUE))-1]
-        trheshold_value <- trheshold_value_a
-        cluster_indices_level <- base::as.vector(stats::cutree(level_hclust_out, h=trheshold_value))
+        threshold_value <- histogram$mids[min(which(hist_gap == TRUE))]
+        cluster_indices_level <- base::as.vector(stats::cutree(level_hclust_out, h=threshold_value))
         base::names(cluster_indices_level) <- base::colnames(full_data_i)
         return(cluster_indices_level)
       }
@@ -253,7 +251,6 @@ clust_all_levels <- function(full_data, samp_in_lev, distance_type, clustering_t
 #' \dontrun{
 #' levels_to_nodes(clust_all_levels_list)}
 levels_to_nodes <- function(clust_all_levels_list){
-  node_counter <- c()
   nodes_list <- list()
   node_counter <- 1
   for(i in 1:base::length(clust_all_levels_list)){
