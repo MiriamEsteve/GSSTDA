@@ -25,17 +25,12 @@ library(GSSTDA)
 Load data:
 ```{r}
 #Loading data
-data("pData_FRMA")
-data("GEO_Eset_Norm_frma_Collapsed")
+data("full_data")
+data("survival_time")
+data("survival_event")
+data("case_tag")
 ```
 
-Create full data set:
-```{r}
-num_rows <- 100
-full_data <- data.frame( x=2*cos(1:num_rows), y=sin(1:num_rows) )
-row.names(full_data) <- 1:num_rows
-
-```
 
 Filter values:
 ```{r}

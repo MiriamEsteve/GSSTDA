@@ -10,7 +10,7 @@
 #' check_full_data(full_data, na.rm = TRUE)}
 check_full_data <- function(full_data, na.rm = TRUE){
   #Read the data set
-  yes_no <- readline(prompt="Are the columns of the data set the subjects and the rows the features?: yes/no ")
+  yes_no <- readline(prompt="Are the columns of the data set the patient and the rows the genes?: yes/no ")
   if(yes_no == "no" | yes_no == "n" | yes_no == ""){
     #Transpose the data set
     full_data <- t(full_data)
