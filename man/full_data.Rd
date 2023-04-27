@@ -3,18 +3,35 @@
 \docType{data}
 \name{full_data}
 \alias{full_data}
-\title{full_data}
+\title{Gene expression matrix}
 \format{
 Gene expression matrix.
 \describe{
-\item{full_data}{Gene expression of 104 breast cancer samples and 17 healthy tissue samples}
-...
+\item{full_data}{Gene expression matrix of 104 breast cancer samples
+and 17 healthy tissue samples. Expression profiling data by array
+(HG-U133_Plus_2).The columns correspond to the patients and the rows to
+the genes. The column names correspond to the patient identifier
+in GEO. The row names correspond to the gene names.}
 }
+}
+\source{
+The data are from the study GSE42568 available in
+\url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE42568}.
+The data were processed as explained in the \code{details} section.
 }
 \usage{
 full_data
 }
 \description{
-A matrix containing gene expression data of 104 breast cancer samples and 17 healthy breast tissues.
+A matrix containing gene expression profiling of 104 breast cancer and
+17 normal breast biopsies.
+}
+\details{
+Normalized gene expression data GSE42568. Background correction,
+summarization, and quantile normalization were carried out using the
+fRMA method implemented in the fRMA package. Filtered probes that did
+not target genes with valid gene id were filtered and  those probes
+targeting the same gene were collapse by thanking those presenting the
+highest row variance using the \code{WGCNA::collapseRows} function.
 }
 \keyword{datasets}

@@ -3,18 +3,26 @@
 \docType{data}
 \name{survival_time}
 \alias{survival_time}
-\title{survival_time}
+\title{Survival time vector
+Numeric vector of length 121 containing the time in months until
+the death of the patient or until the end of the follow-up in case the
+patient has not died.}
 \format{
-Dataframe with covariate data.
+Numeric vector
 \describe{
-\item{survival_time}{Covariate data for the 104 breast cancer samples and 17 healthy tissue samples}
-...
+\item{survival_time}{Numeric vector of length 121 containing the time
+in months until the death of the patient or until the end of the follow-up
+in case the patient has not died. Samples from healthy tissue contain a
+value of \code{NA}.}
 }
 }
 \usage{
 survival_time
 }
 \description{
-A data.frame containing covariate data for the 104 breast cancer samples and 17 healthy breast tissues.
+Survival time vector
+Numeric vector of length 121 containing the time in months until
+the death of the patient or until the end of the follow-up in case the
+patient has not died.
 }
 \keyword{datasets}

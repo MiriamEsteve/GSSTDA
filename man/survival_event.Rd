@@ -3,18 +3,28 @@
 \docType{data}
 \name{survival_event}
 \alias{survival_event}
-\title{survival_event}
+\title{Survival event vector
+Character vector of length 121 containing whether or not the patient
+is deceased.}
 \format{
-Dataframe with covariate data.
+Character vector
 \describe{
-\item{survival_event}{Covariate data for the 104 breast cancer samples and 17 healthy tissue samples}
-...
+\item{survival_event}{Character vector of length 121 containing whether
+or not the patient is deceased ("0": no, "1": yes). Samples from healthy
+tissue contain a value of \code{NA}.}
 }
+}
+\source{
+The data are from the study GSE42568. Information extracted from
+the file GSE42568_family.soft.gz available at
+\url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE42568}.
 }
 \usage{
 survival_event
 }
 \description{
-A data.frame containing covariate data for the 104 breast cancer samples and 17 healthy breast tissues.
+Survival event vector
+Character vector of length 121 containing whether or not the patient
+is deceased.
 }
 \keyword{datasets}
