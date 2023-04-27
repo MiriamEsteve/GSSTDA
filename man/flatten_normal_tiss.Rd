@@ -18,9 +18,11 @@ version of the vectors.
 Given a matrix containing the expression values of
 \code{n} healthy tissue samples, it produces the flattened vector matrix
 as reported in "Disease-specific genomic analysis: identifying
-the signature of pathologic biology".
+the signature of pathology biology".
 }
 \examples{
+\dontrun{
 normal_tissue_matrix <- matrix(stats::rnorm(36), nrow=6)
 flatten_normal_tiss(normal_tissue_matrix)
+}
 }

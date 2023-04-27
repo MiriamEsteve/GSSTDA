@@ -2,14 +2,16 @@
 #' @description Given a matrix containing the expression values of
 #' \code{n} healthy tissue samples, it produces the flattened vector matrix
 #' as reported in "Disease-specific genomic analysis: identifying
-#' the signature of pathologic biology".
+#' the signature of pathology biology".
 #' @param normal_tiss A normal tissue data gene expression matrix.
 #' The columns should be the samples and the rows should be the genes.
 #' @return A gene expression matrix containing the flattened
 #' version of the vectors.
 #' @examples
+#' \dontrun{
 #' normal_tissue_matrix <- matrix(stats::rnorm(36), nrow=6)
 #' flatten_normal_tiss(normal_tissue_matrix)
+#' }
 flatten_normal_tiss <- function(normal_tiss){
   df_out <- normal_tiss
   for(i in 1:ncol(normal_tiss)){
@@ -53,7 +55,6 @@ fun_to_int <- function(t,bet){
   res <- numerator/denominator
   return(res)
 }
-
 
 
 #' @title Get mu sub beta
@@ -111,16 +112,18 @@ get_omega <- function(bet){
 
 #' @title Rectangular Matrix Denoiser.
 #' @description It takes a rectangular matrix composed by the addition of
-#' a signal matrix and a gaussian noise matrix and returns a matrix of the same
+#' a signal matrix and a Gaussian noise matrix and returns a matrix of the same
 #' dimension that is denoised through a Singular Value Decomposition
-#' truncation proccess. The selection of the number of singular values is
+#' truncation process. The selection of the number of singular values is
 #' chosen following the proposal by "The optimal hard threshold
 #' for singular values is \eqn{\sqrt(4/ 3)}". It should be used after
 #' the function \code{flatten_normal_tiss}.
 #' @param input_mat A rectangular noisy matrix to denoise.
 #' @return A same dimension denoised version of the matrix.
 #' @examples
+#' \dontrun{
 #' denoise_rectangular_matrix(matrix(c(1,2,3,4,5,2,3,1,2,3),ncol = 2))
+#' }
 denoise_rectangular_matrix <- function(input_mat){
   omega_found <- get_omega(ncol(input_mat)/nrow(input_mat))
   svd_input_mat <- base::svd(input_mat)

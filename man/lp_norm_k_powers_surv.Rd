@@ -21,9 +21,8 @@ the function computes the standard (Euclidean) vector magnitude
 of each column.}
 
 \item{cox_all}{A matrix with the output of the
-\code{cox_all_genes} function
-that stores the information of all cox proportional hazard model
-tests for each gene in the dataset.}
+\code{cox_all_genes} function that stores the information of all cox
+proportional hazard model tests for each gene in the dataset.}
 }
 \value{
 A numeric vector including the values produced by the function

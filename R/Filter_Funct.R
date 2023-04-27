@@ -20,24 +20,21 @@
 #' the function computes the standard (Euclidean) vector magnitude
 #' of each column.
 #' @param cox_all A matrix with the output of the
-#' \code{cox_all_genes} function
-#' that stores the information of all cox proportional hazard model
-#' tests for each gene in the dataset.
+#' \code{cox_all_genes} function that stores the information of all cox
+#' proportional hazard model tests for each gene in the dataset.
 #' @return A numeric vector including the values produced by the function
 #' for each sample in the dataset.
 lp_norm_k_powers_surv <- function(exp_matrix, p, k, cox_all){
   if(is.matrix(exp_matrix)){
+    #Redundante rownames(exp-MATRIX). z == evento
     cox_vector <- cox_all[rownames(exp_matrix),"z"]
+
+    exp_matrix <- exp_matrix * cox_vector
 
     #Prepare exp_matrix and cox_vector
     exp_matrix[exp_matrix < 0] <- ifelse(!is.na(exp_matrix[exp_matrix < 0]), exp_matrix[exp_matrix < 0] - 1, exp_matrix[exp_matrix < 0])
-    exp_matrix[exp_matrix > 0] <- ifelse(!is.na(exp_matrix[exp_matrix > 0]), exp_matrix[exp_matrix > 0] + 1, exp_matrix[exp_matrix > 0])
-    cox_vector[cox_vector < 0] <- ifelse(!is.na(cox_vector[cox_vector < 0]), cox_vector[cox_vector < 0] - 1, cox_vector[cox_vector < 0])
-    cox_vector[cox_vector > 0] <- ifelse(!is.na(cox_vector[cox_vector > 0]), cox_vector[cox_vector > 0] + 1, cox_vector[cox_vector > 0])
+    exp_matrix[exp_matrix >= 0] <- ifelse(!is.na(exp_matrix[exp_matrix >= 0]), exp_matrix[exp_matrix >= 0] + 1, exp_matrix[exp_matrix >= 0])
 
-    #en caso de = 0????
-
-    exp_matrix <- exp_matrix * cox_vector
     lp_norm <- apply(exp_matrix, 2, function(x) (sum(abs(x)^p)^(k/p)))
     return(lp_norm)
   }else{

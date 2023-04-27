@@ -68,10 +68,8 @@ gene_selection_surv <- function(disease_component, p_Data, status_Col_Name, stat
                           1,stats::sd)+1) * cox_all[,4]
     if(n_top %% 2 == 0){
       n_top <- n_top/2
-      print(n_top)
     }else{
       n_top <- (n_top + 1)/2
-      print(n_top)
     }
     selected_probes <- names(c(probes_test[order(probes_test,decreasing = T)][1:n_top],probes_test[order(probes_test,decreasing = F)][1:n_top]))
   }else if(type_sel == "Abs"){
@@ -80,23 +78,4 @@ gene_selection_surv <- function(disease_component, p_Data, status_Col_Name, stat
     selected_probes <- names(probes_test[order(probes_test,decreasing = T)])[1:n_top]
   }
   return(selected_probes)
-}
-
-
-#' @title Gene selector based on association to survival.
-#'
-#' @param cox_all A matrix output from the \code{cox_all_genes} function
-#' @param quantile_threshold A two element vector indicating the bottom and top quantile for gene selection.
-#'
-#' @return Returns a list of genes that present z-values above or below the selected quantile thresholds.
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' get_survival_related_genes(cox_all)
-#' }
-get_survival_related_genes <- function(cox_all, quantile_threshold = c(0.05,0.95)){
-  genes_asso_surv <- rownames(cox_all[cox_all[,"z"] < stats::quantile(cox_all[,"z"],probs = quantile_threshold[1]) | cox_all[,"z"] > stats::quantile(cox_all[,"z"],probs = quantile_threshold[2]),])
-  return(genes_asso_surv)
-
 }

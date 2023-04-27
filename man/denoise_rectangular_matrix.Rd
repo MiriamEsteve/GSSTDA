@@ -14,13 +14,15 @@ A same dimension denoised version of the matrix.
 }
 \description{
 It takes a rectangular matrix composed by the addition of
-a signal matrix and a gaussian noise matrix and returns a matrix of the same
+a signal matrix and a Gaussian noise matrix and returns a matrix of the same
 dimension that is denoised through a Singular Value Decomposition
-truncation proccess. The selection of the number of singular values is
+truncation process. The selection of the number of singular values is
 chosen following the proposal by "The optimal hard threshold
 for singular values is \eqn{\sqrt(4/ 3)}". It should be used after
 the function \code{flatten_normal_tiss}.
 }
 \examples{
+\dontrun{
 denoise_rectangular_matrix(matrix(c(1,2,3,4,5,2,3,1,2,3),ncol = 2))
+}
 }

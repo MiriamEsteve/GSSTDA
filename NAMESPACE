@@ -3,7 +3,6 @@
 export(GSSTDA)
 export(GSSTDA_obj)
 export(get_information_from_results)
-export(get_survival_related_genes)
 export(mapper)
 export(one_D_Mapper)
 export(plot_mapper)
