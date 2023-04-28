@@ -42,11 +42,13 @@
 GSSTDA <- function(full_data, survival_time, survival_event, case_tag, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
   #Check the arguments introduces in the function
   check_full_data(full_data)
-  check_vectors()
+  control_tag <- check_vectors()
   optimal_clustering_mode <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type, linkage_type, na.rm=na.rm)
+
 
   # Pre-process. DGSA
 
+  normal_tiss <-
 
   # Create mapper object where the arguments are checked
   mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm = "checked")
