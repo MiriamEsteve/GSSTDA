@@ -3,15 +3,11 @@
 \docType{data}
 \name{case_tag}
 \alias{case_tag}
-\title{Case-control vector
-Character vector of length 121 containing the group to which each
-sample belongs.}
+\title{Case-control vector}
 \format{
-Character vector
-\describe{
-\item{code_tag}{Character vector of length 121 containing the group to
-which each sample belongs ("NT": control, sample from healthy tissue;
-"T": case, sample from neoplastic tissue).}
+Character vector length 121.
+\describe{"NT": control, sample from healthy tissue;
+"T": case, sample from neoplastic tissue.
 }
 }
 \source{
@@ -20,10 +16,9 @@ the file GSE42568_family.soft.gz available at
 \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE42568}.
 }
 \usage{
-case_tag
+data(cas_tag, package = "GSSTDA")
 }
 \description{
-Case-control vector
 Character vector of length 121 containing the group to which each
 sample belongs.
 }

@@ -3,15 +3,12 @@
 \docType{data}
 \name{survival_event}
 \alias{survival_event}
-\title{Survival event vector
-Character vector of length 121 containing whether or not the patient
-is deceased.}
+\title{Survival event vector}
 \format{
-Character vector
-\describe{
-\item{survival_event}{Character vector of length 121 containing whether
-or not the patient is deceased ("0": no, "1": yes). Samples from healthy
-tissue contain a value of \code{NA}.}
+Character vector of length 121.
+\describe{A value of "0" indicates that the patient did not pass away
+during follow-up, a value of "1" indicates that the patient did. Samples
+from healthy tissue contain a value of \code{NA}.
 }
 }
 \source{
@@ -20,10 +17,9 @@ the file GSE42568_family.soft.gz available at
 \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE42568}.
 }
 \usage{
-survival_event
+data(survival_event, package = "GSSTDA")
 }
 \description{
-Survival event vector
 Character vector of length 121 containing whether or not the patient
 is deceased.
 }

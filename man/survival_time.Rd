@@ -3,26 +3,24 @@
 \docType{data}
 \name{survival_time}
 \alias{survival_time}
-\title{Survival time vector
-Numeric vector of length 121 containing the time in months until
-the death of the patient or until the end of the follow-up in case the
-patient has not died.}
+\title{Survival time vector}
 \format{
-Numeric vector
-\describe{
-\item{survival_time}{Numeric vector of length 121 containing the time
-in months until the death of the patient or until the end of the follow-up
-in case the patient has not died. Samples from healthy tissue contain a
+Numeric vector of length 121.
+\describe{Time in months. Samples from healthy tissue contain a
 value of \code{NA}.}
 }
 }
+\source{
+The data are from the study GSE42568. Information extracted from
+the file GSE42568_family.soft.gz available at
+\url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE42568}
+}
 \usage{
-survival_time
+data(survival_time, package = "GSSTDA")
 }
 \description{
-Survival time vector
 Numeric vector of length 121 containing the time in months until
 the death of the patient or until the end of the follow-up in case the
-patient has not died.
+patient has not passed away.
 }
 \keyword{datasets}
