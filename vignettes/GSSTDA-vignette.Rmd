@@ -37,8 +37,9 @@ Filter values:
 #names(filter_values) <- row.names(full_data)
 ```
 
-Create the mapper object with full dataset and the function which filter the dataset.
+Create the GSSTDA object with full data set, internally pre-process using the DGSA technique, and the mapper information.
 ```{r}
+#Mapper information
 num_intervals <- 5
 percent_overlap <- 0.4
 distance_type <- "euclidean"
@@ -46,8 +47,8 @@ clustering_type <- "hierarchical"
 linkage_type <- "single"
 num_bins_when_clustering <- 10
 
-
-#mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type)
+GSSTDA_obj <- GSSTDA(full_data, survival_time, survival_event, case_tag, num_intervals, percent_overlap,
+                   distance_type, clustering_type, num_bins_when_clustering, linkage_type)
 
 ```
 

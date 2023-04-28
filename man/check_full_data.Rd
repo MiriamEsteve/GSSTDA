@@ -13,6 +13,9 @@ corresponding to the individuals belonging to the level.}
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 If \code{FALSE}, an error occurs in case of \code{NA} rows.}
 }
+\value{
+Return \code{full_data} without NAN's and as a matrix
+}
 \description{
 Checking the full_data introduces in the package
 }

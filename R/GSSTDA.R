@@ -42,10 +42,15 @@
 GSSTDA <- function(full_data, survival_time, survival_event, case_tag, num_intervals, percent_overlap,
                    distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
   #Check the arguments introduces in the function
-  check_full_data(full_data)
-  control_tag <- check_vectors()
-  optimal_clustering_mode <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type,
-                                              linkage_type, na.rm=na.rm)
+  full_data <- check_full_data(full_data)
+  control_tag <- check_vectors(ncol(full_data), survival_time, survival_event, case_tag)
+  #Don't check filter_values because it is not created.
+  filter_values <- ""
+  check_return <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type,
+                                              linkage_type)
+  full_data <- check_return[[1]]
+  filter_values <- check_return[[2]]
+  optimal_clustering_mode <- check_return[[3]]
 
 
   ################### BLOCK I: Pre-process. DGSA ########################################################
@@ -62,19 +67,22 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, num_inter
 
 
   ################### BLOCK III: Create mapper object where the arguments are checked ###################
+  #   Check filter_values
+  full_data_and_filter_values <- check_filter_values(filter_values)
+  full_data <- full_data_and_filter_values[[1]]
+  filter_values <- full_data_and_filter_values[[2]]
+
   mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type,
                        clustering_type, num_bins_when_clustering, linkage_type, na.rm = "checked")
 
 
   # Create the object
-  GSSTDA_object_ini <- list( unlist(mapper_obj),
-                             "survival_time" = survival_time,
-                             "survival_event" = survival_event,
-                             "case_tag" = case_tag
-                             )
+  GSSTDA_object <- list("normal_space" = normal_space,
+                        "matrix_disease_component" = matrix_disease_component
+                        )
 
-  class(GSSTDA_object_ini) <- "GSSTDA_initialization"
-  return(GSSTDA_object_ini)
+  class(GSSTDA_object) <- "GSSTDA_obj"
+  return(GSSTDA_object)
 }
 
 
