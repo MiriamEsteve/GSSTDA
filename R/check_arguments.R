@@ -35,8 +35,9 @@ check_full_data <- function(full_data, na.rm = TRUE){
 #' @param survival_event \code{logical}. Whether the patient has died or not.
 #' @param case_tag The tag of the healthy patient (healthy or not).
 #'
+#' @return control_tag Return the tag of the healthy patient
 #' @examples
-#' \dontrun{check_vectors(ncol_full_data, survival_time, survival_event, case_tag)}
+#' \dontrun{control_tag <- check_vectors(ncol_full_data, survival_time, survival_event, case_tag)}
 check_vectors <- function(ncol_full_data, survival_time, survival_event, case_tag){
   # Check if the arguments are vectors; a valid type of data; and the vectors are the same dimension as a full_data
   if(!is.vector(survival_time) | !is.numeric(survival_time) | length(survival_time) != ncol_full_data){
@@ -48,6 +49,13 @@ check_vectors <- function(ncol_full_data, survival_time, survival_event, case_ta
   if(!is.vector(case_tag) | !length(unique(case_tag))){
     stop("case_tag must be a valid values vector. Only two type of tags.")
   }
+
+  control_tag_opt <- unique(case_tag)
+  control_tag <- readline(prompt=paste("What is the tag of the healthy patient?", control_tag_opt[1], "or", control_tag_opt[2], ": " ) )
+  if(!(control_tag %in% control_tag_opt)){
+    stop("Provide one of the specified case tag")
+  }
+  return(control_tag)
 }
 
 
