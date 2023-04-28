@@ -34,8 +34,8 @@ data("case_tag")
 
 Filter values:
 ```{r}
-filter_values <- c(2*cos(1:num_rows))
-names(filter_values) <- row.names(full_data)
+#filter_values <- c(2*cos(1:num_rows))
+#names(filter_values) <- row.names(full_data)
 ```
 
 Create the mapper object with full dataset and the function which filter the dataset.

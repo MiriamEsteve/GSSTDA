@@ -24,9 +24,6 @@ check_full_data <- function(full_data, na.rm = TRUE){
     full_data <- full_data[,colSums(is.na(full_data))==0]
     print("Missing values and NaN's are omitted")
   }
-
-  #Check if there are more of two rows in the full_data
-
 }
 
 
@@ -42,16 +39,15 @@ check_full_data <- function(full_data, na.rm = TRUE){
 #' \dontrun{check_vectors(ncol_full_data, survival_time, survival_event, case_tag)}
 check_vectors <- function(ncol_full_data, survival_time, survival_event, case_tag){
   # Check if the arguments are vectors; a valid type of data; and the vectors are the same dimension as a full_data
-  if(!is.vector(survival_time) & is.numeric(survival_time) & length(survival_time) != ncol_full_data){
+  if(!is.vector(survival_time) | !is.numeric(survival_time) | length(survival_time) != ncol_full_data){
     stop("survival_time must be a valid values vector and its length must be the same as the number of patients (columns) of the full_data.")
   }
-  if(!is.vector(survival_event) & !length(unique(survival_event)) & length(survival_event) != ncol_full_data){
+  if(!is.vector(survival_event) | !length(unique(survival_event)) | length(survival_event) != ncol_full_data){
     stop("survival_event must be a valid values vector. Only two type of event. Also, its length must be the same as the number of patients (columns) of the full_data.")
   }
-  if(!is.vector(case_tag) & !length(unique(case_tag))){
+  if(!is.vector(case_tag) | !length(unique(case_tag))){
     stop("case_tag must be a valid values vector. Only two type of tags.")
   }
-
 }
 
 

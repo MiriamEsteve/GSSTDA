@@ -1,4 +1,4 @@
-#' @title GSSTDA_obj
+#' @title GSSTDA
 #'
 #' @description Gene Structure Survival using Topological Data Analysis
 #' @param full_data Matrix with the columns of the input matrix
@@ -34,12 +34,12 @@
 #' num_rows <- 100
 #' full_data <- data.frame( x=2*cos(1:num_rows), y=sin(1:num_rows) )
 #' filter_values <- list(2*cos(1:num_rows))
-#' GSSTDA_obj <- GSSTDA_obj(full_data,  survival_time, survival_event, case_tag, num_intervals = 4,
+#' GSSTDA <- GSSTDA(full_data,  survival_time, survival_event, case_tag, num_intervals = 4,
 #'                      percent_overlap = 0.5, distance_type = "euclidean",
 #'                      num_bins_when_clustering = 8,
 #'                      clustering_type = "hierarchical",
 #'                      linkage_type = "single")}
-GSSTDA_obj <- function(full_data, survival_time, survival_event, case_tag, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
+GSSTDA <- function(full_data, survival_time, survival_event, case_tag, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
   #Check the arguments introduces in the function
   check_full_data(full_data)
   check_vectors()
@@ -64,22 +64,3 @@ GSSTDA_obj <- function(full_data, survival_time, survival_event, case_tag, num_i
 }
 
 
-#' @title GSSTDA
-#'
-#' @description Gene Structure Survival using Topological Data Analysis
-#' @param GSSTDA_obj G-SS-TDA object return by \code{GSSTDA_obj} function.
-#' @return A \code{GSSTDA} output.
-#' @export
-#' @examples
-#' \dontrun{
-#' GSSTDA_obj <- GSSTDA_obj(full_data, num_intervals = 4,
-#'                      percent_overlap = 0.5, distance_type = "euclidean",
-#'                      num_bins_when_clustering = 8,
-#'                      clustering_type = "hierarchical",
-#'                      linkage_type = "single")}
-#' GSSTDA <- GSSTDA(GSSTDA_obj)
-GSSTDA <- function(GSSTDA_obj){
-
-
-
-}
