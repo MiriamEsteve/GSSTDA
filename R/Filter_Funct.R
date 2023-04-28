@@ -25,19 +25,17 @@
 #' @return A numeric vector including the values produced by the function
 #' for each sample in the dataset.
 lp_norm_k_powers_surv <- function(exp_matrix, p, k, cox_all){
-  if(is.matrix(exp_matrix)){
-    #Redundante rownames(exp-MATRIX). z == evento
-    cox_vector <- cox_all[rownames(exp_matrix),"z"]
 
-    exp_matrix <- exp_matrix * cox_vector
+  #Redundante rownames(exp-MATRIX). z == evento
+  cox_vector <- cox_all[rownames(exp_matrix),"z"]
 
-    #Prepare exp_matrix and cox_vector
-    exp_matrix[exp_matrix < 0] <- ifelse(!is.na(exp_matrix[exp_matrix < 0]), exp_matrix[exp_matrix < 0] - 1, exp_matrix[exp_matrix < 0])
-    exp_matrix[exp_matrix >= 0] <- ifelse(!is.na(exp_matrix[exp_matrix >= 0]), exp_matrix[exp_matrix >= 0] + 1, exp_matrix[exp_matrix >= 0])
+  exp_matrix <- exp_matrix * cox_vector
 
-    lp_norm <- apply(exp_matrix, 2, function(x) (sum(abs(x)^p)^(k/p)))
-    return(lp_norm)
-  }else{
-    stop("A matrix object should be provided.")
-  }
+  #Prepare exp_matrix and cox_vector
+  exp_matrix[exp_matrix < 0] <- ifelse(!is.na(exp_matrix[exp_matrix < 0]), exp_matrix[exp_matrix < 0] - 1, exp_matrix[exp_matrix < 0])
+  exp_matrix[exp_matrix >= 0] <- ifelse(!is.na(exp_matrix[exp_matrix >= 0]), exp_matrix[exp_matrix >= 0] + 1, exp_matrix[exp_matrix >= 0])
+
+  lp_norm <- apply(exp_matrix, 2, function(x) (sum(abs(x)^p)^(k/p)))
+  return(lp_norm)
+
 }

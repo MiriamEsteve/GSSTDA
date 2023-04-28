@@ -31,12 +31,6 @@ data("case_tag")
 ```
 
 
-Filter values:
-```{r}
-#filter_values <- c(2*cos(1:num_rows))
-#names(filter_values) <- row.names(full_data)
-```
-
 Create the GSSTDA object with full data set, internally pre-process using the DGSA technique, and the mapper information.
 ```{r}
 #Mapper information
@@ -49,6 +43,8 @@ num_bins_when_clustering <- 10
 
 GSSTDA_obj <- GSSTDA(full_data, survival_time, survival_event, case_tag, num_intervals, percent_overlap,
                    distance_type, clustering_type, num_bins_when_clustering, linkage_type)
+
+
 
 ```
 

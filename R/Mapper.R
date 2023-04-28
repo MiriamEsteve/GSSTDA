@@ -56,9 +56,13 @@ mapper <- function(full_data, filter_values, num_intervals, percent_overlap, dis
   # Don't call by GSSTDA function
   if (na.rm != "checked"){
     # Check the full_data introduces
-    check_full_data()
+    full_data <- check_full_data(full_data)
     # Check mapper arguments
-    optimal_clustering_mode <- check_arg_mapper(filter_values, distance_type, clustering_type, linkage_type)
+    check_return <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type,
+                                     linkage_type)
+    full_data <- check_return[[1]]
+    filter_values <- check_return[[2]]
+    optimal_clustering_mode <- check_return[[3]]
   }
 
   mapper_object_ini <- list("full_data" = full_data,
@@ -73,9 +77,7 @@ mapper <- function(full_data, filter_values, num_intervals, percent_overlap, dis
 
   class(mapper_object_ini) <- "mapper_initialization"
 
-  if (na.rm != "checked"){
-    mapper_object <- one_D_Mapper(mapper_object_ini)
-  }
+  mapper_object <- one_D_Mapper(mapper_object_ini)
 
   return(mapper_object)
 }

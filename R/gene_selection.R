@@ -2,28 +2,26 @@
 #' @description It carries out univariate cox proportional hazard models for
 #' the expression levels of each gene included in the provided dataset (eData)
 #' and their link with relapse-free or overall survival.
-#' @param expression_vector_disease Expression data for disease samples
-#' @param time_vector Numeric vector that includes time to the event information
-#' @param event_vector Numeric vector that indicates if relapse or death
+#' @param matrix_disease_component Expression data for disease samples
+#' @param survival_time Numeric vector that includes time to the event information
+#' @param survival_event Numeric vector that indicates if relapse or death
 #' have been produced (0 and 1s).
 #' @return A matrix with the results of the application of proportional
 #' hazard models using the expression levels of each gene as covariate.
 #' @import survival
 #' @examples
 #' \dontrun{
-#' cox_all_genes(expression_vector_disease,time_vector,event_vector)
+#' cox_all_genes(matrix_disease_component,survival_time,survival_event)
 #' }
-cox_all_genes <- function(expression_vector_disease, time_vector, event_vector){
-  pb <- utils::txtProgressBar(min = 0, max = nrow(expression_vector_disease), style = 3)
+cox_all_genes <- function(matrix_disease_component, survival_time, survival_event){
   list_out <- list()
-  for(i in 1:nrow(expression_vector_disease)){
-    utils::setTxtProgressBar(pb, i)
-    temp <- summary(survival::coxph(survival::Surv(time_vector,as.numeric(event_vector))~expression_vector_disease[i,]))$coefficients[1,]
+  for(i in 1:nrow(matrix_disease_component)){
+    temp <- summary(survival::coxph(survival::Surv(survival_time,as.numeric(survival_event))~matrix_disease_component[i,]))$coefficients[1,]
     list_out[[i]] <- temp
   }
   df_out <- data.frame(do.call("rbind",list_out))
   colnames(df_out) <-  c("coef","exp_coef","se_coef","z","Pr_z")
-  rownames(df_out) <- rownames(expression_vector_disease)
+  rownames(df_out) <- rownames(matrix_disease_component)
   df_out <- as.matrix(df_out)
   return(df_out)
 }

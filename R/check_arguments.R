@@ -12,7 +12,7 @@
 check_full_data <- function(full_data, na.rm = TRUE){
   #Read the data set
   yes_no <- readline(prompt="Are the columns of the data set the patient and the rows the genes?: yes/no ")
-  if(yes_no == "no" | yes_no == "n" | yes_no == ""){
+  if(yes_no == "no" | yes_no == "n"){
     #Transpose the data set. Columns = patient and rows = genes
     full_data <- t(full_data)
   }
@@ -32,7 +32,7 @@ check_full_data <- function(full_data, na.rm = TRUE){
 #' @title check_vectors
 #' @description Checking the \code{survival_time}, \code{survival_event} and \code{case_tag} introduces in the \code{GSSTDA} object.
 #'
-#' @param col_full_data Column names of the genes of the full_data (maybe remove by na.rm = TRUE)
+#' @param ncol_full_data Column names of the genes of the full_data (maybe remove by na.rm = TRUE)
 #' @param survival_time Time between disease diagnosis and death (if not dead until the end of follow-up).
 #' @param survival_event \code{logical}. Whether the patient has died or not.
 #' @param case_tag The tag of the healthy patient (healthy or not).
@@ -41,8 +41,8 @@ check_full_data <- function(full_data, na.rm = TRUE){
 #' @return control_tag Return the tag of the healthy patient
 #' @examples
 #' \dontrun{control_tag <- check_vectors(col_full_data, survival_time, survival_event, case_tag)}
-check_vectors <- function(col_full_data, survival_time, survival_event, case_tag, na.rm = TRUE){
-  ncol_full_data <- length(col_full_data)
+check_vectors <- function(ncol_full_data, survival_time, survival_event, case_tag, na.rm = TRUE){
+  #ncol_full_data <- length(col_full_data)
 
   # Check if the arguments are vectors; a valid type of data; and the vectors are the same dimension as a full_data
   if(!is.vector(survival_time) | !is.numeric(survival_time) | length(survival_time) != ncol_full_data){
@@ -65,9 +65,8 @@ check_vectors <- function(col_full_data, survival_time, survival_event, case_tag
   control_tag_opt <- unique(case_tag)
   control_tag <- readline(prompt=paste("What is the tag of the healthy patient? (", control_tag_opt[1], " or ", control_tag_opt[2], "): " , sep="") )
   if(!(control_tag %in% control_tag_opt)){
-    stop("Provide one of the specified case tag")
-  }else if(control_tag == ""){
-    control_tag = "NT"
+    print(paste("The case tag is '", control_tag_opt[1], "' by default"))
+    control_tag <- control_tag_opt[1]
   }
   return(control_tag)
 }
@@ -91,6 +90,11 @@ check_filter_values <- function(filter_values, na.rm = TRUE){
     stop("filter_values must be a valid values vector")
   }
 
+  #Check if the names of the filter_values are the same as the columns of full_data.
+  if(!setequal(names(filter_values), colnames(full_data))){
+    stop("The name of the filter_values must be the same as the subject name of the full_data.")
+  }
+
   #Omit NAN's values
   #if (na.rm == TRUE){
     # Remove colums (subjects) and their filter values with NA's values
@@ -100,7 +104,7 @@ check_filter_values <- function(filter_values, na.rm = TRUE){
   #  full_data <- full_data[,names(filter_values)]
   #  print("Missing values and NaN's are omitted")
   #}
-  return(c(full_data, filter_values))
+  return(list(full_data, filter_values))
 }
 
 #' @title check_arg_mapper
@@ -130,11 +134,6 @@ check_filter_values <- function(filter_values, na.rm = TRUE){
 #' @examples
 #' \dontrun{check_arg_mapper(filter_values, distance_type, clustering_type, linkage_type)}
 check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type, na.rm = TRUE){
-  #Check if the names of the filter_values are the same as the columns of full_data.
-  if(!setequal(names(filter_values), colnames(full_data))){
-    stop("The name of the filter_values must be the same as the subject name of the full_data.")
-  }
-
   #Check distance_type
   distances <- c("cor","euclidean")
   if(!distance_type %in% distances){
@@ -152,7 +151,7 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
   if(clustering_type == "hierarchical"){
     opt_clust_modes <- c("standard","silhouette")
     option <- readline(prompt="Choose one of the folowing optimal cluster number method: standard/silhouette ")
-    if(option == "standard" | option == ""){
+    if(option == "standard" | option == "" | option == "#"){
       optimal_clustering_mode <- "standard"
     }
   }
@@ -164,11 +163,11 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
   }
 
   # Check if filter_values == "" the filter_values is not calculated yet. So, we checked only the others args
-  if(filter_values != ""){
+  if(filter_values != "" & na.rm != "checked"){
     full_data_and_filter_values <- check_filter_values(filter_values)
     full_data <- full_data_and_filter_values[[1]]
     filter_values <- full_data_and_filter_values[[2]]
   }
 
-  return(c(full_data, filter_values, optimal_clustering_mode))
+  return(list(full_data, filter_values, optimal_clustering_mode))
 }

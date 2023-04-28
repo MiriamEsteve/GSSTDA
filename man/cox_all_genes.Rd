@@ -4,14 +4,14 @@
 \alias{cox_all_genes}
 \title{Survival analysis based on gene expression levels.}
 \usage{
-cox_all_genes(expression_vector_disease, time_vector, event_vector)
+cox_all_genes(matrix_disease_component, survival_time, survival_event)
 }
 \arguments{
-\item{expression_vector_disease}{Expression data for disease samples}
+\item{matrix_disease_component}{Expression data for disease samples}
 
-\item{time_vector}{Numeric vector that includes time to the event information}
+\item{survival_time}{Numeric vector that includes time to the event information}
 
-\item{event_vector}{Numeric vector that indicates if relapse or death
+\item{survival_event}{Numeric vector that indicates if relapse or death
 have been produced (0 and 1s).}
 }
 \value{
@@ -25,6 +25,6 @@ and their link with relapse-free or overall survival.
 }
 \examples{
 \dontrun{
-cox_all_genes(expression_vector_disease,time_vector,event_vector)
+cox_all_genes(matrix_disease_component,survival_time,survival_event)
 }
 }

@@ -63,18 +63,28 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, num_inter
   #   Obtain the disease component of the normal_space
   matrix_disease_component <- generate_disease_component(full_data, normal_space)
 
+  print("The pre-process DGSA is finished")
+
   ################### BLOCK II: Gene selection ##########################################################
 
 
+  print("The gene selection is finished")
+
   ################### BLOCK III: Create mapper object where the arguments are checked ###################
+  # Transpose full_data: rows = patient, columns = genes
+  full_data <- t(full_data)
+
   #   Check filter_values
-  full_data_and_filter_values <- check_filter_values(filter_values)
-  full_data <- full_data_and_filter_values[[1]]
-  filter_values <- full_data_and_filter_values[[2]]
+  #full_data_and_filter_values <- check_filter_values(filter_values)
+  #full_data <- full_data_and_filter_values[[1]]
+  #filter_values <- full_data_and_filter_values[[2]]
+  filter_values <- c(2*cos(1:ncol(full_data)))
+  names(filter_values) <- colnames(full_data)
 
   mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type,
                        clustering_type, num_bins_when_clustering, linkage_type, na.rm = "checked")
 
+  print("The mapper process is finished")
 
   # Create the object
   GSSTDA_object <- list("normal_space" = normal_space,

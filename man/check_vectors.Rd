@@ -4,16 +4,25 @@
 \alias{check_vectors}
 \title{check_vectors}
 \usage{
-check_vectors(ncol_full_data, survival_time, survival_event, case_tag)
+check_vectors(
+  ncol_full_data,
+  survival_time,
+  survival_event,
+  case_tag,
+  na.rm = TRUE
+)
 }
 \arguments{
-\item{ncol_full_data}{Number of columns (patients) of the full_data}
+\item{ncol_full_data}{Column names of the genes of the full_data (maybe remove by na.rm = TRUE)}
 
 \item{survival_time}{Time between disease diagnosis and death (if not dead until the end of follow-up).}
 
 \item{survival_event}{\code{logical}. Whether the patient has died or not.}
 
 \item{case_tag}{The tag of the healthy patient (healthy or not).}
+
+\item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
+If \code{FALSE}, an error occurs in case of \code{NA} rows.}
 }
 \value{
 control_tag Return the tag of the healthy patient
@@ -22,5 +31,5 @@ control_tag Return the tag of the healthy patient
 Checking the \code{survival_time}, \code{survival_event} and \code{case_tag} introduces in the \code{GSSTDA} object.
 }
 \examples{
-\dontrun{control_tag <- check_vectors(ncol_full_data, survival_time, survival_event, case_tag)}
+\dontrun{control_tag <- check_vectors(col_full_data, survival_time, survival_event, case_tag)}
 }
