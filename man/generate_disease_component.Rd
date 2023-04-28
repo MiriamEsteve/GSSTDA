@@ -14,7 +14,7 @@ generate_disease_component(full_data, normal_space)
 }
 \value{
 Disease component matrix that contains the disease component
-of the provided expression matrix.
+of the provided normal space
 }
 \description{
 This function produces a disease component matrix

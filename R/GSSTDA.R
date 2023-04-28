@@ -39,19 +39,31 @@
 #'                      num_bins_when_clustering = 8,
 #'                      clustering_type = "hierarchical",
 #'                      linkage_type = "single")}
-GSSTDA <- function(full_data, survival_time, survival_event, case_tag, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
+GSSTDA <- function(full_data, survival_time, survival_event, case_tag, num_intervals, percent_overlap,
+                   distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
   #Check the arguments introduces in the function
   check_full_data(full_data)
   control_tag <- check_vectors()
-  optimal_clustering_mode <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type, linkage_type, na.rm=na.rm)
+  optimal_clustering_mode <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type,
+                                              linkage_type, na.rm=na.rm)
 
 
-  # Pre-process. DGSA
+  ################### BLOCK I: Pre-process. DGSA ########################################################
+  #   Select the normal tissue data gene expression matrix.
+  normal_tiss <- full_data[,which(case_tag == control_tag)]
+  #   Obtain the gene expression matrix containing the flattened version of the vectors.
+  matrix_flatten_normal_tiss <- flatten_normal_tiss(normal_tiss)
+  #   Obtain the normal space
+  normal_space <- denoise_rectangular_matrix(matrix_flatten_normal_tiss)
+  #   Obtain the disease component of the normal_space
+  matrix_disease_component <- generate_disease_component(full_data, normal_space)
 
-  normal_tiss <-
+  ################### BLOCK II: Gene selection ##########################################################
 
-  # Create mapper object where the arguments are checked
-  mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm = "checked")
+
+  ################### BLOCK III: Create mapper object where the arguments are checked ###################
+  mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type,
+                       clustering_type, num_bins_when_clustering, linkage_type, na.rm = "checked")
 
 
   # Create the object

@@ -7,17 +7,18 @@
 #' The columns should be the samples and the rows should be the genes.
 #' @return A gene expression matrix containing the flattened
 #' version of the vectors.
+#' @export
 #' @examples
 #' \dontrun{
 #' normal_tissue_matrix <- matrix(stats::rnorm(36), nrow=6)
 #' flatten_normal_tiss(normal_tissue_matrix)
 #' }
 flatten_normal_tiss <- function(normal_tiss){
-  df_out <- normal_tiss
+  matrix_flatten_normal_tiss <- normal_tiss
   for(i in 1:ncol(normal_tiss)){
-    df_out[,i] <- stats::fitted(stats::lm(normal_tiss[,i] ~ 0 + ., data = data.frame(normal_tiss)[,-i]))
+    matrix_flatten_normal_tiss[,i] <- stats::fitted(stats::lm(normal_tiss[,i] ~ 0 + ., data = data.frame(normal_tiss)[,-i]))
   }
-  return(df_out)
+  return(matrix_flatten_normal_tiss)
 }
 
 
@@ -27,6 +28,7 @@ flatten_normal_tiss <- function(normal_tiss){
 #' @param bet Beta value. Aspect ratio of the input matrix.  \deqn{\frac{m}{n}},
 #' were m is the number of rows of the input matrix and n the number of columns.
 #' @return Numeric. Lambda value.
+#'
 #' @examples
 #' get_lambda(0.3)
 get_lambda <- function(bet){
@@ -44,6 +46,7 @@ get_lambda <- function(bet){
 #' @param bet Beta value. Aspect ratio of the input matrix,
 #' \eqn{\frac{m}{n}}, were m is the number of rows of the input
 #' matrix and n the number of columns.
+#'
 #' @return It returns the function value for a specific t and a particular
 #' aspect ration m/n.
 #' @examples fun_to_int(1,0.3)
@@ -70,6 +73,7 @@ fun_to_int <- function(t,bet){
 #' were m is the number of rows of the input matrix and n the number of columns.
 #' @return It returns the mu beta value. This is the upper limit of integration
 #' where the Marcenko-Pastur distribution is equal to 1/2.
+#'
 #' @examples
 #' get_mu_beta(0.3)
 get_mu_beta <- function(bet){
@@ -100,6 +104,7 @@ get_mu_beta <- function(bet){
 #' @param bet Beta value. Aspect ratio of the input matrix, \deqn{\frac{m}{n}},
 #' were m is the number of rows of the input matrix and n the number of columns.
 #' @return Numeric. Omega value.
+#'
 #' @examples
 #' get_omega(0.3)
 get_omega <- function(bet){
@@ -118,27 +123,46 @@ get_omega <- function(bet){
 #' chosen following the proposal by "The optimal hard threshold
 #' for singular values is \eqn{\sqrt(4/ 3)}". It should be used after
 #' the function \code{flatten_normal_tiss}.
-#' @param input_mat A rectangular noisy matrix to denoise.
-#' @return A same dimension denoised version of the matrix.
+#' @param matrix_flatten_normal_tiss A rectangular noisy matrix to denoise. It is return by
+#' \code{flatten_normal_tiss} function.
+#' @return A the normal space which has the same dimension denoised version of the matrix
+#' returned by \code{flatten_normal_tiss}.
+#'
+#' @export
 #' @examples
 #' \dontrun{
 #' denoise_rectangular_matrix(matrix(c(1,2,3,4,5,2,3,1,2,3),ncol = 2))
 #' }
-denoise_rectangular_matrix <- function(input_mat){
-  omega_found <- get_omega(ncol(input_mat)/nrow(input_mat))
-  svd_input_mat <- base::svd(input_mat)
-  D <- diag(svd_input_mat$d)
-  U <- svd_input_mat$u
-  V <- svd_input_mat$v
-  threshold_singular <- stats::median(svd_input_mat$d)*omega_found
-  up_to_sv <- length(svd_input_mat$d[svd_input_mat$d > threshold_singular])
-  diag(D)[(up_to_sv + 1):length(diag(D))] <- 0
-  mat_denoised <- U %*% D %*% t(V)
-  rownames(mat_denoised) <- rownames(input_mat)
-  colnames(mat_denoised) <- colnames(input_mat)
+denoise_rectangular_matrix <- function(matrix_flatten_normal_tiss){
+  ### Model reduction ##
+  # Find omega value
+  omega_found <- get_omega(ncol(matrix_flatten_normal_tiss)/nrow(matrix_flatten_normal_tiss))
 
-  return(mat_denoised)
+  # Calculate Singular Value Decomposition of matrix_flatten_normal_tiss
+  svd <- base::svd(matrix_flatten_normal_tiss)
+  # Obtain values D, U, V.
+  ## d = a vector containing the singular values of x
+  ## u = a matrix whose columns contain the left singular vectors of x, present if nu > 0
+  ## v = a matrix whose columns contain the right singular vectors of x, present if nv > 0. Dimension c(p, nv).
+  d <- svd$d
+  u <- svd$u
+  v <- svd$v
+
+  # Threshold of the singular matrix
+  threshold_singular <- stats::median(d)*omega_found
+
+  # Count values up to the threshold
+  up_to_threshold <- length(d[d > threshold_singular])
+  d[(up_to_threshold + 1):length(d)] <- 0
+
+  # Build rectangular renoised matrix of the normal tiss space
+  normal_space <- u %*% diag(d) %*% t(v)
+  rownames(normal_space) <- rownames(matrix_flatten_normal_tiss)
+  colnames(normal_space) <- colnames(matrix_flatten_normal_tiss)
+
+  return(normal_space)
 }
+
 
 #' @title Generate disease component matrix.
 #' @description This function produces a disease component matrix
@@ -148,7 +172,9 @@ denoise_rectangular_matrix <- function(input_mat){
 #' @param normal_space Denoised flattened matrix constructed from
 #' "healthy tissue data". Output of the function \code{denoise_rectangular_matrix}.
 #' @return Disease component matrix that contains the disease component
-#' of the provided expression matrix.
+#' of the provided normal space
+#'
+#' @export
 #' @examples
 #' full_data <- matrix(stats::rnorm(120),ncol=20)
 #' normal_tissue <- full_data[,11:20]
@@ -156,10 +182,9 @@ denoise_rectangular_matrix <- function(input_mat){
 #' normal_tissue_f_d <- denoise_rectangular_matrix(normal_tissue_f)
 #' disease_component <- generate_disease_component(full_data,normal_tissue_f_d)
 generate_disease_component <- function(full_data, normal_space){
+  # calculate the distance of all points to the normal space by calculating the regression residuals
   disease_component <- full_data
-  pb <- utils::txtProgressBar(min = 0, max = ncol(full_data), style = 3)
   for(i in 1:ncol(full_data)){
-    utils::setTxtProgressBar(pb, i)
     disease_component[,i] <- stats::resid(stats::lm(full_data[,i] ~ 0 + ., data = data.frame(normal_space)))
   }
   return(disease_component)

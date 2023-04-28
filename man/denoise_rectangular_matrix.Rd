@@ -4,13 +4,15 @@
 \alias{denoise_rectangular_matrix}
 \title{Rectangular Matrix Denoiser.}
 \usage{
-denoise_rectangular_matrix(input_mat)
+denoise_rectangular_matrix(matrix_flatten_normal_tiss)
 }
 \arguments{
-\item{input_mat}{A rectangular noisy matrix to denoise.}
+\item{matrix_flatten_normal_tiss}{A rectangular noisy matrix to denoise. It is return by
+\code{flatten_normal_tiss} function.}
 }
 \value{
-A same dimension denoised version of the matrix.
+A the normal space which has the same dimension denoised version of the matrix
+returned by \code{flatten_normal_tiss}.
 }
 \description{
 It takes a rectangular matrix composed by the addition of

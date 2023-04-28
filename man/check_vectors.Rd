@@ -15,9 +15,12 @@ check_vectors(ncol_full_data, survival_time, survival_event, case_tag)
 
 \item{case_tag}{The tag of the healthy patient (healthy or not).}
 }
+\value{
+control_tag Return the tag of the healthy patient
+}
 \description{
 Checking the \code{survival_time}, \code{survival_event} and \code{case_tag} introduces in the \code{GSSTDA} object.
 }
 \examples{
-\dontrun{check_vectors(ncol_full_data, survival_time, survival_event, case_tag)}
+\dontrun{control_tag <- check_vectors(ncol_full_data, survival_time, survival_event, case_tag)}
 }

@@ -22,9 +22,8 @@ This vignette represents an introduction to the use of the package G-SS-TDA.
 library(GSSTDA)
 ```
 
-Load data:
+Loading data:
 ```{r}
-#Loading data
 data("full_data")
 data("survival_time")
 data("survival_event")
