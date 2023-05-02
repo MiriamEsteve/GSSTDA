@@ -168,7 +168,8 @@ denoise_rectangular_matrix <- function(matrix_flatten_normal_tiss){
 #' @description This function produces a disease component matrix
 #' from an expression matrix and the denoised flattened matrix constructed
 #' from "healthy tissue data".
-#' @param full_data Matrix that contains the expression data.
+#' @param full_data Matrix with the columns of the input matrix
+#' corresponding to the individuals belonging to the level. It acts as a control group.
 #' @param normal_space Denoised flattened matrix constructed from
 #' "healthy tissue data". Output of the function \code{denoise_rectangular_matrix}.
 #' @return Disease component matrix that contains the disease component
@@ -183,7 +184,7 @@ denoise_rectangular_matrix <- function(matrix_flatten_normal_tiss){
 #' disease_component <- generate_disease_component(full_data,normal_tissue_f_d)
 generate_disease_component <- function(full_data, normal_space){
   # calculate the distance of all points to the normal space by calculating the regression residuals
-  disease_component <- full_data
+  disease_component <- normal_tiss
   for(i in 1:ncol(full_data)){
     disease_component[,i] <- stats::resid(stats::lm(full_data[,i] ~ 0 + ., data = data.frame(normal_space)))
   }

@@ -43,6 +43,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, num_inter
                    distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data)
+  # Select the control_tag
   control_tag <- check_vectors(ncol(full_data), survival_time, survival_event, case_tag)
   #Don't check filter_values because it is not created.
   filter_values <- ""
@@ -53,9 +54,11 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, num_inter
   optimal_clustering_mode <- check_return[[3]]
 
 
-  ################### BLOCK I: Pre-process. DGSA ########################################################
+  ################### BLOCK I: Pre-process. DGSA (using "NT" control_tag) ##############################
   #   Select the normal tissue data gene expression matrix.
-  normal_tiss <- full_data[,which(case_tag == control_tag)]
+  control_tag_cases <- which(case_tag == control_tag)
+  normal_tiss <- full_data[,control_tag_cases]
+
   #   Obtain the gene expression matrix containing the flattened version of the vectors.
   matrix_flatten_normal_tiss <- flatten_normal_tiss(normal_tiss)
   #   Obtain the normal space
@@ -65,9 +68,12 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, num_inter
 
   print("The pre-process DGSA is finished")
 
-  ################### BLOCK II: Gene selection ##########################################################
+  ################### BLOCK II: Gene selection (using "T" control_tag) ##################################
+  #Remove NAN's values (case_tag == control_tag) of survival_time and survival_event
+  survival_time <- survival_time[-control_tag_cases]
+  survival_event <- survival_event[-control_tag_cases]
   # Univariate cox proportional hazard models for the expression levels of each gene included in the provided dataset
-  cox_all_genes <- function(matrix_disease_component, survival_time, survival_event)
+  cox_all_matrix <- cox_all_genes(matrix_disease_component, survival_time, survival_event)
 
   print("The gene selection is finished")
 

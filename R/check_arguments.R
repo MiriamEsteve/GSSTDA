@@ -20,11 +20,13 @@ check_full_data <- function(full_data, na.rm = TRUE){
   full_data <- as.matrix(full_data)
 
   #Omit NAN's values
-  #if (na.rm == TRUE){
+  if (na.rm == TRUE){
+    nrow_ini = nrow(full_data)
     # Remove rows (genes) with NA's values
-  #  full_data <- full_data[rowSums(is.na(full_data))==0,]
-  #  print("Missing values and NaN's are omitted")
-  #}
+    full_data <- full_data[rowSums(is.na(full_data))==0,]
+
+    print(paste(nrow(full_data) - nrow_ini, " missing values and NaN's are omitted in the genes (rows)"))
+  }
   return(full_data)
 }
 
@@ -42,8 +44,6 @@ check_full_data <- function(full_data, na.rm = TRUE){
 #' @examples
 #' \dontrun{control_tag <- check_vectors(col_full_data, survival_time, survival_event, case_tag)}
 check_vectors <- function(ncol_full_data, survival_time, survival_event, case_tag, na.rm = TRUE){
-  #ncol_full_data <- length(col_full_data)
-
   # Check if the arguments are vectors; a valid type of data; and the vectors are the same dimension as a full_data
   if(!is.vector(survival_time) | !is.numeric(survival_time) | length(survival_time) != ncol_full_data){
     stop("survival_time must be a valid values vector and its length must be the same as the number of patients (columns) of the full_data.")
@@ -55,15 +55,8 @@ check_vectors <- function(ncol_full_data, survival_time, survival_event, case_ta
     stop("case_tag must be a valid values vector. Only two type of tags.")
   }
 
-  #if(na.rm == TRUE){
-    # Select the survival_time, survival_event and case_tag with the genes selected in the full_data
-  #  survival_time <- survival_time[col_full_data]
-  #  survival_event <- survival_event[col_full_data]
-  #  case_tag <- case_tag[col_full_data]
-  #}
-
   control_tag_opt <- unique(case_tag)
-  control_tag <- readline(prompt=paste("What is the tag of the healthy patient? (", control_tag_opt[1], " or ", control_tag_opt[2], "): " , sep="") )
+  control_tag <- readline(prompt=paste("What is the tag of the healthy patient (value in the case_tag)? (", control_tag_opt[1], " or ", control_tag_opt[2], "): " , sep="") )
   if(!(control_tag %in% control_tag_opt)){
     print(paste("The case tag is '", control_tag_opt[1], "' by default"))
     control_tag <- control_tag_opt[1]
@@ -92,18 +85,18 @@ check_filter_values <- function(filter_values, na.rm = TRUE){
 
   #Check if the names of the filter_values are the same as the columns of full_data.
   if(!setequal(names(filter_values), colnames(full_data))){
-    stop("The name of the filter_values must be the same as the subject name of the full_data.")
+    stop("The name of the filter_values must be the same as the patient name of the full_data.")
   }
 
   #Omit NAN's values
-  #if (na.rm == TRUE){
-    # Remove colums (subjects) and their filter values with NA's values
-  #  filter_values <- filter_values[colnames(full_data)]
-    # Remove filter values and respective columns with NA's values
-  #  filter_values <- stats::na.omit(filter_values)
-  #  full_data <- full_data[,names(filter_values)]
-  #  print("Missing values and NaN's are omitted")
-  #}
+  # if (na.rm == TRUE){
+  #   # Remove columns (subjects) and their filter values with NA's values
+  #   filter_values <- filter_values[colnames(full_data)]
+  #   # Remove filter values and respective columns with NA's values
+  #   filter_values <- stats::na.omit(filter_values)
+  #   full_data <- full_data[,names(filter_values)]
+  #   print("Missing values and NaN's are omitted")
+  # }
   return(list(full_data, filter_values))
 }
 
@@ -151,7 +144,7 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
   if(clustering_type == "hierarchical"){
     opt_clust_modes <- c("standard","silhouette")
     option <- readline(prompt="Choose one of the folowing optimal cluster number method: standard/silhouette ")
-    if(option == "standard" | option == "" | option == "#"){
+    if(option != "silhouette"){
       optimal_clustering_mode <- "standard"
     }
   }

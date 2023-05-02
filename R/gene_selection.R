@@ -16,7 +16,7 @@
 cox_all_genes <- function(matrix_disease_component, survival_time, survival_event){
   list_out <- list()
   for(i in 1:nrow(matrix_disease_component)){
-    temp <- summary(survival::coxph(survival::Surv(survival_time,as.numeric(survival_event))~matrix_disease_component[i,]))$coefficients[1,]
+    temp <- summary(survival::coxph(survival::Surv(survival_time,survival_event)~matrix_disease_component[i,]))$coefficients[1,]
     list_out[[i]] <- temp
   }
   df_out <- data.frame(do.call("rbind",list_out))
@@ -36,7 +36,7 @@ cox_all_genes <- function(matrix_disease_component, survival_time, survival_even
 #' hazard model to the level of each gene. For further information see
 #' "Topology based data analysis identifies a subgroup of breast cancers
 #' with a unique mutational profile and excellent survival"
-#' @param disease_component Disease component matrix (output of the function
+#' @param matrix_disease_component Disease component matrix (output of the function
 #' \code{generate_disease_component}). The names of the rows must be the names
 #' of the genes.
 #' @param p_Data Data.frame with the phenotype data.
@@ -58,7 +58,7 @@ cox_all_genes <- function(matrix_disease_component, survival_time, survival_even
 #' \dontrun{
 #' gene_selection_surv(disease_component, p_Data, status_Col_Name, status_Value, cox_all, n_top)
 #' }
-gene_selection_surv <- function(disease_component, p_Data, status_Col_Name, status_Value, cox_all, n_top, type_sel = c("Top_Bot","Abs")){
+gene_selection_surv <- function(matrix_disease_component, p_Data, status_Col_Name, status_Value, cox_all, n_top, type_sel = c("Top_Bot","Abs")){
   cox_all <- cox_all[rownames(disease_component),]
   if(type_sel == "Top_Bot"){
     print("Is Top_Bot")
