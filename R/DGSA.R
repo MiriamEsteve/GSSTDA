@@ -184,7 +184,7 @@ denoise_rectangular_matrix <- function(matrix_flatten_normal_tiss){
 #' disease_component <- generate_disease_component(full_data,normal_tissue_f_d)
 generate_disease_component <- function(full_data, normal_space){
   # calculate the distance of all points to the normal space by calculating the regression residuals
-  disease_component <- normal_tiss
+  disease_component <- full_data
   for(i in 1:ncol(full_data)){
     disease_component[,i] <- stats::resid(stats::lm(full_data[,i] ~ 0 + ., data = data.frame(normal_space)))
   }
