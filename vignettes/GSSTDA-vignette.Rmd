@@ -33,16 +33,20 @@ data("case_tag")
 
 Create the GSSTDA object with full data set, internally pre-process using the DGSA technique, and the mapper information.
 ```{r}
+# Gene selection information
+type_gen_select <- "Top_Bot"
+percent_gen_select <- 90 # Percentage of genes to be selected
+
+
 #Mapper information
 num_intervals <- 5
 percent_overlap <- 0.4
 distance_type <- "euclidean"
 clustering_type <- "hierarchical"
-linkage_type <- "single"
 num_bins_when_clustering <- 10
+linkage_type <- "single"
 
-GSSTDA_obj <- GSSTDA(full_data, survival_time, survival_event, case_tag, num_intervals, percent_overlap,
-                   distance_type, clustering_type, num_bins_when_clustering, linkage_type)
+GSSTDA_obj <- GSSTDA(full_data, survival_time, survival_event, case_tag, type_gen_select, percent_gen_select, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type)
 
 
 

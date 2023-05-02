@@ -6,7 +6,7 @@
 to survival.}
 \usage{
 gene_selection_surv(
-  disease_component,
+  matrix_disease_component,
   p_Data,
   status_Col_Name,
   status_Value,
@@ -16,7 +16,7 @@ gene_selection_surv(
 )
 }
 \arguments{
-\item{disease_component}{Disease component matrix (output of the function
+\item{matrix_disease_component}{Disease component matrix (output of the function
 \code{generate_disease_component}). The names of the rows must be the names
 of the genes.}
 

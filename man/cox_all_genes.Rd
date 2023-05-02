@@ -20,7 +20,7 @@ hazard models using the expression levels of each gene as covariate.
 }
 \description{
 It carries out univariate cox proportional hazard models for
-the expression levels of each gene included in the provided dataset (eData)
+the expression levels of each gene included in the provided dataset (matrix_disease_component)
 and their link with relapse-free or overall survival.
 }
 \examples{

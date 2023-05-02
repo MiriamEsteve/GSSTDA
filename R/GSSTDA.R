@@ -39,12 +39,17 @@
 #'                      num_bins_when_clustering = 8,
 #'                      clustering_type = "hierarchical",
 #'                      linkage_type = "single")}
-GSSTDA <- function(full_data, survival_time, survival_event, case_tag, num_intervals, percent_overlap,
-                   distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
+GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_select_type="Top_Bot",
+                   percent_gen_select=90, num_intervals=5, percent_overlap=0.4, distance_type="euclidean",
+                   clustering_type="hierarchical", num_bins_when_clustering=10, linkage_type="single", na.rm=TRUE){
+  ################################ Prepare data and check data ########################################
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data)
-  # Select the control_tag
+  #Select the control_tag
   control_tag <- check_vectors(ncol(full_data), survival_time, survival_event, case_tag)
+  #Check and obtain gene selection (we use in the gene_select_surv)
+  num_gen_select <- check_gene_selection(nrow(full_data), gen_select_type, percent_gen_select)
+
   #Don't check filter_values because it is not created.
   filter_values <- ""
   check_return <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type,
@@ -72,8 +77,16 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, num_inter
   #Remove NAN's values (case_tag == control_tag) of survival_time and survival_event
   survival_time <- survival_time[-control_tag_cases]
   survival_event <- survival_event[-control_tag_cases]
-  # Univariate cox proportional hazard models for the expression levels of each gene included in the provided dataset
-  cox_all_matrix <- cox_all_genes(matrix_disease_component, survival_time, survival_event)
+  #Select the disease component of the "T" control_tag
+  control_disease_component <- matrix_disease_component[,-control_tag_cases]
+
+  # Univariate cox proportional hazard models for the expression levels of each gene included in the
+  #provided dataset
+  cox_all_matrix <- cox_all_genes(control_disease_component, survival_time, survival_event)
+
+  #Selects genes for mapper
+  genes_selected <- gene_selection_surv(control_disease_component, cox_all_matrix, gen_select_type,
+                                         num_gen_select)
 
   print("The gene selection is finished")
 

@@ -100,6 +100,31 @@ check_filter_values <- function(filter_values, na.rm = TRUE){
   return(list(full_data, filter_values))
 }
 
+#' @title check_gene_selection
+#'
+#' @description Checking the arguments introduces in the gene selection process.
+#'
+#' @param num_genes Number of genes in the full_data
+#' @param gen_select_type Type of gene selection to be used. Choose between "top_bot" (top-botton)
+#' and "abs" (absolute)
+#' @param percent_gen_select Percentage of genes to be selected
+#'
+#' @return num_gen_select Number of genes to be selected according to the percent_gen_select value
+#' @examples
+#' \dontrun{check_gene_selection(num_genes, gen_select_type, percent_gen_select)}
+check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select){
+  #Check gen_select_type
+  gen <- c("top_bot","abs")
+  if(!gen_select_type %in% gen){
+    stop(paste("Invalid gene selection type selected. Choose one of the folowing:", paste(gen, collapse = ", ")))
+  }
+
+  #Number of genes to be selected in gene_selection_surv function
+  num_gen_select <- trunc((percent_gen_select/100) * num_genes)
+
+  return(num_gen_select)
+}
+
 #' @title check_arg_mapper
 #'
 #' @description Checking the arguments introduces in the \code{mapper} object.

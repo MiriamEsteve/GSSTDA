@@ -7,7 +7,8 @@
 generate_disease_component(full_data, normal_space)
 }
 \arguments{
-\item{full_data}{Matrix that contains the expression data.}
+\item{full_data}{Matrix with the columns of the input matrix
+corresponding to the individuals belonging to the level. It acts as a control group.}
 
 \item{normal_space}{Denoised flattened matrix constructed from
 "healthy tissue data". Output of the function \code{denoise_rectangular_matrix}.}
