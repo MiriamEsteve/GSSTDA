@@ -66,7 +66,8 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, num_inter
   print("The pre-process DGSA is finished")
 
   ################### BLOCK II: Gene selection ##########################################################
-
+  # Univariate cox proportional hazard models for the expression levels of each gene included in the provided dataset
+  cox_all_genes <- function(matrix_disease_component, survival_time, survival_event)
 
   print("The gene selection is finished")
 
