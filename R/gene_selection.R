@@ -8,21 +8,27 @@
 #' have been produced (0 and 1s).
 #' @return A matrix with the results of the application of proportional
 #' hazard models using the expression levels of each gene as covariate.
+#' @export
 #' @import survival
 #' @examples
 #' \dontrun{
 #' cox_all_genes(control_disease_component,survival_time,survival_event)
 #' }
 cox_all_genes <- function(control_disease_component, survival_time, survival_event){
+  print("Calculating the matrix of Zcox")
+  pb <- utils::txtProgressBar(min = 0, max = nrow(control_disease_component), style = 3)
+
   list_out <- list()
   for(i in 1:nrow(control_disease_component)){
+    utils::setTxtProgressBar(pb, i)
+
     temp <- summary(survival::coxph(survival::Surv(survival_time,survival_event)~control_disease_component[i,]))$coefficients[1,]
     list_out[[i]] <- temp
   }
   cox_all_matrix <- data.frame(do.call("rbind",list_out))
   colnames(cox_all_matrix) <-  c("coef","exp_coef","se_coef","z","Pr_z")
   rownames(cox_all_matrix) <- rownames(control_disease_component)
-  df_out <- as.matrix(cox_all_matrix)
+  cox_all_matrix <- as.matrix(cox_all_matrix)
   return(cox_all_matrix)
 }
 
@@ -50,6 +56,7 @@ cox_all_genes <- function(control_disease_component, survival_time, survival_eve
 #' @param num_gen_select Number of genes to be selected (those with the highest
 #' product value).
 #' @return Character vector with the names of the selected genes.
+#' @export
 #' @examples
 #' \dontrun{
 #' gene_selection_surv(control_disease_component, cox_all_matrix, gen_select_type, num_gen_select)

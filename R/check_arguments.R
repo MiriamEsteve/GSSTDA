@@ -57,6 +57,7 @@ check_vectors <- function(ncol_full_data, survival_time, survival_event, case_ta
 
   control_tag_opt <- unique(case_tag)
   control_tag <- readline(prompt=paste("What is the tag of the healthy patient (value in the case_tag)? (", control_tag_opt[1], " or ", control_tag_opt[2], "): " , sep="") )
+
   if(!(control_tag %in% control_tag_opt)){
     print(paste("The case tag is '", control_tag_opt[1], "' by default"))
     control_tag <- control_tag_opt[1]
@@ -79,25 +80,25 @@ check_vectors <- function(ncol_full_data, survival_time, survival_event, case_ta
 #'
 #' @return \code{filter_value} and \code{full_data} without NAN's
 #' @examples
-#' \dontrun{check_arg_mapper(filter_values, distance_type, clustering_type, linkage_type)}
+#' \dontrun{check_arg_mapper(full_data, filter_values, distance_type, clustering_type, linkage_type)}
 check_filter_values <- function(full_data, filter_values, na.rm = TRUE){
   # Check if filter_values is a vector
   if(!is.vector(filter_values)){
     stop("filter_values must be a valid values vector")
   }
 
-  #Check if the names of the filter_values are the same as the columns of full_data.
-  if(!setequal(names(filter_values), rownames(full_data))){
+  #Check if the names of the filter_values are the same as the cols of full_data.
+  if(!setequal(names(filter_values), colnames(full_data))){
     stop("The name of the filter_values must be the same as the patient name of the full_data (or genes_disease_component).")
   }
 
   #Omit NAN's values
   if (na.rm == TRUE){
     # Remove rows (subjects) and their filter values with NA's values
-    filter_values <- filter_values[rownames(full_data)]
-    # Remove filter values and respective columns with NA's values
+    filter_values <- filter_values[colnames(full_data)]
+    # Remove filter values and respective rows with NA's values
     filter_values <- stats::na.omit(filter_values)
-    full_data <- full_data[names(filter_values), ]
+    full_data <- full_data[,names(filter_values)]
   }
   return(list(full_data, filter_values))
 }
@@ -172,7 +173,8 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
 
   if(clustering_type == "hierarchical"){
     opt_clust_modes <- c("standard","silhouette")
-    option <- readline(prompt="Choose one of the folowing optimal cluster number method: standard/silhouette ")
+    option <- readline(prompt="Choose one of the folowing optimal cluster number method: standard/silhouette")
+
     if(option != "silhouette"){
       optimal_clustering_mode <- "standard"
     }

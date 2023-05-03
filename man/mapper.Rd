@@ -13,6 +13,7 @@ mapper(
   clustering_type,
   num_bins_when_clustering,
   linkage_type,
+  optimal_clustering_mode = "",
   na.rm = TRUE
 )
 }
@@ -48,6 +49,13 @@ Choose between "single" for single-linkage clustering, "complete" for
 complete-linkage clustering or "average" for average linkage clustering
 (or UPGMA). Only necessary for hierarchical clustering.
 "single" default option.}
+
+\item{optimal_clustering_mode}{Method for selection optimal number of
+clusters. It is only necessary if the chosen type of algorithm is
+hierarchical. In this case, choose between "standard" (the method used
+in the original mapper article) or "silhouette". In the case of the PAM
+algorithm, the method will always be "silhouette". "silhouette" default
+option.}
 
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 If \code{FALSE}, an error occurs in case of \code{NA} rows.}

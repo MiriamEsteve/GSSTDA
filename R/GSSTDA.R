@@ -6,6 +6,13 @@
 #' @param survival_time Time between disease diagnosis and death (if not dead until the end of follow-up).
 #' @param survival_event \code{logical}. Whether the patient has died or not.
 #' @param case_tag The tag of the healthy patient (healthy or not).
+#' @param gen_select_type Option. Select the "Abs" option, which means that the
+#' genes with the highest absolute value are chosen, or the
+#' "Top_Bot" option, which means that half of the selected
+#' genes are those with the highest value (positive value, i.e.
+#' worst survival prognosis) and the other half are those with the
+#' lowest value (negative value, i.e. best prognosis).
+#' @param percent_gen_select Percentage of genes to be selected
 #' @param num_intervals Number of intervals used to create the first sample
 #' partition based on filtering values.
 #' @param percent_overlap Percentage of overlap between intervals. Expressed
@@ -54,6 +61,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   filter_values <- ""
   check_return <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type,
                                               linkage_type)
+
   full_data <- check_return[[1]]
   filter_values <- check_return[[2]]
   optimal_clustering_mode <- check_return[[3]]
@@ -71,7 +79,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   #   Obtain the disease component of the normal_space
   matrix_disease_component <- generate_disease_component(full_data, normal_space)
 
-  print("The pre-process DGSA is finished")
+  print("BLOCK I: The pre-process DGSA is finished")
 
   ################### BLOCK II: Gene selection (using "T" control_tag) ##################################
   #Remove NAN's values (case_tag == control_tag) of survival_time and survival_event
@@ -91,14 +99,14 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   # Select genes in matrix_disease_component
   genes_disease_component <- matrix_disease_component[genes_selected,]
 
-  print("The gene selection is finished")
+  print("BLOCK II: The gene selection is finished")
 
   ################### BLOCK III: Create mapper object where the arguments are checked ###################
   # Filter the genes_disease_component
   filter_values <- lp_norm_k_powers_surv(genes_disease_component, 2, 1, cox_all_matrix)
 
   # Transpose genes_disease_component: rows = patient, columns = genes
-  genes_disease_component <- t(genes_disease_component)
+  #genes_disease_component <- t(genes_disease_component)
 
   #   Check filter_values
   check_filter <- check_filter_values(genes_disease_component, filter_values)
@@ -106,16 +114,17 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   filter_values <- check_filter[[2]]
 
   mapper_obj <- mapper(genes_disease_component, filter_values, num_intervals, percent_overlap, distance_type,
-                       clustering_type, num_bins_when_clustering, linkage_type, na.rm = "checked")
+                       clustering_type, num_bins_when_clustering, linkage_type, optimal_clustering_mode, na.rm = "checked")
 
-  print("The mapper process is finished")
+  print("BLOCK III: The mapper process is finished")
 
   # Create the object
   GSSTDA_object <- list("normal_space" = normal_space,
                         "matrix_disease_component" = matrix_disease_component,
                         "cox_all_matrix" = cox_all_matrix,
                         "genes_selected" = genes_selected,
-                        "genes_disease_component" = genes_disease_component
+                        "genes_disease_component" = genes_disease_component,
+                        "mapper_obj" = mapper_obj
                         )
 
   class(GSSTDA_object) <- "GSSTDA_obj"

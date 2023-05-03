@@ -1,6 +1,6 @@
 #' @title PAD-S Filtering function
 #' @description A filtering function for mapper that projects $$R$^n$ into $R$.
-#' It calculates for each colum of the matrix (each patient), its value
+#' It calculates for each column of the matrix (each patient), its value
 #' of the filtering function. Specifically, it computes
 #' the vector magnitude in the \[L_{p}\] norm (as well
 #' as k powers of this magnitude) of the vector resulting of
@@ -24,7 +24,9 @@
 #' proportional hazard model tests for each gene in the dataset.
 #' @return A numeric vector including the values produced by the function
 #' for each sample in the dataset.
+#' @export
 lp_norm_k_powers_surv <- function(genes_disease_component, p, k, cox_all_matrix){
+  #Select "z" value (p-value) of cox_all_matrix
   cox_vector <- cox_all_matrix[rownames(genes_disease_component),"z"]
 
   #Prepare genes_disease_component and cox_vector

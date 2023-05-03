@@ -31,7 +31,7 @@ data("case_tag")
 ```
 
 
-Create the GSSTDA object with full data set, internally pre-process using the DGSA technique, and the mapper information.
+Declare the necessary parameters of the GSSTDA object.
 ```{r}
 # Gene selection information
 gen_select_type <- "Top_Bot"
@@ -46,20 +46,22 @@ clustering_type <- "hierarchical"
 num_bins_when_clustering <- 10
 linkage_type <- "single"
 
+```
+
+Create the GSSTDA object with full data set, internally pre-process using the DGSA technique, and the mapper information.
+```{r}
 GSSTDA_obj <- GSSTDA(full_data, survival_time, survival_event, case_tag, gen_select_type, percent_gen_select, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type)
-
-
 
 ```
 
 Obtain information from the mapper object created in the previous step.
 ```{r}
-#mapper_infor <- get_information_from_results(mapper_obj)
+mapper_infor <- get_information_from_results(GSSTDA_obj[["mapper_obj"]])
 
-#print(mapper_infor)
+print(mapper_infor)
 ```
 
 Plot the mapper graph.
 ```{r}
-#plot_mapper(mapper_obj)
+plot_mapper(GSSTDA_obj[["mapper_obj"]])
 ```

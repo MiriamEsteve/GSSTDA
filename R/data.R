@@ -35,7 +35,7 @@
 #'   "T": case, sample from neoplastic tissue.
 #' }
 #' @usage
-#' data(cas_tag, package = "GSSTDA")
+#' data(case_tag, package = "GSSTDA")
 #' @source The data are from the study GSE42568. Information extracted from
 #' the file GSE42568_family.soft.gz available at
 #' \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE42568}.

@@ -4,9 +4,13 @@
 \alias{check_filter_values}
 \title{check_filter_values}
 \usage{
-check_filter_values(filter_values, na.rm = TRUE)
+check_filter_values(full_data, filter_values, na.rm = TRUE)
 }
 \arguments{
+\item{full_data}{Matrix with the columns of the input matrix
+corresponding to the individuals belonging to the level. This matrix could be the
+genes_disease_component.}
+
 \item{filter_values}{Vector obtained after applying the filtering function
 to the input matrix, i.e, a vector with the filtering function
 values for each included sample.}
@@ -21,5 +25,5 @@ If \code{FALSE}, an error occurs in case of \code{NA} rows.}
 Checking the filter_values introduces in the \code{mapper} object.
 }
 \examples{
-\dontrun{check_arg_mapper(filter_values, distance_type, clustering_type, linkage_type)}
+\dontrun{check_arg_mapper(full_data, filter_values, distance_type, clustering_type, linkage_type)}
 }

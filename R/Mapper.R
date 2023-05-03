@@ -32,6 +32,12 @@
 #' complete-linkage clustering or "average" for average linkage clustering
 #' (or UPGMA). Only necessary for hierarchical clustering.
 #' "single" default option.
+#' @param optimal_clustering_mode Method for selection optimal number of
+#' clusters. It is only necessary if the chosen type of algorithm is
+#' hierarchical. In this case, choose between "standard" (the method used
+#' in the original mapper article) or "silhouette". In the case of the PAM
+#' algorithm, the method will always be "silhouette". "silhouette" default
+#' option.
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #' @return A \code{mapper_obj} object. It contains the values of the intervals
@@ -52,7 +58,7 @@
 #'                      num_bins_when_clustering = 8,
 #'                      clustering_type = "hierarchical",
 #'                      linkage_type = "single")}
-mapper <- function(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, na.rm=TRUE){
+mapper <- function(full_data, filter_values, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type, optimal_clustering_mode="", na.rm=TRUE){
   # Don't call by GSSTDA function
   if (na.rm != "checked"){
     # Check the full_data introduces
@@ -60,6 +66,7 @@ mapper <- function(full_data, filter_values, num_intervals, percent_overlap, dis
     # Check mapper arguments
     check_return <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type,
                                      linkage_type)
+
     full_data <- check_return[[1]]
     filter_values <- check_return[[2]]
     optimal_clustering_mode <- check_return[[3]]
@@ -73,7 +80,8 @@ mapper <- function(full_data, filter_values, num_intervals, percent_overlap, dis
                                "optimal_clustering_mode" = optimal_clustering_mode,
                                "num_bins_when_clustering" = num_bins_when_clustering,
                                "clustering_type" = clustering_type,
-                               "linkage_type" = linkage_type)
+                               "linkage_type" = linkage_type,
+                               "optimal_clustering_mode" = optimal_clustering_mode)
 
   class(mapper_object_ini) <- "mapper_initialization"
 
@@ -126,7 +134,7 @@ one_D_Mapper <- function(mapper_object_ini){
                            "sample_in_level" = samp_in_lev,
                            "clustering_all_levels" = test_clust_all_levels,
                            "node_samples" = node_samples,
-                           "n_nodes" = unlist(lapply(node_samples,length)),
+                           "node_sizes" = unlist(lapply(node_samples,length)),
                            "node_average_filt" = lapply(node_samples,function(x,y) mean(y[x]),filter_values),
                            "adj_matrix" = adj_matrix_out)
 
@@ -168,7 +176,7 @@ get_information_from_results <- function(mapper_object){
   n_ramifications <- sum(n_ramifications)
 
   #Generating the object of the output data
-  mapper_information <- list("n_nodes" = n_nodes,
+  mapper_information <- list("node_sizes" = n_nodes,
                                 "average_nodes"= av_node_size,
                                 "standard_desviation_nodes " = sd_node_size,
                                 "number_connections" = n_connections,

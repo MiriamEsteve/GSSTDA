@@ -30,6 +30,15 @@ corresponding to the individuals belonging to the level.}
 
 \item{case_tag}{The tag of the healthy patient (healthy or not).}
 
+\item{gen_select_type}{Option. Select the "Abs" option, which means that the
+genes with the highest absolute value are chosen, or the
+"Top_Bot" option, which means that half of the selected
+genes are those with the highest value (positive value, i.e.
+worst survival prognosis) and the other half are those with the
+lowest value (negative value, i.e. best prognosis).}
+
+\item{percent_gen_select}{Percentage of genes to be selected}
+
 \item{num_intervals}{Number of intervals used to create the first sample
 partition based on filtering values.}
 

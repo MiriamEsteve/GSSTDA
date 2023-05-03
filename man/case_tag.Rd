@@ -16,7 +16,7 @@ the file GSE42568_family.soft.gz available at
 \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE42568}.
 }
 \usage{
-data(cas_tag, package = "GSSTDA")
+data(case_tag, package = "GSSTDA")
 }
 \description{
 Character vector of length 121 containing the group to which each

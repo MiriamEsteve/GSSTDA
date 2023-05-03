@@ -4,10 +4,10 @@
 \alias{lp_norm_k_powers_surv}
 \title{PAD-S Filtering function}
 \usage{
-lp_norm_k_powers_surv(exp_matrix, p, k, cox_all)
+lp_norm_k_powers_surv(genes_disease_component, p, k, cox_all_matrix)
 }
 \arguments{
-\item{exp_matrix}{Disease component matrix (output of the function of
+\item{genes_disease_component}{Disease component matrix (output of the function of
 \code{generate_disease_component}), after having selected the rows
 corresponding to the selected genes.}
 
@@ -20,7 +20,7 @@ weight of genes with larger levels is greater.}
 the function computes the standard (Euclidean) vector magnitude
 of each column.}
 
-\item{cox_all}{A matrix with the output of the
+\item{cox_all_matrix}{A matrix with the output of the
 \code{cox_all_genes} function that stores the information of all cox
 proportional hazard model tests for each gene in the dataset.}
 }
@@ -30,7 +30,7 @@ for each sample in the dataset.
 }
 \description{
 A filtering function for mapper that projects $$R$^n$ into $R$.
-It calculates for each colum of the matrix (each patient), its value
+It calculates for each column of the matrix (each patient), its value
 of the filtering function. Specifically, it computes
 the vector magnitude in the [L_{p}] norm (as well
 as k powers of this magnitude) of the vector resulting of

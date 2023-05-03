@@ -28,7 +28,7 @@ flatten_normal_tiss <- function(normal_tiss){
 #' @param bet Beta value. Aspect ratio of the input matrix.  \deqn{\frac{m}{n}},
 #' were m is the number of rows of the input matrix and n the number of columns.
 #' @return Numeric. Lambda value.
-#'
+#' @export
 #' @examples
 #' get_lambda(0.3)
 get_lambda <- function(bet){
@@ -46,7 +46,7 @@ get_lambda <- function(bet){
 #' @param bet Beta value. Aspect ratio of the input matrix,
 #' \eqn{\frac{m}{n}}, were m is the number of rows of the input
 #' matrix and n the number of columns.
-#'
+#' @export
 #' @return It returns the function value for a specific t and a particular
 #' aspect ration m/n.
 #' @examples fun_to_int(1,0.3)
@@ -73,7 +73,7 @@ fun_to_int <- function(t,bet){
 #' were m is the number of rows of the input matrix and n the number of columns.
 #' @return It returns the mu beta value. This is the upper limit of integration
 #' where the Marcenko-Pastur distribution is equal to 1/2.
-#'
+#' @export
 #' @examples
 #' get_mu_beta(0.3)
 get_mu_beta <- function(bet){
@@ -104,7 +104,7 @@ get_mu_beta <- function(bet){
 #' @param bet Beta value. Aspect ratio of the input matrix, \deqn{\frac{m}{n}},
 #' were m is the number of rows of the input matrix and n the number of columns.
 #' @return Numeric. Omega value.
-#'
+#' @export
 #' @examples
 #' get_omega(0.3)
 get_omega <- function(bet){
