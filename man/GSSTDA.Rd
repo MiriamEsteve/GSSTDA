@@ -9,12 +9,14 @@ GSSTDA(
   survival_time,
   survival_event,
   case_tag,
-  num_intervals,
-  percent_overlap,
-  distance_type,
-  clustering_type,
-  num_bins_when_clustering,
-  linkage_type,
+  gen_select_type = "Top_Bot",
+  percent_gen_select = 90,
+  num_intervals = 5,
+  percent_overlap = 0.4,
+  distance_type = "euclidean",
+  clustering_type = "hierarchical",
+  num_bins_when_clustering = 10,
+  linkage_type = "single",
   na.rm = TRUE
 )
 }

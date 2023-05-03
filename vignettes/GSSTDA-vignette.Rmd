@@ -34,7 +34,7 @@ data("case_tag")
 Create the GSSTDA object with full data set, internally pre-process using the DGSA technique, and the mapper information.
 ```{r}
 # Gene selection information
-type_gen_select <- "Top_Bot"
+gen_select_type <- "Top_Bot"
 percent_gen_select <- 90 # Percentage of genes to be selected
 
 

@@ -6,39 +6,29 @@
 to survival.}
 \usage{
 gene_selection_surv(
-  matrix_disease_component,
-  p_Data,
-  status_Col_Name,
-  status_Value,
-  cox_all,
-  n_top,
-  type_sel = c("Top_Bot", "Abs")
+  control_disease_component,
+  cox_all_matrix,
+  gen_select_type,
+  num_gen_select
 )
 }
 \arguments{
-\item{matrix_disease_component}{Disease component matrix (output of the function
-\code{generate_disease_component}). The names of the rows must be the names
+\item{control_disease_component}{Disease component matrix (output of the function
+\code{generate_disease_component} with the control_tag == "T"). The names of the rows must be the names
 of the genes.}
 
-\item{p_Data}{Data.frame with the phenotype data.}
-
-\item{status_Col_Name}{Column of p_Data for sample filtering.}
-
-\item{status_Value}{Value of Status_Col_Name for the sample filtering
-co-variate.}
-
-\item{cox_all}{Output from the \code{cox_all_genes} function. Data.frame with
+\item{cox_all_matrix}{Output from the \code{cox_all_genes} function. Data.frame with
 information on the relationship between genes and survival.}
 
-\item{n_top}{Number of genes to be selected (those with the highest
-product value).}
-
-\item{type_sel}{Option. Select the "Abs" option, which means that the
+\item{gen_select_type}{Option. Select the "Abs" option, which means that the
 genes with the highest absolute value are chosen, or the
 "Top_Bot" option, which means that half of the selected
 genes are those with the highest value (positive value, i.e.
 worst survival prognosis) and the other half are those with the
 lowest value (negative value, i.e. best prognosis).}
+
+\item{num_gen_select}{Number of genes to be selected (those with the highest
+product value).}
 }
 \value{
 Character vector with the names of the selected genes.
@@ -53,6 +43,6 @@ with a unique mutational profile and excellent survival"
 }
 \examples{
 \dontrun{
-gene_selection_surv(disease_component, p_Data, status_Col_Name, status_Value, cox_all, n_top)
+gene_selection_surv(disease_component, cox_all_matrix, num_gen_select)
 }
 }
