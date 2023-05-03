@@ -81,6 +81,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
 
   print("BLOCK I: The pre-process DGSA is finished")
 
+
   ################### BLOCK II: Gene selection (using "T" control_tag) ##################################
   #Remove NAN's values (case_tag == control_tag) of survival_time and survival_event
   survival_time <- survival_time[-control_tag_cases]
@@ -101,6 +102,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
 
   print("BLOCK II: The gene selection is finished")
 
+
   ################### BLOCK III: Create mapper object where the arguments are checked ###################
   # Filter the genes_disease_component
   filter_values <- lp_norm_k_powers_surv(genes_disease_component, 2, 1, cox_all_matrix)
@@ -114,11 +116,13 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   filter_values <- check_filter[[2]]
 
   mapper_obj <- mapper(genes_disease_component, filter_values, num_intervals, percent_overlap, distance_type,
-                       clustering_type, num_bins_when_clustering, linkage_type, optimal_clustering_mode, na.rm = "checked")
+                       clustering_type, num_bins_when_clustering, linkage_type, optimal_clustering_mode,
+                       na.rm = "checked")
 
   print("BLOCK III: The mapper process is finished")
 
-  # Create the object
+
+  ############################################  Create the object #########################################
   GSSTDA_object <- list("normal_space" = normal_space,
                         "matrix_disease_component" = matrix_disease_component,
                         "cox_all_matrix" = cox_all_matrix,
