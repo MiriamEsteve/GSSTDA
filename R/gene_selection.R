@@ -52,19 +52,21 @@ cox_all_genes <- function(control_disease_component, survival_time, survival_eve
 #' @return Character vector with the names of the selected genes.
 #' @examples
 #' \dontrun{
-#' gene_selection_surv(disease_component, cox_all_matrix, num_gen_select)
+#' gene_selection_surv(control_disease_component, cox_all_matrix, gen_select_type, num_gen_select)
 #' }
 gene_selection_surv <- function(control_disease_component, cox_all_matrix, gen_select_type, num_gen_select){
+  # Same operation to both methods
+  probes_test <- apply(control_disease_component, 1,stats::sd)+1
+
   if(gen_select_type == "top_bot"){
-    probes_test <- (apply(control_disease_component, 1,stats::sd)+1) * cox_all_matrix[,4]
-    if(num_gen_select %% 2 == 0){
-      num_gen_select <- num_gen_select/2
-    }else{
-      num_gen_select <- (num_gen_select + 1)/2
-    }
-    selected_probes <- names(c(probes_test[order(probes_test,decreasing = T)][1:num_gen_select],probes_test[order(probes_test,decreasing = F)][1:num_gen_select]))
+    probes_test <- probes_test * cox_all_matrix[,4]
+    if(num_gen_select %% 2 == 0){ num_gen_select <- num_gen_select/2}
+    else{ num_gen_select <- (num_gen_select + 1)/2}
+
+    genes_selected <- names(c(probes_test[order(probes_test,decreasing = T)][1:num_gen_select],probes_test[order(probes_test,decreasing = F)][1:num_gen_select]))
+
   }else if(gen_select_type == "abs"){
-    probes_test <- (apply(control_disease_component,1,stats::sd)+1) * abs(cox_all_matrix[,4])
+    probes_test <- probes_test * abs(cox_all_matrix[,4])
     genes_selected <- names(probes_test[order(probes_test,decreasing = T)])[1:num_gen_select]
   }
   return(genes_selected)

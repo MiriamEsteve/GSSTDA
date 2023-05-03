@@ -46,7 +46,7 @@ clustering_type <- "hierarchical"
 num_bins_when_clustering <- 10
 linkage_type <- "single"
 
-GSSTDA_obj <- GSSTDA(full_data, survival_time, survival_event, case_tag, type_gen_select, percent_gen_select, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type)
+GSSTDA_obj <- GSSTDA(full_data, survival_time, survival_event, case_tag, gen_select_type, percent_gen_select, num_intervals, percent_overlap, distance_type, clustering_type, num_bins_when_clustering, linkage_type)
 
 
 
