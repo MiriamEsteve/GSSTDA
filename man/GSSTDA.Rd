@@ -21,66 +21,91 @@ GSSTDA(
 )
 }
 \arguments{
-\item{full_data}{Matrix with the columns of the input matrix
-corresponding to the individuals belonging to the level.}
+\item{full_data}{Input matrix whose columns correspond to the patients and
+rows to the genes.}
 
-\item{survival_time}{Time between disease diagnosis and death (if not dead until the end of follow-up).}
+\item{survival_time}{Numerical vector of the same length as the number of
+columns of full_matrix. Patients must be in the same order as in full_matrix.
+For the patients with tumour sample should be indicated the time between
+disease diagnosis and death (if not dead until the end of follow-up)
+and healthy patients must have an NA value.}
 
-\item{survival_event}{\code{logical}. Whether the patient has died or not.}
+\item{survival_event}{Numerical vector of the same length as the number of
+columns of full_matrix. Patients must be in the same order as in full_matrix.
+For the patients with tumour sample should be indicated whether
+the patient has died (1) or not (0). Only these values are valid
+and healthy patients must have an NA value.}
 
-\item{case_tag}{The tag of the healthy patient (healthy or not).}
+\item{case_tag}{Character vector of the same length as the number of
+columns of full_matrix. Patients must be in the same order as in full_matrix.
+It must be indicated for each patient whether he/she is healthy or not.
+One value should be used to indicate whether the patient is healthy and
+another value should be used to indicate whether the patient's sample is
+tumourous. The user will then be asked which one indicates whether
+the patient is healthy. Only two values are valid in the vector in total.}
 
-\item{gen_select_type}{Option. Select the "Abs" option, which means that the
+\item{gen_select_type}{Option. Options on how to select the genes to be
+used in the mapper. Select the "Abs" option, which means that the
 genes with the highest absolute value are chosen, or the
 "Top_Bot" option, which means that half of the selected
 genes are those with the highest value (positive value, i.e.
 worst survival prognosis) and the other half are those with the
 lowest value (negative value, i.e. best prognosis).}
 
-\item{percent_gen_select}{Percentage of genes to be selected}
+\item{percent_gen_select}{Percentage (from zero to one hundred) of genes
+to be selected to be used in mapper.}
 
-\item{num_intervals}{Number of intervals used to create the first sample
-partition based on filtering values.}
+\item{num_intervals}{Parameter for the mapper algorithm. Number of
+intervals used to create the first sample partition based on
+filtering values.}
 
-\item{percent_overlap}{Percentage of overlap between intervals. Expressed
-as a fraction from zero to one.}
+\item{percent_overlap}{Parameter for the mapper algorithm. Percentage
+of overlap between intervals. Expressed as a fraction from zero to one.}
 
-\item{distance_type}{Type of distance to be used for clustering.
-Choose between correlation ("cor") and euclidean ("euclidean"). "cor"
-default option.}
+\item{distance_type}{Parameter for the mapper algorithm.
+Type of distance to be used for clustering. Choose between correlation
+("cor") and euclidean ("euclidean"). "cor" default option.}
 
-\item{clustering_type}{Type of clustering method. Choose between
-"hierarchical" and "PAM" (“partition around medoids”) options.
-"hierarchical" default option.}
+\item{clustering_type}{Parameter for the mapper algorithm. Type of
+clustering method. Choose between "hierarchical" and "PAM"
+(“partition around medoids”) options. "hierarchical" default option.}
 
-\item{num_bins_when_clustering}{Number of bins to generate the
-histogram employed by the standard optimal number of cluster finder
-method. Parameter not necessary if the "optimal_clust_mode" option
-is "silhouette" or the "clust_type" is "PAM".}
+\item{num_bins_when_clustering}{Parameter for the mapper algorithm.
+Number of bins to generate the histogram employed by the standard
+optimal number of cluster finder method. Parameter not necessary if the
+"optimal_clust_mode" option is "silhouette" or the "clust_type" is "PAM".}
 
-\item{linkage_type}{Linkage criteria used in hierarchical clustering.
-Choose between "single" for single-linkage clustering, "complete" for
-complete-linkage clustering or "average" for average linkage clustering
-(or UPGMA). Only necessary for hierarchical clustering.
-"single" default option.}
+\item{linkage_type}{Parameter for the mapper algorithm. Linkage criteria
+used in hierarchical clustering. Choose between "single" for single-linkage
+clustering, "complete" for complete-linkage clustering or "average" for
+average linkage clustering (or UPGMA). Only necessary for hierarchical
+clustering. "single" default option.}
 
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 If \code{FALSE}, an error occurs in case of \code{NA} rows.}
 }
 \value{
-A \code{GSSTDA} object.
+A \code{GSSTDA} object. It contains: the matrix with the normal
+space, the matrix of the disease components, a matrix with the results of
+the application of proportional hazard models for each gene (cox_all_matrix),
+the genes selected for mapper, the matrix of the disease components with
+information from these genes only and a \code{mapper_obj} object.
+This \code{mapper_obj} object contains the values of the intervals
+(interval_data), the samples included in each interval (sample_in_level),
+information about the cluster to which the individuals in each interval
+belong (clustering_all_levels), a list including the individuals contained
+in each detected node (node_samples), their size (node_sizes), the
+average of the filter function values of the individuals of each node
+(node_average_filt) and the adjacency matrix linking the nodes (adj_matrix).
 }
 \description{
 Gene Structure Survival using Topological Data Analysis
 }
 \examples{
 \dontrun{
-num_rows <- 100
-full_data <- data.frame( x=2*cos(1:num_rows), y=sin(1:num_rows) )
-filter_values <- list(2*cos(1:num_rows))
-GSSTDA <- GSSTDA(full_data,  survival_time, survival_event, case_tag, num_intervals = 4,
-                     percent_overlap = 0.5, distance_type = "euclidean",
-                     num_bins_when_clustering = 8,
-                     clustering_type = "hierarchical",
-                     linkage_type = "single")}
+GSSTDA <- GSSTDA(full_data,  survival_time, survival_event, case_tag,
+                 gen_select_type="Top_Bot", percent_gen_select=90,
+                 num_intervals = 4, percent_overlap = 0.5,
+                 distance_type = "euclidean", num_bins_when_clustering = 8,
+                 clustering_type = "hierarchical", linkage_type = "single")}
 }

@@ -121,7 +121,7 @@ check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select)
   #Check gen_select_type
   gen <- c("top_bot","abs")
   if(!gen_select_type %in% gen){
-    stop(paste("Invalid gene selection type selected. Choose one of the folowing:", paste(gen, collapse = ", ")))
+    stop(paste("Invalid gene selection type selected. Choose one of the folowing: ", paste(gen, collapse = ", ")))
   }
 
   #Number of genes to be selected in gene_selection_surv function
@@ -160,20 +160,20 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
   #Check distance_type
   distances <- c("cor","euclidean")
   if(!distance_type %in% distances){
-    stop(paste("Invalid distance selected. Choose one of the folowing:", paste(distances, collapse = ", ")))
+    stop(paste("Invalid distance selected. Choose one of the folowing: ", paste(distances, collapse = ", ")))
   }
 
   #Check clustering_type
   clust_types <- c("hierarchical","PAM")
   if(!clustering_type %in% clust_types){
-    stop(paste("Invalid clustering method selected. Choose one of the folowing:", paste(clust_types,collapse = ", ")))
+    stop(paste("Invalid clustering method selected. Choose one of the folowing: ", paste(clust_types,collapse = ", ")))
   }
 
   optimal_clustering_mode <- "silhouette"
 
   if(clustering_type == "hierarchical"){
     opt_clust_modes <- c("standard","silhouette")
-    option <- readline(prompt="Choose one of the folowing optimal cluster number method: standard/silhouette")
+    option <- readline(prompt="Choose one of the folowing optimal cluster number method: standard/silhouette: ")
 
     if(option != "silhouette"){
       optimal_clustering_mode <- "standard"
@@ -183,7 +183,7 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
   #Check linkage_type
   link_types <- c("single","average","complete")
   if(!linkage_type %in% link_types){
-    stop(paste("Invalid linkage method selected. Choose one of the folowing:", paste(link_types,collapse = ", ")))
+    stop(paste("Invalid linkage method selected. Choose one of the folowing: ", paste(link_types,collapse = ", ")))
   }
 
   # Check if filter_values == "" the filter_values is not calculated yet. So, we checked only the others args

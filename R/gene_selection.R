@@ -2,7 +2,7 @@
 #' @description It carries out univariate cox proportional hazard models for
 #' the expression levels of each gene included in the provided dataset (matrix_disease_component)
 #' and their link with relapse-free or overall survival.
-#' @param control_disease_component Expression data for disease samples with control_tag == "T"
+#' @param control_disease_component Expression data for disease samples.
 #' @param survival_time Numeric vector that includes time to the event information
 #' @param survival_event Numeric vector that indicates if relapse or death
 #' have been produced (0 and 1s).
@@ -43,8 +43,8 @@ cox_all_genes <- function(control_disease_component, survival_time, survival_eve
 #' "Topology based data analysis identifies a subgroup of breast cancers
 #' with a unique mutational profile and excellent survival"
 #' @param control_disease_component Disease component matrix (output of the function
-#' \code{generate_disease_component} with the control_tag == "T"). The names of the rows must be the names
-#' of the genes.
+#' \code{generate_disease_component}) having selected only the columns
+#' belonging to disease samples. The names of the rows must be the names of the genes.
 #' @param cox_all_matrix Output from the \code{cox_all_genes} function. Data.frame with
 #' information on the relationship between genes and survival.
 #' @param gen_select_type Option. Select the "Abs" option, which means that the

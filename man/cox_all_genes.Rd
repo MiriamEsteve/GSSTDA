@@ -7,7 +7,7 @@
 cox_all_genes(control_disease_component, survival_time, survival_event)
 }
 \arguments{
-\item{control_disease_component}{Expression data for disease samples with control_tag == "T"}
+\item{control_disease_component}{Expression data for disease samples.}
 
 \item{survival_time}{Numeric vector that includes time to the event information}
 

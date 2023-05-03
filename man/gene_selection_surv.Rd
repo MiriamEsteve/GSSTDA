@@ -14,8 +14,8 @@ gene_selection_surv(
 }
 \arguments{
 \item{control_disease_component}{Disease component matrix (output of the function
-\code{generate_disease_component} with the control_tag == "T"). The names of the rows must be the names
-of the genes.}
+\code{generate_disease_component}) having selected only the columns
+belonging to disease samples. The names of the rows must be the names of the genes.}
 
 \item{cox_all_matrix}{Output from the \code{cox_all_genes} function. Data.frame with
 information on the relationship between genes and survival.}

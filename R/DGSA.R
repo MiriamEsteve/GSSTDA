@@ -168,8 +168,8 @@ denoise_rectangular_matrix <- function(matrix_flatten_normal_tiss){
 #' @description This function produces a disease component matrix
 #' from an expression matrix and the denoised flattened matrix constructed
 #' from "healthy tissue data".
-#' @param full_data Matrix with the columns of the input matrix
-#' corresponding to the individuals belonging to the level. It acts as a control group.
+#' @param full_data Input matrix whose columns correspond to the patients and
+#' rows to the gens. Both tumour and healthy samples should be included.
 #' @param normal_space Denoised flattened matrix constructed from
 #' "healthy tissue data". Output of the function \code{denoise_rectangular_matrix}.
 #' @return Disease component matrix that contains the disease component

@@ -18,8 +18,8 @@ mapper(
 )
 }
 \arguments{
-\item{full_data}{Matrix with the columns of the input matrix
-corresponding to the individuals belonging to the level.}
+\item{full_data}{Input matrix whose columns correspond to the individuals
+and rows to the features.}
 
 \item{filter_values}{Vector obtained after applying the filtering function
 to the input matrix, i.e, a vector with the filtering function

@@ -8,8 +8,8 @@
 #' a combinatory graph or simplicial complex that is referred to as
 #' the skeleton of the dataset. This implementation is the mapper of one
 #' dimension, i.e. using only one filter function value.
-#' @param full_data Matrix with the columns of the input matrix
-#' corresponding to the individuals belonging to the level.
+#' @param full_data Input matrix whose columns correspond to the individuals
+#' and rows to the features.
 #' @param filter_values Vector obtained after applying the filtering function
 #' to the input matrix, i.e, a vector with the filtering function
 #' values for each included sample.

@@ -1,4 +1,4 @@
-#' @title PAD-S Filtering function
+#' @title Filtering function
 #' @description A filtering function for mapper that projects $$R$^n$ into $R$.
 #' It calculates for each column of the matrix (each patient), its value
 #' of the filtering function. Specifically, it computes

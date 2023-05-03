@@ -2,7 +2,7 @@
 % Please edit documentation in R/Filter_Funct.R
 \name{lp_norm_k_powers_surv}
 \alias{lp_norm_k_powers_surv}
-\title{PAD-S Filtering function}
+\title{Filtering function}
 \usage{
 lp_norm_k_powers_surv(genes_disease_component, p, k, cox_all_matrix)
 }
