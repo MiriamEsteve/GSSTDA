@@ -68,7 +68,7 @@
 #' @name survival_time
 #' @format  Numeric vector of length 121.
 #' \describe{Time in months. Samples from healthy tissue contain a
-#'   value of \code{NA}.}
+#'   value of \code{NA}.
 #' }
 #' @usage
 #' data(survival_time, package = "GSSTDA")

@@ -88,27 +88,34 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   genes_selected <- gene_selection_surv(control_disease_component, cox_all_matrix, gen_select_type,
                                          num_gen_select)
 
+  # Select genes in matrix_disease_component
+  genes_disease_component <- matrix_disease_component[genes_selected,]
+
   print("The gene selection is finished")
 
   ################### BLOCK III: Create mapper object where the arguments are checked ###################
-  # Transpose full_data: rows = patient, columns = genes
-  full_data <- t(full_data)
+  # Filter the genes_disease_component
+  filter_values <- lp_norm_k_powers_surv(genes_disease_component, 2, 1, cox_all_matrix)
+
+  # Transpose genes_disease_component: rows = patient, columns = genes
+  genes_disease_component <- t(genes_disease_component)
 
   #   Check filter_values
-  #full_data_and_filter_values <- check_filter_values(filter_values)
-  #full_data <- full_data_and_filter_values[[1]]
-  #filter_values <- full_data_and_filter_values[[2]]
-  filter_values <- c(2*cos(1:ncol(full_data)))
-  names(filter_values) <- colnames(full_data)
+  check_filter <- check_filter_values(genes_disease_component, filter_values)
+  genes_disease_component <- check_filter[[1]]
+  filter_values <- check_filter[[2]]
 
-  mapper_obj <- mapper(full_data, filter_values, num_intervals, percent_overlap, distance_type,
+  mapper_obj <- mapper(genes_disease_component, filter_values, num_intervals, percent_overlap, distance_type,
                        clustering_type, num_bins_when_clustering, linkage_type, na.rm = "checked")
 
   print("The mapper process is finished")
 
   # Create the object
   GSSTDA_object <- list("normal_space" = normal_space,
-                        "matrix_disease_component" = matrix_disease_component
+                        "matrix_disease_component" = matrix_disease_component,
+                        "cox_all_matrix" = cox_all_matrix,
+                        "genes_selected" = genes_selected,
+                        "genes_disease_component" = genes_disease_component
                         )
 
   class(GSSTDA_object) <- "GSSTDA_obj"

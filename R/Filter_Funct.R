@@ -9,7 +9,7 @@
 #' For further information see "Progression Analysis of Disease with Survival
 #' (PAD-S) by SurvMap identifies different prognostic subgroups of breast
 #' cancer in a large combined set of transcriptomics and methylation studies"
-#' @param exp_matrix Disease component matrix (output of the function of
+#' @param genes_disease_component Disease component matrix (output of the function of
 #' \code{generate_disease_component}), after having selected the rows
 #' corresponding to the selected genes.
 #' @param p integer. It indicates the p norm to be calculated.
@@ -19,23 +19,30 @@
 #' @param k integer. Powers of the vector magnitude. If k = 1 and p = 2,
 #' the function computes the standard (Euclidean) vector magnitude
 #' of each column.
-#' @param cox_all A matrix with the output of the
+#' @param cox_all_matrix A matrix with the output of the
 #' \code{cox_all_genes} function that stores the information of all cox
 #' proportional hazard model tests for each gene in the dataset.
 #' @return A numeric vector including the values produced by the function
 #' for each sample in the dataset.
-lp_norm_k_powers_surv <- function(exp_matrix, p, k, cox_all){
-  cox_vector <- cox_all[rownames(exp_matrix),"z"]
+lp_norm_k_powers_surv <- function(genes_disease_component, p, k, cox_all_matrix){
+  cox_vector <- cox_all_matrix[rownames(genes_disease_component),"z"]
 
-  #Prepare exp_matrix and cox_vector
-  exp_matrix[exp_matrix < 0] <- ifelse(!is.na(exp_matrix[exp_matrix < 0]), exp_matrix[exp_matrix < 0] - 1, exp_matrix[exp_matrix < 0])
-  exp_matrix[exp_matrix > 0] <- ifelse(!is.na(exp_matrix[exp_matrix > 0]), exp_matrix[exp_matrix > 0] + 1, exp_matrix[exp_matrix > 0])
-  cox_vector[cox_vector < 0] <- ifelse(!is.na(cox_vector[cox_vector < 0]), cox_vector[cox_vector < 0] - 1, cox_vector[cox_vector < 0])
-  cox_vector[cox_vector > 0] <- ifelse(!is.na(cox_vector[cox_vector > 0]), cox_vector[cox_vector > 0] + 1, cox_vector[cox_vector > 0])
+  #Prepare genes_disease_component and cox_vector
+  genes_disease_component[genes_disease_component < 0] <- ifelse(!is.na(genes_disease_component[genes_disease_component < 0]),
+                                                                 genes_disease_component[genes_disease_component < 0] - 1,
+                                                                 genes_disease_component[genes_disease_component < 0])
+  genes_disease_component[genes_disease_component > 0] <- ifelse(!is.na(genes_disease_component[genes_disease_component > 0]),
+                                                                 genes_disease_component[genes_disease_component > 0] + 1,
+                                                                 genes_disease_component[genes_disease_component > 0])
+  cox_vector[cox_vector < 0] <- ifelse(!is.na(cox_vector[cox_vector < 0]), cox_vector[cox_vector < 0] - 1,
+                                       cox_vector[cox_vector < 0])
+  cox_vector[cox_vector > 0] <- ifelse(!is.na(cox_vector[cox_vector > 0]), cox_vector[cox_vector > 0] + 1,
+                                       cox_vector[cox_vector > 0])
 
-  exp_matrix <- exp_matrix * cox_vector
+  genes_disease_component <- genes_disease_component * cox_vector
 
-  lp_norm <- apply(exp_matrix, 2, function(x) (sum(abs(x)^p)^(k/p)))
+  #Calculate kp-norm
+  lp_norm <- apply(genes_disease_component, 2, function(x) (sum(abs(x)^p)^(k/p)))
   return(lp_norm)
 
 }

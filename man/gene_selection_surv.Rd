@@ -43,6 +43,6 @@ with a unique mutational profile and excellent survival"
 }
 \examples{
 \dontrun{
-gene_selection_surv(disease_component, cox_all_matrix, num_gen_select)
+gene_selection_surv(control_disease_component, cox_all_matrix, gen_select_type, num_gen_select)
 }
 }

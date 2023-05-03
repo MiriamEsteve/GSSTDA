@@ -58,16 +58,16 @@ gene_selection_surv <- function(control_disease_component, cox_all_matrix, gen_s
   # Same operation to both methods
   probes_test <- apply(control_disease_component, 1,stats::sd)+1
 
-  if(gen_select_type == "top_bot"){
+  if(gen_select_type == "abs"){
+    probes_test <- probes_test * abs(cox_all_matrix[,4])
+    genes_selected <- names(probes_test[order(probes_test,decreasing = T)])[1:num_gen_select]
+  }else{
     probes_test <- probes_test * cox_all_matrix[,4]
     if(num_gen_select %% 2 == 0){ num_gen_select <- num_gen_select/2}
     else{ num_gen_select <- (num_gen_select + 1)/2}
 
-    genes_selected <- names(c(probes_test[order(probes_test,decreasing = T)][1:num_gen_select],probes_test[order(probes_test,decreasing = F)][1:num_gen_select]))
-
-  }else if(gen_select_type == "abs"){
-    probes_test <- probes_test * abs(cox_all_matrix[,4])
-    genes_selected <- names(probes_test[order(probes_test,decreasing = T)])[1:num_gen_select]
+    genes_selected <- names(c(probes_test[order(probes_test,decreasing = T)][1:num_gen_select],
+                              probes_test[order(probes_test,decreasing = F)][1:num_gen_select]))
   }
   return(genes_selected)
 }

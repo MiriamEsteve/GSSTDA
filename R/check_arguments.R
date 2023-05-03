@@ -68,6 +68,9 @@ check_vectors <- function(ncol_full_data, survival_time, survival_event, case_ta
 #'
 #' @description Checking the filter_values introduces in the \code{mapper} object.
 #'
+#' @param full_data Matrix with the columns of the input matrix
+#' corresponding to the individuals belonging to the level. This matrix could be the
+#' genes_disease_component.
 #' @param filter_values Vector obtained after applying the filtering function
 #' to the input matrix, i.e, a vector with the filtering function
 #' values for each included sample.
@@ -77,26 +80,25 @@ check_vectors <- function(ncol_full_data, survival_time, survival_event, case_ta
 #' @return \code{filter_value} and \code{full_data} without NAN's
 #' @examples
 #' \dontrun{check_arg_mapper(filter_values, distance_type, clustering_type, linkage_type)}
-check_filter_values <- function(filter_values, na.rm = TRUE){
+check_filter_values <- function(full_data, filter_values, na.rm = TRUE){
   # Check if filter_values is a vector
   if(!is.vector(filter_values)){
     stop("filter_values must be a valid values vector")
   }
 
   #Check if the names of the filter_values are the same as the columns of full_data.
-  if(!setequal(names(filter_values), colnames(full_data))){
-    stop("The name of the filter_values must be the same as the patient name of the full_data.")
+  if(!setequal(names(filter_values), rownames(full_data))){
+    stop("The name of the filter_values must be the same as the patient name of the full_data (or genes_disease_component).")
   }
 
   #Omit NAN's values
-  # if (na.rm == TRUE){
-  #   # Remove columns (subjects) and their filter values with NA's values
-  #   filter_values <- filter_values[colnames(full_data)]
-  #   # Remove filter values and respective columns with NA's values
-  #   filter_values <- stats::na.omit(filter_values)
-  #   full_data <- full_data[,names(filter_values)]
-  #   print("Missing values and NaN's are omitted")
-  # }
+  if (na.rm == TRUE){
+    # Remove rows (subjects) and their filter values with NA's values
+    filter_values <- filter_values[rownames(full_data)]
+    # Remove filter values and respective columns with NA's values
+    filter_values <- stats::na.omit(filter_values)
+    full_data <- full_data[names(filter_values), ]
+  }
   return(list(full_data, filter_values))
 }
 
@@ -113,6 +115,8 @@ check_filter_values <- function(filter_values, na.rm = TRUE){
 #' @examples
 #' \dontrun{check_gene_selection(num_genes, gen_select_type, percent_gen_select)}
 check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select){
+  #Convert text to lowercase
+  gen_select_type <- tolower(gen_select_type)
   #Check gen_select_type
   gen <- c("top_bot","abs")
   if(!gen_select_type %in% gen){
