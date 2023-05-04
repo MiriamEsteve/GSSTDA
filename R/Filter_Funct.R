@@ -33,13 +33,13 @@ lp_norm_k_powers_surv <- function(genes_disease_component, p, k, cox_all_matrix)
   genes_disease_component[genes_disease_component < 0] <- ifelse(!is.na(genes_disease_component[genes_disease_component < 0]),
                                                                  genes_disease_component[genes_disease_component < 0] - 1,
                                                                  genes_disease_component[genes_disease_component < 0])
-  genes_disease_component[genes_disease_component > 0] <- ifelse(!is.na(genes_disease_component[genes_disease_component > 0]),
-                                                                 genes_disease_component[genes_disease_component > 0] + 1,
-                                                                 genes_disease_component[genes_disease_component > 0])
+  genes_disease_component[genes_disease_component >= 0] <- ifelse(!is.na(genes_disease_component[genes_disease_component >= 0]),
+                                                                 genes_disease_component[genes_disease_component >= 0] + 1,
+                                                                 genes_disease_component[genes_disease_component >= 0])
   cox_vector[cox_vector < 0] <- ifelse(!is.na(cox_vector[cox_vector < 0]), cox_vector[cox_vector < 0] - 1,
                                        cox_vector[cox_vector < 0])
-  cox_vector[cox_vector > 0] <- ifelse(!is.na(cox_vector[cox_vector > 0]), cox_vector[cox_vector > 0] + 1,
-                                       cox_vector[cox_vector > 0])
+  cox_vector[cox_vector >= 0] <- ifelse(!is.na(cox_vector[cox_vector >= 0]), cox_vector[cox_vector >= 0] + 1,
+                                       cox_vector[cox_vector >= 0])
 
   genes_disease_component <- genes_disease_component * cox_vector
 

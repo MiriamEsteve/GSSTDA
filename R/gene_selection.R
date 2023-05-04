@@ -2,7 +2,7 @@
 #' @description It carries out univariate cox proportional hazard models for
 #' the expression levels of each gene included in the provided dataset (matrix_disease_component)
 #' and their link with relapse-free or overall survival.
-#' @param control_disease_component Expression data for disease samples.
+#' @param case_disease_component Expression data for disease samples.
 #' @param survival_time Numeric vector that includes time to the event information
 #' @param survival_event Numeric vector that indicates if relapse or death
 #' have been produced (0 and 1s).
@@ -12,22 +12,22 @@
 #' @import survival
 #' @examples
 #' \dontrun{
-#' cox_all_genes(control_disease_component,survival_time,survival_event)
+#' cox_all_genes(case_disease_component,survival_time,survival_event)
 #' }
-cox_all_genes <- function(control_disease_component, survival_time, survival_event){
+cox_all_genes <- function(case_disease_component, survival_time, survival_event){
   print("Calculating the matrix of Zcox")
-  pb <- utils::txtProgressBar(min = 0, max = nrow(control_disease_component), style = 3)
+  pb <- utils::txtProgressBar(min = 0, max = nrow(case_disease_component), style = 3)
 
   list_out <- list()
-  for(i in 1:nrow(control_disease_component)){
+  for(i in 1:nrow(case_disease_component)){
     utils::setTxtProgressBar(pb, i)
 
-    temp <- summary(survival::coxph(survival::Surv(survival_time,survival_event)~control_disease_component[i,]))$coefficients[1,]
+    temp <- summary(survival::coxph(survival::Surv(survival_time,survival_event)~case_disease_component[i,]))$coefficients[1,]
     list_out[[i]] <- temp
   }
   cox_all_matrix <- data.frame(do.call("rbind",list_out))
   colnames(cox_all_matrix) <-  c("coef","exp_coef","se_coef","z","Pr_z")
-  rownames(cox_all_matrix) <- rownames(control_disease_component)
+  rownames(cox_all_matrix) <- rownames(case_disease_component)
   cox_all_matrix <- as.matrix(cox_all_matrix)
   return(cox_all_matrix)
 }
@@ -42,7 +42,7 @@ cox_all_genes <- function(control_disease_component, survival_time, survival_eve
 #' hazard model to the level of each gene. For further information see
 #' "Topology based data analysis identifies a subgroup of breast cancers
 #' with a unique mutational profile and excellent survival"
-#' @param control_disease_component Disease component matrix (output of the function
+#' @param case_disease_component Disease component matrix (output of the function
 #' \code{generate_disease_component}) having selected only the columns
 #' belonging to disease samples. The names of the rows must be the names of the genes.
 #' @param cox_all_matrix Output from the \code{cox_all_genes} function. Data.frame with
@@ -59,11 +59,11 @@ cox_all_genes <- function(control_disease_component, survival_time, survival_eve
 #' @export
 #' @examples
 #' \dontrun{
-#' gene_selection_surv(control_disease_component, cox_all_matrix, gen_select_type, num_gen_select)
+#' gene_selection_surv(case_disease_component, cox_all_matrix, gen_select_type, num_gen_select)
 #' }
-gene_selection_surv <- function(control_disease_component, cox_all_matrix, gen_select_type, num_gen_select){
+gene_selection_surv <- function(case_disease_component, cox_all_matrix, gen_select_type, num_gen_select){
   # Same operation to both methods
-  probes_test <- apply(control_disease_component, 1,stats::sd)+1
+  probes_test <- apply(case_disease_component, 1,stats::sd)+1
 
   if(gen_select_type == "abs"){
     probes_test <- probes_test * abs(cox_all_matrix[,4])
