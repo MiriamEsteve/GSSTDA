@@ -8,6 +8,13 @@
 #' have been produced (0 and 1s).
 #' @return A matrix with the results of the application of proportional
 #' hazard models using the expression levels of each gene as covariate.
+#' The \code{coef} column corresponds to the regression coefficient; the
+#' \code{exp_coef} column corresponds to the value of e^coef  (which is
+#' interpreted as the odds ratio); the \code{se_coef} column corresponds
+#' to the standard error of each coefficient; the \code{z} column corresponds
+#' to the value of coef/se_coef (the higher the Z value, the higher the
+#' significance of the variable) and the \code{Pr_z} column corresponds to
+#' the p-value for each Z value.
 #' @export
 #' @import survival
 #' @examples
