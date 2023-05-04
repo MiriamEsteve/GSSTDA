@@ -4,17 +4,17 @@
 #' @param full_data Input matrix whose columns correspond to the patients and
 #' rows to the genes.
 #' @param survival_time Numerical vector of the same length as the number of
-#' columns of full_matrix. Patients must be in the same order as in full_matrix.
+#' columns of full_data. Patients must be in the same order as in full_data.
 #' For the patients with tumour sample should be indicated the time between
 #' disease diagnosis and death (if not dead until the end of follow-up)
 #' and healthy patients must have an NA value.
 #' @param survival_event Numerical vector of the same length as the number of
-#' columns of full_matrix. Patients must be in the same order as in full_matrix.
+#' columns of full_data. Patients must be in the same order as in full_data.
 #' For the patients with tumour sample should be indicated whether
 #' the patient has died (1) or not (0). Only these values are valid
 #' and healthy patients must have an NA value.
 #' @param case_tag Character vector of the same length as the number of
-#' columns of full_matrix. Patients must be in the same order as in full_matrix.
+#' columns of full_data. Patients must be in the same order as in full_data.
 #' It must be indicated for each patient whether he/she is healthy or not.
 #' One value should be used to indicate whether the patient is healthy and
 #' another value should be used to indicate whether the patient's sample is
