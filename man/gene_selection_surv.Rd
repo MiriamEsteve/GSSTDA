@@ -6,14 +6,14 @@
 to survival.}
 \usage{
 gene_selection_surv(
-  control_disease_component,
+  case_disease_component,
   cox_all_matrix,
   gen_select_type,
   num_gen_select
 )
 }
 \arguments{
-\item{control_disease_component}{Disease component matrix (output of the function
+\item{case_disease_component}{Disease component matrix (output of the function
 \code{generate_disease_component}) having selected only the columns
 belonging to disease samples. The names of the rows must be the names of the genes.}
 
@@ -43,6 +43,6 @@ with a unique mutational profile and excellent survival"
 }
 \examples{
 \dontrun{
-gene_selection_surv(control_disease_component, cox_all_matrix, gen_select_type, num_gen_select)
+gene_selection_surv(case_disease_component, cox_all_matrix, gen_select_type, num_gen_select)
 }
 }

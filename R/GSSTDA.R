@@ -77,8 +77,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   ################################ Prepare data and check data ########################################
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data, na.rm)
-  #Select the control_tag
-  control_tag <- check_vectors(ncol(full_data), survival_time, survival_event, case_tag, na.rm)
+  #Select the control_tag. This do it inside of the DGSA function
   #Check and obtain gene selection (we use in the gene_select_surv)
   num_gen_select <- check_gene_selection(nrow(full_data), gen_select_type, percent_gen_select)
 
@@ -95,6 +94,11 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   ################### BLOCK I: Pre-process. DGSA (using "NT" control_tag) ##############################
   DGSA_obj <- DGSA(full_data, survival_time, survival_event, case_tag, na.rm = "checked")
   matrix_disease_component <- DGSA_obj[["matrix_disease_component"]]
+  control_tag <- DGSA_obj[["control_tag"]]
+  full_data <- DGSA_obj[["full_data"]]
+  survival_event <- DGSA_obj[["survival_event"]]
+  survival_time <- DGSA_obj[["survival_time"]]
+  case_tag <- DGSA_obj[["case_tag"]]
 
   ################### BLOCK II: Gene selection (using "T" control_tag) ##################################
   control_tag_cases <- which(case_tag == control_tag)
@@ -190,8 +194,14 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
   ################################ Prepare data and check data ########################################
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data, na.rm)
+
   #Select the control_tag
-  control_tag <- check_vectors(ncol(full_data), survival_time, survival_event, case_tag, na.rm)
+  return_check <- check_vectors(full_data, survival_time, survival_event, case_tag, na.rm)
+  control_tag <- return_check[[1]]
+  full_data <- return_check[[2]]
+  survival_event <- return_check[[3]]
+  survival_time <- return_check[[4]]
+  case_tag <- return_check[[5]]
 
   ################### BLOCK I: Pre-process. DGSA (using "NT" control_tag) ##############################
   print("BLOCK I: The pre-process DGSA is started")
@@ -210,6 +220,9 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
   ############################################  Create the object #########################################
   DGSA_object <- list("full_data" = full_data,
                       "control_tag" = control_tag,
+                      "case_tag" = case_tag,
+                      "survival_event" = survival_event,
+                      "survival_time" = survival_time,
                       "normal_space" = normal_space,
                       "matrix_disease_component" = matrix_disease_component)
 

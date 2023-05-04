@@ -4,10 +4,10 @@
 \alias{cox_all_genes}
 \title{Survival analysis based on gene expression levels.}
 \usage{
-cox_all_genes(control_disease_component, survival_time, survival_event)
+cox_all_genes(case_disease_component, survival_time, survival_event)
 }
 \arguments{
-\item{control_disease_component}{Expression data for disease samples.}
+\item{case_disease_component}{Expression data for disease samples.}
 
 \item{survival_time}{Numeric vector that includes time to the event information}
 
@@ -25,6 +25,6 @@ and their link with relapse-free or overall survival.
 }
 \examples{
 \dontrun{
-cox_all_genes(control_disease_component,survival_time,survival_event)
+cox_all_genes(case_disease_component,survival_time,survival_event)
 }
 }

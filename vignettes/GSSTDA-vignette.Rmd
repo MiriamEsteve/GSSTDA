@@ -35,18 +35,30 @@ Declare the necessary parameters of the GSSTDA object.
 ```{r}
 # Gene selection information
 gen_select_type <- "Top_Bot"
-percent_gen_select <- 90 # Percentage of genes to be selected
+percent_gen_select <- 10 # Percentage of genes to be selected
 
 
 #Mapper information
-num_intervals <- 5
+num_intervals <- 10
 percent_overlap <- 0.4
-distance_type <- "euclidean"
+distance_type <- "cor"
 clustering_type <- "hierarchical"
 num_bins_when_clustering <- 10
 linkage_type <- "single"
 
 ```
+
+First step of the process: DGSA.
+```{r}
+#DGSA_obj <- DGSA(full_data, survival_time, survival_event, case_tag)
+```
+
+Second step of the process: Select the genes.
+```{r}
+
+```
+
+
 
 Create the GSSTDA object with full data set, internally pre-process using the DGSA technique, and the mapper information.
 ```{r}

@@ -4,16 +4,10 @@
 \alias{check_vectors}
 \title{check_vectors}
 \usage{
-check_vectors(
-  ncol_full_data,
-  survival_time,
-  survival_event,
-  case_tag,
-  na.rm = TRUE
-)
+check_vectors(full_data, survival_time, survival_event, case_tag, na.rm = TRUE)
 }
 \arguments{
-\item{ncol_full_data}{Column names of the genes of the full_data (maybe remove by na.rm = TRUE)}
+\item{full_data}{The genes of the full_data (maybe remove by na.rm = TRUE)}
 
 \item{survival_time}{Time between disease diagnosis and death (if not dead until the end of follow-up).}
 

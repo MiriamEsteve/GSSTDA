@@ -17,6 +17,7 @@ check_full_data <- function(full_data, na.rm = TRUE){
 
   #Read the data set
   yes_no <- readline(prompt="Are the columns of the data set the patient and the rows the genes?: yes/no ")
+
   if(yes_no == "no" | yes_no == "n"){
     #Transpose the data set. Columns = patient and rows = genes
     full_data <- t(full_data)
@@ -39,7 +40,7 @@ check_full_data <- function(full_data, na.rm = TRUE){
 #' @title check_vectors
 #' @description Checking the \code{survival_time}, \code{survival_event} and \code{case_tag} introduces in the \code{GSSTDA} object.
 #'
-#' @param ncol_full_data Column names of the genes of the full_data (maybe remove by na.rm = TRUE)
+#' @param full_data The genes of the full_data (maybe remove by na.rm = TRUE)
 #' @param survival_time Time between disease diagnosis and death (if not dead until the end of follow-up).
 #' @param survival_event \code{logical}. Whether the patient has died or not.
 #' @param case_tag The tag of the healthy patient (healthy or not).
@@ -48,21 +49,36 @@ check_full_data <- function(full_data, na.rm = TRUE){
 #' @return control_tag Return the tag of the healthy patient
 #' @examples
 #' \dontrun{control_tag <- check_vectors(col_full_data, survival_time, survival_event, case_tag)}
-check_vectors <- function(ncol_full_data, survival_time, survival_event, case_tag, na.rm = TRUE){
-  # If this function has been executed don't do nothing
-  if(na.rm == "checked"){
-    return(full_data)
-  }
-
+check_vectors <- function(full_data, survival_time, survival_event, case_tag, na.rm = TRUE){
+  ncol_full_data <- ncol(full_data)
   # Check if the arguments are vectors; a valid type of data; and the vectors are the same dimension as a full_data
   if(!is.vector(survival_time) | !is.numeric(survival_time) | length(survival_time) != ncol_full_data){
     stop("survival_time must be a valid values vector and its length must be the same as the number of patients (columns) of the full_data.")
   }
-  if(!is.vector(survival_event) | (length(unique(survival_event)) != 2 & !is.numeric(survival_event)) | length(survival_event) != ncol_full_data){
+
+  # Omit NAN's values in checking
+  if(!is.vector(survival_event) | !(length(unique(stats::na.omit(survival_event))) == 2 & is.numeric(stats::na.omit(survival_event))) | length(survival_event) != ncol_full_data){
     stop("survival_event must be a valid values vector. Only two type of event (0 or 1). Also, its length must be the same as the number of patients (columns) of the full_data.")
   }
-  if(!is.vector(case_tag) | length(unique(case_tag) != 2)){
-    stop("case_tag must be a valid values vector. Only two type of tags.")
+
+  #If exits NAN's values remove it and check if it contain only two cases and it has the same dimension (columns) as full_data
+  if(!is.vector(case_tag)){
+    stop("case_tag must be a valid values vector.")
+  }
+  if( any(is.na(case_tag))){
+    nan_patient <- which(is.na(case_tag))
+    case_tag <- case_tag[!nan_patient]
+    full_data <- full_data[!nan_patient]
+    survival_event <- survival_event[!nan_patient]
+    survival_time <- survival_time[!nan_patient]
+    print("NAN's values in patient was removed in case_tag, full_data, survival_time and survival_event")
+    if(length(unique(case_tag)) != 2){
+      stop("case_tag must has only two type of tags.")
+    }
+    if(length(case_tag) != ncol_full_data){
+      stop("The length of case_tag must be the same as the number of patients (columns) of the full_data.")
+
+    }
   }
 
   control_tag_opt <- unique(case_tag)
@@ -72,7 +88,7 @@ check_vectors <- function(ncol_full_data, survival_time, survival_event, case_ta
     print(paste("The case tag is '", control_tag_opt[1], "' by default"))
     control_tag <- control_tag_opt[1]
   }
-  return(control_tag)
+  return(list(control_tag, full_data, survival_event, survival_time, case_tag))
 }
 
 #' @title check_filter_values
