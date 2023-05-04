@@ -66,19 +66,19 @@ check_vectors <- function(full_data, survival_time, survival_event, case_tag, na
     stop("case_tag must be a valid values vector.")
   }
   if( any(is.na(case_tag))){
-    nan_patient <- which(is.na(case_tag))
-    case_tag <- case_tag[!nan_patient]
-    full_data <- full_data[!nan_patient]
-    survival_event <- survival_event[!nan_patient]
-    survival_time <- survival_time[!nan_patient]
+    without_nan_patient <- which(!is.na(case_tag))
+    case_tag <- case_tag[without_nan_patient]
+    full_data <- full_data[,without_nan_patient]
+    survival_event <- survival_event[without_nan_patient]
+    survival_time <- survival_time[without_nan_patient]
+    ncol_full_data <- ncol(full_data)
     print("NAN's values in patient was removed in case_tag, full_data, survival_time and survival_event")
-    if(length(unique(case_tag)) != 2){
-      stop("case_tag must has only two type of tags.")
-    }
-    if(length(case_tag) != ncol_full_data){
-      stop("The length of case_tag must be the same as the number of patients (columns) of the full_data.")
-
-    }
+  }
+  if(length(unique(case_tag)) != 2){
+    stop("case_tag must has only two type of tags.")
+  }
+  if(length(case_tag) != ncol_full_data){
+    stop("The length of case_tag must be the same as the number of patients (columns) of the full_data.")
   }
 
   control_tag_opt <- unique(case_tag)
