@@ -190,3 +190,75 @@ generate_disease_component <- function(full_data, normal_space){
   }
   return(disease_component)
 }
+
+
+#' @title plot DGSA
+#' @description
+#' It draws the heatmap of the DGSA result by selecting the 100 genes with
+#' the highest variability between samples.
+#' @param selected_matrix_disease_component Disease component matrix of
+#' the selected genes that contains the disease component of all patients.
+#' Output of the function \code{generate_disease_component}.
+#' @param case_tag Character vector of the same length as the number of
+#' columns of full_data. Patients must be in the same order as in full_data.
+#' It must be indicated for each patient whether he/she is healthy or not.
+#' One value should be used to indicate whether the patient is healthy and
+#' another value should be used to indicate whether the patient's sample is
+#' tumourous. The user will then be asked which one indicates whether
+#' the patient is healthy. Only two values are valid in the vector in total.
+#' @param control_tag Value of the case_tag vector corresponding to
+#' healthy patients.
+#' @import ComplexHeatmap
+#' @import circlize
+#' @export
+plot_DGSA <- function(selected_matrix_disease_component, case_tag, control_tag){
+  genes_test <- apply(matrix_disease_component,1,sd)
+  selected_genes <- names(genes_test[order(genes_test,decreasing = T)])[1:100]
+  sel_matrix_disease_component <- matrix_disease_component[selected_genes,]
+  col_fun = circlize::colorRamp2(c(-4, 0,4),
+                                 c("red", "black", "green"))
+  row_text_size = 10
+  ha = ComplexHeatmap::HeatmapAnnotation(Group = case_tag,
+                                         annotation_legend_param = list(
+                                           Group = list(title = "Group",
+                                                        at = c(control_tag,
+                                                               unique(case_tag)[!unique(case_tag)%in%"NT"]))
+                                         ))
+  ComplexHeatmap::draw(ComplexHeatmap::Heatmap(sel_matrix_disease_component,
+                                               cluster_columns = T,col = col_fun,cluster_rows = F,
+                                               heatmap_legend_param = list(
+                                                 title = "Expression",
+                                                 at = c(-4, 0, 4)),
+                                               row_names_gp = grid::gpar(fontsize = 5.25),
+                                               column_names_gp = grid::gpar(fontsize = 0),
+                                               top_annotation = ha))
+}
+
+#' @title results DGSA
+#' @description
+#' It calculates the 100 genes with the highest variability in the matrix
+#' disease component between samples and use them to draw the heat map.
+#' @param matrix_disease_component Disease component matrix that contains
+#' the disease component of all patients. Output of the function
+#' \code{generate_disease_component}.
+#' @param case_tag Character vector of the same length as the number of
+#' columns of full_data. Patients must be in the same order as in full_data.
+#' It must be indicated for each patient whether he/she is healthy or not.
+#' One value should be used to indicate whether the patient is healthy and
+#' another value should be used to indicate whether the patient's sample is
+#' tumourous. The user will then be asked which one indicates whether
+#' the patient is healthy. Only two values are valid in the vector in total.
+#' @param control_tag Value of the case_tag vector corresponding to
+#' healthy patients.
+#' @export
+results_DGSA <- function(matrix_disease_component, case_tag, control_tag){
+  genes_sd <- apply(matrix_disease_component,1,sd)
+  selected_genes_sd <- names(genes_sd[order(genes_sd,decreasing = T)])[1:100]
+  selected_matrix_disease_component_sd <- matrix_disease_component[selected_genes_sd,]
+
+  # DT::datatable(selected_matrix_disease_component_sd)
+
+  plot_DGSA(selected_matrix_disease_component_sd, case_tag, control_tag)
+
+  return(selected_genes_sd)
+}
