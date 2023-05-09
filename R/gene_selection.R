@@ -2,7 +2,9 @@
 #' @description It carries out univariate cox proportional hazard models for
 #' the expression levels of each gene included in the provided dataset (matrix_disease_component)
 #' and their link with relapse-free or overall survival.
-#' @param case_disease_component Expression data for disease samples.
+#' @param case_disease_component Disease component matrix (output of the function
+#' \code{generate_disease_component}) having selected only the columns
+#' belonging to disease samples. The names of the rows must be the names of the genes.
 #' @param survival_time Numeric vector that includes time to the event information
 #' @param survival_event Numeric vector that indicates if relapse or death
 #' have been produced (0 and 1s).
@@ -72,11 +74,19 @@ gene_selection_surv <- function(case_disease_component, cox_all_matrix, gen_sele
   # Same operation to both methods
   probes_test <- apply(case_disease_component, 1,stats::sd)+1
 
+  cox_vector <- cox_all_matrix[,"z"]
+  cox_vector[cox_vector < 0] <- ifelse(!is.na(cox_vector[cox_vector < 0]),
+                                       cox_vector[cox_vector < 0] - 1,
+                                       cox_vector[cox_vector < 0])
+  cox_vector[cox_vector >= 0] <- ifelse(!is.na(cox_vector[cox_vector >= 0]),
+                                        cox_vector[cox_vector >= 0] + 1,
+                                        cox_vector[cox_vector >= 0])
+
   if(gen_select_type == "abs"){
-    probes_test <- probes_test * abs(cox_all_matrix[,4])
+    probes_test <- probes_test * abs(cox_vector)
     genes_selected <- names(probes_test[order(probes_test,decreasing = T)])[1:num_gen_select]
   }else{
-    probes_test <- probes_test * cox_all_matrix[,4]
+    probes_test <- probes_test * cox_vector
     if(num_gen_select %% 2 == 0){ num_gen_select <- num_gen_select/2}
     else{ num_gen_select <- (num_gen_select + 1)/2}
 
