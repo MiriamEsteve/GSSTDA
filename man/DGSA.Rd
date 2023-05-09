@@ -31,7 +31,8 @@ tumourous. The user will then be asked which one indicates whether
 the patient is healthy. Only two values are valid in the vector in total.}
 
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
-If \code{FALSE}, an error occurs in case of \code{NA} rows.}
+If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
+option.}
 }
 \value{
 A \code{DGSA} object. It contains: the full_data without NAN's values,

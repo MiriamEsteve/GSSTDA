@@ -19,26 +19,23 @@ clust_lev(
 corresponding to the individuals belonging to the level.}
 
 \item{distance_type}{Type of distance to be used for clustering.
-Choose between correlation ("cor") and euclidean ("euclidean"). "cor"
-default option.}
+Choose between correlation ("cor") and euclidean ("euclidean").}
 
 \item{clustering_type}{Type of clustering method.
 Choose between "hierarchical" and "PAM" (“partition around medoids”)
-options. "hierarchical" default option.}
+options.}
 
 \item{linkage_type}{Linkage criteria used in hierarchical clustering.
 Choose between "single" for single-linkage clustering, "complete" for
 complete-linkage clustering or "average" for average linkage clustering
 (or UPGMA). Only necessary for hierarchical clustering. The value provided
-if the type of clustering chosen is hierarchical will be ignored
-"single" default option.}
+if the type of clustering chosen is hierarchical will be ignored}
 
 \item{optimal_clustering_mode}{Method for selection optimal number of
 clusters. It is only necessary if the chosen type of algorithm is
 hierarchical. In this case, choose between "standard" (the method used
 in the original mapper article) or "silhouette". In the case of the PAM
-algorithm, the method will always be "silhouette". "silhouette" default
-option.}
+algorithm, the method will always be "silhouette".}
 
 \item{num_bins_when_clustering}{Number of bins to generate the histogram
 employed by the standard optimal number of cluster finder method.

@@ -7,12 +7,12 @@
 mapper(
   full_data,
   filter_values,
-  num_intervals,
-  percent_overlap,
-  distance_type,
-  clustering_type,
-  num_bins_when_clustering,
-  linkage_type,
+  num_intervals = 5,
+  percent_overlap = 40,
+  distance_type = "cor",
+  clustering_type = "hierarchical",
+  num_bins_when_clustering = 10,
+  linkage_type = "single",
   optimal_clustering_mode = "",
   na.rm = TRUE
 )
@@ -26,10 +26,10 @@ to the input matrix, i.e, a vector with the filtering function
 values for each included sample.}
 
 \item{num_intervals}{Number of intervals used to create the first sample
-partition based on filtering values.}
+partition based on filtering values. 5 default option.}
 
 \item{percent_overlap}{Percentage of overlap between intervals. Expressed
-as a fraction from zero to one.}
+as a percentage. 40 default option.}
 
 \item{distance_type}{Type of distance to be used for clustering.
 Choose between correlation ("cor") and euclidean ("euclidean"). "cor"
@@ -42,7 +42,7 @@ default option.}
 \item{num_bins_when_clustering}{Number of bins to generate the
 histogram employed by the standard optimal number of cluster finder
 method. Parameter not necessary if the "optimal_clust_mode" option
-is "silhouette" or the "clust_type" is "PAM".}
+is "silhouette" or the "clust_type" is "PAM". 10 default option.}
 
 \item{linkage_type}{Linkage criteria used in hierarchical clustering.
 Choose between "single" for single-linkage clustering, "complete" for
@@ -54,11 +54,11 @@ complete-linkage clustering or "average" for average linkage clustering
 clusters. It is only necessary if the chosen type of algorithm is
 hierarchical. In this case, choose between "standard" (the method used
 in the original mapper article) or "silhouette". In the case of the PAM
-algorithm, the method will always be "silhouette". "silhouette" default
-option.}
+algorithm, the method will always be "silhouette".}
 
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
-If \code{FALSE}, an error occurs in case of \code{NA} rows.}
+If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
+option.}
 }
 \value{
 A \code{mapper_obj} object. It contains the values of the intervals

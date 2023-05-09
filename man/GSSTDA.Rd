@@ -12,7 +12,7 @@ GSSTDA(
   gen_select_type = "Top_Bot",
   percent_gen_select = 10,
   num_intervals = 5,
-  percent_overlap = 0.4,
+  percent_overlap = 40,
   distance_type = "cor",
   clustering_type = "hierarchical",
   num_bins_when_clustering = 10,
@@ -50,17 +50,17 @@ genes with the highest absolute value are chosen, or the
 "Top_Bot" option, which means that half of the selected
 genes are those with the highest value (positive value, i.e.
 worst survival prognosis) and the other half are those with the
-lowest value (negative value, i.e. best prognosis).}
+lowest value (negative value, i.e. best prognosis). "Top_Bot" default option.}
 
 \item{percent_gen_select}{Percentage (from zero to one hundred) of genes
-to be selected to be used in mapper.}
+to be selected to be used in mapper. 10 default option.}
 
 \item{num_intervals}{Parameter for the mapper algorithm. Number of
 intervals used to create the first sample partition based on
-filtering values.}
+filtering values. 5 default option.}
 
 \item{percent_overlap}{Parameter for the mapper algorithm. Percentage
-of overlap between intervals. Expressed as a fraction from zero to one.}
+of overlap between intervals. Expressed as a percentage. 40 default option.}
 
 \item{distance_type}{Parameter for the mapper algorithm.
 Type of distance to be used for clustering. Choose between correlation
@@ -73,7 +73,8 @@ clustering method. Choose between "hierarchical" and "PAM"
 \item{num_bins_when_clustering}{Parameter for the mapper algorithm.
 Number of bins to generate the histogram employed by the standard
 optimal number of cluster finder method. Parameter not necessary if the
-"optimal_clust_mode" option is "silhouette" or the "clust_type" is "PAM".}
+"optimal_clust_mode" option is "silhouette" or the "clust_type" is "PAM".
+10 default option.}
 
 \item{linkage_type}{Parameter for the mapper algorithm. Linkage criteria
 used in hierarchical clustering. Choose between "single" for single-linkage
@@ -82,7 +83,8 @@ average linkage clustering (or UPGMA). Only necessary for hierarchical
 clustering. "single" default option.}
 
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
-If \code{FALSE}, an error occurs in case of \code{NA} rows.}
+If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
+option.}
 }
 \value{
 A \code{GSSTDA} object. It contains: the matrix with the normal
@@ -104,8 +106,8 @@ Gene Structure Survival using Topological Data Analysis
 \examples{
 \dontrun{
 GSSTDA <- GSSTDA(full_data,  survival_time, survival_event, case_tag,
-                 gen_select_type="Top_Bot", percent_gen_select=90,
-                 num_intervals = 4, percent_overlap = 0.5,
+                 gen_select_type="Top_Bot", percent_gen_select=10,
+                 num_intervals = 4, percent_overlap = 50,
                  distance_type = "euclidean", num_bins_when_clustering = 8,
                  clustering_type = "hierarchical", linkage_type = "single")}
 }

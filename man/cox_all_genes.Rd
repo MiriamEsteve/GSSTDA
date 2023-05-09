@@ -7,7 +7,9 @@
 cox_all_genes(case_disease_component, survival_time, survival_event)
 }
 \arguments{
-\item{case_disease_component}{Expression data for disease samples.}
+\item{case_disease_component}{Disease component matrix (output of the function
+\code{generate_disease_component}) having selected only the columns
+belonging to disease samples. The names of the rows must be the names of the genes.}
 
 \item{survival_time}{Numeric vector that includes time to the event information}
 
