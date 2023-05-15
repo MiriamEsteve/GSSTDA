@@ -4,7 +4,7 @@
 \alias{results_DGSA}
 \title{results DGSA}
 \usage{
-results_DGSA(matrix_disease_component, case_tag, control_tag)
+results_DGSA(matrix_disease_component, case_tag)
 }
 \arguments{
 \item{matrix_disease_component}{Disease component matrix that contains
@@ -18,9 +18,6 @@ One value should be used to indicate whether the patient is healthy and
 another value should be used to indicate whether the patient's sample is
 tumourous. The user will then be asked which one indicates whether
 the patient is healthy. Only two values are valid in the vector in total.}
-
-\item{control_tag}{Value of the case_tag vector corresponding to
-healthy patients.}
 }
 \description{
 It calculates the 100 genes with the highest variability in the matrix

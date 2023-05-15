@@ -206,15 +206,10 @@ generate_disease_component <- function(full_data, normal_space){
 #' another value should be used to indicate whether the patient's sample is
 #' tumourous. The user will then be asked which one indicates whether
 #' the patient is healthy. Only two values are valid in the vector in total.
-#' @param control_tag Value of the case_tag vector corresponding to
-#' healthy patients.
 #' @import ComplexHeatmap
 #' @import circlize
 #' @export
-plot_DGSA <- function(selected_matrix_disease_component, case_tag, control_tag){
-  genes_test <- apply(selected_matrix_disease_component,1,stats::sd)
-  selected_genes <- names(genes_test[order(genes_test,decreasing = T)])[1:100]
-  sel_matrix_disease_component <- selected_matrix_disease_component[selected_genes,]
+plot_DGSA <- function(selected_matrix_disease_component, case_tag){
   col_fun = circlize::colorRamp2(c(-4, 0,4),
                                  c("red", "black", "green"))
   row_text_size = 10
@@ -224,7 +219,8 @@ plot_DGSA <- function(selected_matrix_disease_component, case_tag, control_tag){
                                                         at = c(unique(case_tag)))
                                          ))
   ComplexHeatmap::draw(ComplexHeatmap::Heatmap(selected_matrix_disease_component,
-                                               cluster_columns = T,col = col_fun,cluster_rows = F,
+                                               cluster_columns = T,col = col_fun,
+                                               cluster_rows = F,
                                                heatmap_legend_param = list(
                                                  title = "Expression",
                                                  at = c(-4, 0, 4)),
@@ -247,17 +243,15 @@ plot_DGSA <- function(selected_matrix_disease_component, case_tag, control_tag){
 #' another value should be used to indicate whether the patient's sample is
 #' tumourous. The user will then be asked which one indicates whether
 #' the patient is healthy. Only two values are valid in the vector in total.
-#' @param control_tag Value of the case_tag vector corresponding to
-#' healthy patients.
 #' @export
-results_DGSA <- function(matrix_disease_component, case_tag, control_tag){
+results_DGSA <- function(matrix_disease_component, case_tag){
   genes_sd <- apply(matrix_disease_component,1,stats::sd)
   selected_genes_sd <- names(genes_sd[order(genes_sd,decreasing = T)])[1:100]
   selected_matrix_disease_component_sd <- matrix_disease_component[selected_genes_sd,]
 
   # DT::datatable(selected_matrix_disease_component_sd)
 
-  plot_DGSA(selected_matrix_disease_component_sd, case_tag, control_tag)
+  plot_DGSA(selected_matrix_disease_component_sd, case_tag)
 
   return(selected_genes_sd)
 }

@@ -4,7 +4,7 @@
 \alias{plot_DGSA}
 \title{plot DGSA}
 \usage{
-plot_DGSA(selected_matrix_disease_component, case_tag, control_tag)
+plot_DGSA(selected_matrix_disease_component, case_tag)
 }
 \arguments{
 \item{selected_matrix_disease_component}{Disease component matrix of
@@ -18,9 +18,6 @@ One value should be used to indicate whether the patient is healthy and
 another value should be used to indicate whether the patient's sample is
 tumourous. The user will then be asked which one indicates whether
 the patient is healthy. Only two values are valid in the vector in total.}
-
-\item{control_tag}{Value of the case_tag vector corresponding to
-healthy patients.}
 }
 \description{
 It draws the heatmap of the DGSA result by selecting the 100 genes with
