@@ -72,7 +72,92 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
 }
 
 
-gene_selection <- function(data, control_tag_cases, survival_time, survival_event, gen_select_type,
+#' @title geneSelection
+#'
+#' @description Gene selection
+#' @param full_data Input matrix whose columns correspond to the patients and
+#' rows to the genes.
+#' @param survival_time Numerical vector of the same length as the number of
+#' columns of full_data. Patients must be in the same order as in full_data.
+#' For the patients with tumour sample should be indicated the time between
+#' disease diagnosis and death (if not dead until the end of follow-up)
+#' and healthy patients must have an NA value.
+#' @param survival_event Numerical vector of the same length as the number of
+#' columns of full_data. Patients must be in the same order as in full_data.
+#' For the patients with tumour sample should be indicated whether
+#' the patient has died (1) or not (0). Only these values are valid
+#' and healthy patients must have an NA value.
+#' @param case_tag Character vector of the same length as the number of
+#' columns of full_data. Patients must be in the same order as in full_data.
+#' It must be indicated for each patient whether he/she is healthy or not.
+#' One value should be used to indicate whether the patient is healthy and
+#' another value should be used to indicate whether the patient's sample is
+#' tumourous. The user will then be asked which one indicates whether
+#' the patient is healthy. Only two values are valid in the vector in total.
+#' @param gen_select_type Option. Options on how to select the genes to be
+#' used in the mapper. Select the "Abs" option, which means that the
+#' genes with the highest absolute value are chosen, or the
+#' "Top_Bot" option, which means that half of the selected
+#' genes are those with the highest value (positive value, i.e.
+#' worst survival prognosis) and the other half are those with the
+#' lowest value (negative value, i.e. best prognosis). "Top_Bot" default option.
+#' @param percent_gen_select Percentage (from zero to one hundred) of genes
+#' to be selected to be used in mapper. 10 default option.
+#' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
+#' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
+#' option.
+#' @return A \code{DGSA} object. It contains: the full_data without NAN's values,
+#' the control tag of the healthy patient, the matrix with the normal space and
+#' the matrix of the disease components.
+#' @export
+#' @examples
+#' \dontrun{
+#' geneSelection_obj <- geneSelection(full_data, survival_time, survival_event, case_tag,
+#' gen_select_type, percent_gen_select)}
+geneSelection <- function(full_data, survival_time, survival_event, case_tag, gen_select_type,
+                          percent_gen_select, na.rm = TRUE){
+  UseMethod("gene_selection_classes")
+}
+
+#' @title gene_selection
+#'
+#' @description Private function to select Gene
+#' @param data Input matrix whose columns correspond to the patients and
+#' rows to the genes.
+#' @param survival_time Numerical vector of the same length as the number of
+#' columns of full_data. Patients must be in the same order as in full_data.
+#' For the patients with tumour sample should be indicated the time between
+#' disease diagnosis and death (if not dead until the end of follow-up)
+#' and healthy patients must have an NA value.
+#' @param survival_event Numerical vector of the same length as the number of
+#' columns of full_data. Patients must be in the same order as in full_data.
+#' For the patients with tumour sample should be indicated whether
+#' the patient has died (1) or not (0). Only these values are valid
+#' and healthy patients must have an NA value.
+#' @param control_tag_cases Character vector of the same length as the number of
+#' columns of full_data. Patients must be in the same order as in full_data.
+#' It must be indicated for each patient whether he/she is healthy or not.
+#' One value should be used to indicate whether the patient is healthy and
+#' another value should be used to indicate whether the patient's sample is
+#' tumourous. The user will then be asked which one indicates whether
+#' the patient is healthy. Only two values are valid in the vector in total.
+#' @param gen_select_type Option. Options on how to select the genes to be
+#' used in the mapper. Select the "Abs" option, which means that the
+#' genes with the highest absolute value are chosen, or the
+#' "Top_Bot" option, which means that half of the selected
+#' genes are those with the highest value (positive value, i.e.
+#' worst survival prognosis) and the other half are those with the
+#' lowest value (negative value, i.e. best prognosis). "Top_Bot" default option.
+#' @param num_gen_select Percentage (from zero to one hundred) of genes
+#' to be selected to be used in mapper. 10 default option.
+#' @return A \code{geneSelection} object. It contains: the full_data without NAN's values,
+#' the control tag of the healthy patient, the matrix with the normal space and
+#' the matrix of the disease components.
+#' @examples
+#' \dontrun{
+#' geneSelection_obj <- gene_selection(full_data, survival_time, survival_event, case_tag,
+#' gen_select_type, percent_gen_select)}
+gene_selection <- function(data, survival_time, survival_event, control_tag_cases, gen_select_type,
                            num_gen_select){
   print("BLOCK II: The gene selection is started")
   #Remove NAN's values (case_tag == control_tag) of survival_time and survival_event
@@ -103,34 +188,91 @@ gene_selection <- function(data, control_tag_cases, survival_time, survival_even
                                 "genes_disease_component" = genes_disease_component,
                                 "filter_values" = filter_values
   )
-  class(geneSelection_object) <- "geneSelection_obj"
-}
-
-#Generic function
-geneSelection <- function(full_data,  survival_time, survival_event, case_tag, gen_select_type,
-                          percent_gen_select, na.rm = TRUE){
-  UseMethod("gene_selection_classes")
-}
-
-gene_selection_classes.DGSA_object <- function(x, gen_select_type, percent_gen_select){
-  print(class(x))
-
-  matrix_disease_component <- x[["matrix_disease_component"]]
-  #Check and obtain gene selection (we use in the gene_select_surv)
-  num_gen_select <- check_gene_selection(nrow(matrix_disease_component), gen_select_type, percent_gen_select)
-
-  control_tag <- x[["control_tag"]]
-  survival_event <- x[["survival_event"]]
-  survival_time <- x[["survival_time"]]
-  case_tag <- x[["case_tag"]]
-
-  control_tag_cases <- which(case_tag == control_tag)
-  geneSelection_object <- gene_selection(matrix_disease_component, control_tag_cases, survival_time, survival_event,
-                                         gen_select_type, num_gen_select)
+  class(geneSelection_object) <- "geneSelection_object"
 
   return(geneSelection_object)
 }
 
+#' @title gene_selection_classes.DGSA_object
+#'
+#' @description Private function to select Gene with DGSA object
+#' @param DGSA_obj DGSA object information
+#' @param gen_select_type Option. Options on how to select the genes to be
+#' used in the mapper. Select the "Abs" option, which means that the
+#' genes with the highest absolute value are chosen, or the
+#' "Top_Bot" option, which means that half of the selected
+#' genes are those with the highest value (positive value, i.e.
+#' worst survival prognosis) and the other half are those with the
+#' lowest value (negative value, i.e. best prognosis). "Top_Bot" default option.
+#' @param percent_gen_select Percentage (from zero to one hundred) of genes
+#' to be selected to be used in mapper. 10 default option.
+#' @return A \code{geneSelection} object. It contains: the full_data without NAN's values,
+#' the control tag of the healthy patient, the matrix with the normal space and
+#' the matrix of the disease components.
+#' @examples
+#' \dontrun{
+#' geneSelection_obj <- gene_selection_classes.DGSA_object(DGSA_obj, gen_select_type,
+#'                                                        percent_gen_select)}
+gene_selection_classes.DGSA_object <- function(DGSA_obj, gen_select_type, percent_gen_select){
+  print(class(DGSA_obj))
+
+  matrix_disease_component <- DGSA_obj[["matrix_disease_component"]]
+  #Check and obtain gene selection (we use in the gene_select_surv)
+  num_gen_select <- check_gene_selection(nrow(matrix_disease_component), gen_select_type, percent_gen_select)
+
+  control_tag <- DGSA_obj[["control_tag"]]
+  survival_event <- DGSA_obj[["survival_event"]]
+  survival_time <- DGSA_obj[["survival_time"]]
+  case_tag <- DGSA_obj[["case_tag"]]
+
+  control_tag_cases <- which(case_tag == control_tag)
+  geneSelection_object <- gene_selection(matrix_disease_component, survival_time, survival_event,
+                                         control_tag_cases, gen_select_type, num_gen_select)
+
+  return(geneSelection_object)
+}
+
+#' @title gene_selection_classes.matrix
+#'
+#' @description Private function to select Gene without DGSA process
+#' @param data Input matrix whose columns correspond to the patients and
+#' rows to the genes.
+#' @param survival_time Numerical vector of the same length as the number of
+#' columns of full_data. Patients must be in the same order as in full_data.
+#' For the patients with tumour sample should be indicated the time between
+#' disease diagnosis and death (if not dead until the end of follow-up)
+#' and healthy patients must have an NA value.
+#' @param survival_event Numerical vector of the same length as the number of
+#' columns of full_data. Patients must be in the same order as in full_data.
+#' For the patients with tumour sample should be indicated whether
+#' the patient has died (1) or not (0). Only these values are valid
+#' and healthy patients must have an NA value.
+#' @param case_tag Character vector of the same length as the number of
+#' columns of full_data. Patients must be in the same order as in full_data.
+#' It must be indicated for each patient whether he/she is healthy or not.
+#' One value should be used to indicate whether the patient is healthy and
+#' another value should be used to indicate whether the patient's sample is
+#' tumourous. The user will then be asked which one indicates whether
+#' the patient is healthy. Only two values are valid in the vector in total.
+#' @param gen_select_type Option. Options on how to select the genes to be
+#' used in the mapper. Select the "Abs" option, which means that the
+#' genes with the highest absolute value are chosen, or the
+#' "Top_Bot" option, which means that half of the selected
+#' genes are those with the highest value (positive value, i.e.
+#' worst survival prognosis) and the other half are those with the
+#' lowest value (negative value, i.e. best prognosis). "Top_Bot" default option.
+#' @param percent_gen_select Percentage (from zero to one hundred) of genes
+#' to be selected to be used in mapper. 10 default option.
+#' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
+#' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
+#' option.
+#' @return A \code{geneSelection} object. It contains: the full_data without NAN's values,
+#' the control tag of the healthy patient, the matrix with the normal space and
+#' the matrix of the disease components.
+#' @examples
+#' \dontrun{
+#' geneSelection_obj <- gene_selection_classes.matrix(full_data, survival_time, survival_event,
+#'  case_tag, gen_select_type, percent_gen_select)}
 gene_selection_classes.matrix <- function(data, survival_time, survival_event, case_tag, gen_select_type,
                                           percent_gen_select, na.rm = TRUE){
   print("gene_selection_classes")
@@ -151,8 +293,8 @@ gene_selection_classes.matrix <- function(data, survival_time, survival_event, c
 
   control_tag_cases <- which(case_tag == control_tag)
 
-  geneSelection_object <- gene_selection(full_data, control_tag_cases, survival_time, survival_event,
-                                         gen_select_type, num_gen_select)
+  geneSelection_object <- gene_selection(full_data, survival_time, survival_event,
+                                         control_tag_cases, gen_select_type, num_gen_select)
 
   return(geneSelection_object)
 }
