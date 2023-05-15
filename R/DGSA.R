@@ -212,19 +212,18 @@ generate_disease_component <- function(full_data, normal_space){
 #' @import circlize
 #' @export
 plot_DGSA <- function(selected_matrix_disease_component, case_tag, control_tag){
-  genes_test <- apply(matrix_disease_component,1,sd)
+  genes_test <- apply(selected_matrix_disease_component,1,stats::sd)
   selected_genes <- names(genes_test[order(genes_test,decreasing = T)])[1:100]
-  sel_matrix_disease_component <- matrix_disease_component[selected_genes,]
+  sel_matrix_disease_component <- selected_matrix_disease_component[selected_genes,]
   col_fun = circlize::colorRamp2(c(-4, 0,4),
                                  c("red", "black", "green"))
   row_text_size = 10
   ha = ComplexHeatmap::HeatmapAnnotation(Group = case_tag,
                                          annotation_legend_param = list(
                                            Group = list(title = "Group",
-                                                        at = c(control_tag,
-                                                               unique(case_tag)[!unique(case_tag)%in%"NT"]))
+                                                        at = c(unique(case_tag)))
                                          ))
-  ComplexHeatmap::draw(ComplexHeatmap::Heatmap(sel_matrix_disease_component,
+  ComplexHeatmap::draw(ComplexHeatmap::Heatmap(selected_matrix_disease_component,
                                                cluster_columns = T,col = col_fun,cluster_rows = F,
                                                heatmap_legend_param = list(
                                                  title = "Expression",
@@ -252,7 +251,7 @@ plot_DGSA <- function(selected_matrix_disease_component, case_tag, control_tag){
 #' healthy patients.
 #' @export
 results_DGSA <- function(matrix_disease_component, case_tag, control_tag){
-  genes_sd <- apply(matrix_disease_component,1,sd)
+  genes_sd <- apply(matrix_disease_component,1,stats::sd)
   selected_genes_sd <- names(genes_sd[order(genes_sd,decreasing = T)])[1:100]
   selected_matrix_disease_component_sd <- matrix_disease_component[selected_genes_sd,]
 

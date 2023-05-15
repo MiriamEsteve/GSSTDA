@@ -37,7 +37,9 @@ Imports:
     stats,
     survival,
     utils,
-	visNetwork
+	visNetwork,
+	ComplexHeatmap,
+	circlize
 Suggests: 
     rmarkdown,
     knitr,
