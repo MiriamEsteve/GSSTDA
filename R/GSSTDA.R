@@ -105,7 +105,10 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
 
   ################### BLOCK II: Gene selection (using "T" control_tag) ##################################
   geneSelection_object <- geneSelection(DGSA_obj, gen_select_type, percent_gen_select)
-
+  cox_all_matrix <- geneSelection_object[["cox_all_matrix"]]
+  genes_selected <- geneSelection_object[["genes_selected"]]
+  genes_disease_component <- geneSelection_object[["genes_disease_component"]]
+  filter_values <- geneSelection_object[["filter_values"]]
 
   ################### BLOCK III: Create mapper object where the arguments are checked ###################
   print("BLOCK III: The mapper process is started")

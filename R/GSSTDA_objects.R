@@ -72,7 +72,8 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
 }
 
 
-gene_selection <- function(data, control_tag_cases, survival_time, survival_event){
+gene_selection <- function(data, control_tag_cases, survival_time, survival_event, gen_select_type,
+                           num_gen_select){
   print("BLOCK II: The gene selection is started")
   #Remove NAN's values (case_tag == control_tag) of survival_time and survival_event
   survival_time <- survival_time[-control_tag_cases]
@@ -124,7 +125,8 @@ gene_selection_classes.DGSA_object <- function(x, gen_select_type, percent_gen_s
   case_tag <- x[["case_tag"]]
 
   control_tag_cases <- which(case_tag == control_tag)
-  geneSelection_object <- gene_selection(matrix_disease_component, control_tag_cases, survival_time, survival_event)
+  geneSelection_object <- gene_selection(matrix_disease_component, control_tag_cases, survival_time, survival_event,
+                                         gen_select_type, num_gen_select)
 
   return(geneSelection_object)
 }
@@ -149,7 +151,8 @@ gene_selection_classes.matrix <- function(data, survival_time, survival_event, c
 
   control_tag_cases <- which(case_tag == control_tag)
 
-  geneSelection_object <- gene_selection(full_data, control_tag_cases, survival_time, survival_event)
+  geneSelection_object <- gene_selection(full_data, control_tag_cases, survival_time, survival_event,
+                                         gen_select_type, num_gen_select)
 
   return(geneSelection_object)
 }
