@@ -48,17 +48,60 @@ linkage_type <- "single"
 
 ```
 
-First step of the process: DGSA.
+### OPTION #1 (the three blocks of the G-SS-TDA process are in separate function):
+
+# First step of the process: DGSA.
 ```{r}
-#DGSA_obj <- DGSA(full_data, survival_time, survival_event, case_tag)
+DGSA_object <- DGSA(full_data, survival_time, survival_event, case_tag)
+
+
 ```
 
-Second step of the process: Select the genes.
+# Second step of the process: Select the genes within the DGSA object created in the previous step.
 ```{r}
+geneSelection_object <- geneSelection(DGSA_object, gen_select_type, percent_gen_select)
 
+```
+Another option to execute the second step of the process. Create a object "data_object" with the require information.
+```{r}
+# Crete data object
+data_object <- list("full_data" = DGSA_object[["full_data"]],
+                 "survival_time" = DGSA_object[["survival_time"]],
+                 "survival_event" = DGSA_object[["survival_event"]],
+                 "case_tag" = case_tag)
+class(data_object) <- "data_object"
+
+
+#Select gene from data object
+geneSelection_object <- geneSelection(data_object, gen_select_type, percent_gen_select)
 ```
 
 
+# Third step of the process: Create the mapper object with genes disease component and the filter function obtained in the gene selection step.
+```{r}
+mapper_object <- mapper(geneSelection_object[["genes_disease_component"]], geneSelection_object[["filter_values"]], num_intervals, percent_overlap, distance_type,clustering_type, num_bins_when_clustering, linkage_type, optimal_clustering_mode)
+```
+
+
+Obtain information from the DGSA block created in the previous step.
+```{r}
+DGSA_information <- results_DGSA(DGSA_object[["matrix_disease_component"]], case_tag)
+print(DGSA_information)
+```
+
+Obtain information from the mapper object created in the G-SS-TDA process.
+```{r}
+mapper_information <- get_information_from_results(mapper_object)
+print(mapper_information)
+```
+
+Plot the mapper graph.
+```{r}
+plot_mapper(mapper_object)
+```
+
+
+### OPTION #2 (all process integrate in the same function):
 
 Create the GSSTDA object with full data set, internally pre-process using the DGSA technique, and the mapper information.
 ```{r}
@@ -66,11 +109,17 @@ GSSTDA_obj <- GSSTDA(full_data, survival_time, survival_event, case_tag, gen_sel
 
 ```
 
-Obtain information from the mapper object created in the previous step.
+Obtain information from the DGSA block created in the previous step.
 ```{r}
-mapper_infor <- get_information_from_results(GSSTDA_obj[["mapper_obj"]])
+DGSA_information <- results_DGSA(GSSTDA_obj[["matrix_disease_component"]], case_tag)
+print(DGSA_information)
+```
 
-print(mapper_infor)
+Obtain information from the mapper object created in the G-SS-TDA process.
+```{r}
+mapper_information <- get_information_from_results(GSSTDA_obj[["mapper_obj"]])
+
+print(mapper_information)
 ```
 
 Plot the mapper graph.

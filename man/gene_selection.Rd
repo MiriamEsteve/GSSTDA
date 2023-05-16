@@ -5,7 +5,7 @@
 \title{gene_selection}
 \usage{
 gene_selection(
-  data,
+  full_data,
   survival_time,
   survival_event,
   control_tag_cases,
@@ -14,7 +14,7 @@ gene_selection(
 )
 }
 \arguments{
-\item{data}{Input matrix whose columns correspond to the patients and
+\item{full_data}{Input matrix whose columns correspond to the patients and
 rows to the genes.}
 
 \item{survival_time}{Numerical vector of the same length as the number of
@@ -45,8 +45,7 @@ genes are those with the highest value (positive value, i.e.
 worst survival prognosis) and the other half are those with the
 lowest value (negative value, i.e. best prognosis). "Top_Bot" default option.}
 
-\item{num_gen_select}{Percentage (from zero to one hundred) of genes
-to be selected to be used in mapper. 10 default option.}
+\item{num_gen_select}{Number of genes to be selected to be used in mapper.}
 }
 \value{
 A \code{geneSelection} object. It contains: the full_data without NAN's values,
@@ -58,6 +57,6 @@ Private function to select Gene
 }
 \examples{
 \dontrun{
-geneSelection_obj <- gene_selection(full_data, survival_time, survival_event, case_tag,
-gen_select_type, percent_gen_select)}
+geneSelection_obj <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
+gen_select_type, num_gen_select)}
 }

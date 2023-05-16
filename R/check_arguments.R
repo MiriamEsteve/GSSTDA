@@ -6,6 +6,8 @@
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #' @return Return \code{full_data} without NAN's and as a matrix
+#'
+#' @export
 #' @examples
 #' \dontrun{
 #' check_full_data(full_data, na.rm = TRUE)}
@@ -47,6 +49,8 @@ check_full_data <- function(full_data, na.rm = TRUE){
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #' @return control_tag Return the tag of the healthy patient
+#'
+#' @export
 #' @examples
 #' \dontrun{control_tag <- check_vectors(col_full_data, survival_time, survival_event, case_tag)}
 check_vectors <- function(full_data, survival_time, survival_event, case_tag, na.rm = TRUE){
@@ -105,6 +109,8 @@ check_vectors <- function(full_data, survival_time, survival_event, case_tag, na
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #'
 #' @return \code{filter_value} and \code{full_data} without NAN's
+#'
+#' @export
 #' @examples
 #' \dontrun{check_arg_mapper(full_data, filter_values, distance_type, clustering_type, linkage_type)}
 check_filter_values <- function(full_data, filter_values, na.rm = TRUE){
@@ -139,6 +145,8 @@ check_filter_values <- function(full_data, filter_values, na.rm = TRUE){
 #' @param percent_gen_select Percentage of genes to be selected
 #'
 #' @return num_gen_select Number of genes to be selected according to the percent_gen_select value
+#'
+#' @export
 #' @examples
 #' \dontrun{check_gene_selection(num_genes, gen_select_type, percent_gen_select)}
 check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select){
@@ -180,6 +188,8 @@ check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select)
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #'
 #' @return \code{optimal_clustering_mode}
+#'
+#' @export
 #' @examples
 #' \dontrun{check_arg_mapper(filter_values, distance_type, clustering_type, linkage_type)}
 check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type, na.rm = TRUE){
