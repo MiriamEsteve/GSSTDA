@@ -136,11 +136,7 @@ geneSelection <- function(full_data, survival_time, survival_event, case_tag, ge
 #' and healthy patients must have an NA value.
 #' @param control_tag_cases Character vector of the same length as the number of
 #' columns of full_data. Patients must be in the same order as in full_data.
-#' It must be indicated for each patient whether he/she is healthy or not.
-#' One value should be used to indicate whether the patient is healthy and
-#' another value should be used to indicate whether the patient's sample is
-#' tumourous. The user will then be asked which one indicates whether
-#' the patient is healthy. Only two values are valid in the vector in total.
+#' It must be indicated for each patient whether he/she is healthy.
 #' @param gen_select_type Option. Options on how to select the genes to be
 #' used in the mapper. Select the "Abs" option, which means that the
 #' genes with the highest absolute value are chosen, or the
@@ -148,8 +144,7 @@ geneSelection <- function(full_data, survival_time, survival_event, case_tag, ge
 #' genes are those with the highest value (positive value, i.e.
 #' worst survival prognosis) and the other half are those with the
 #' lowest value (negative value, i.e. best prognosis). "Top_Bot" default option.
-#' @param num_gen_select Percentage (from zero to one hundred) of genes
-#' to be selected to be used in mapper. 10 default option.
+#' @param num_gen_select Number of genes to be selected to be used in mapper.
 #' @return A \code{geneSelection} object. It contains: the full_data without NAN's values,
 #' the control tag of the healthy patient, the matrix with the normal space and
 #' the matrix of the disease components.
