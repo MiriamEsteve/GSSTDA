@@ -223,7 +223,7 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
   }
 
   # Check if filter_values == "" the filter_values is not calculated yet. So, we checked only the others args
-  if(filter_values != "" & na.rm != "checked"){
+  if(any(filter_values == "") & na.rm != "checked"){
     full_data_and_filter_values <- check_filter_values(filter_values)
     full_data <- full_data_and_filter_values[[1]]
     filter_values <- full_data_and_filter_values[[2]]

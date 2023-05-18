@@ -82,6 +82,8 @@ geneSelection_object <- geneSelection(data_object, gen_select_type, percent_gen_
 # Third step of the process: Create the mapper object with genes disease component and the filter function obtained in the gene selection step.
 ```{r}
 mapper_object <- mapper(geneSelection_object[["genes_disease_component"]], geneSelection_object[["filter_values"]], num_intervals, percent_overlap, distance_type,clustering_type, num_bins_when_clustering, linkage_type, optimal_clustering_mode)
+
+
 ```
 
 

@@ -81,7 +81,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data, na.rm)
   #Select the control_tag. This do it inside of the DGSA function
-  #Check and obtain gene selection (we use in the gene_select_surv)
+  #Check and obtain gene selection (we use in the gene_select_surv). It execute in Block II
   #num_gen_select <- check_gene_selection(nrow(full_data), gen_select_type, percent_gen_select)
 
   #Don't check filter_values because it is not created.
@@ -111,7 +111,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   filter_values <- geneSelection_object[["filter_values"]]
 
   ################### BLOCK III: Create mapper object where the arguments are checked ###################
-  print("BLOCK III: The mapper process is started")
+  print("\nBLOCK III: The mapper process is started")
 
   # Transpose genes_disease_component: rows = patient, columns = genes
   #genes_disease_component <- t(genes_disease_component)
@@ -125,7 +125,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
                        clustering_type, num_bins_when_clustering, linkage_type, optimal_clustering_mode,
                        na.rm = "checked")
 
-  print("BLOCK III: The mapper process is finished")
+  print("\nBLOCK III: The mapper process is finished")
 
 
   ############################################  Create the object #########################################
