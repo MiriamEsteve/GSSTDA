@@ -85,7 +85,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   #num_gen_select <- check_gene_selection(nrow(full_data), gen_select_type, percent_gen_select)
 
   #Don't check filter_values because it is not created.
-  filter_values <- ""
+  filter_values <- c()
   check_return <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type,
                                               linkage_type, na.rm)
 
