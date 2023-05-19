@@ -23,6 +23,16 @@ library(GSSTDA)
 ```
 
 Loading data:
+
+* The *full data* is the expression matrix, 
+* the *survival_time* is a vector with time between disease diagnosis and death, 
+or other type of event, (if there has been no death, until the end of follow-up), 
+* the *survival_event* is a vector with information  on whether or not the patient 
+has died (or other type of event) 
+* and the *case_tag* with information from each patient on whether he/she is 
+healthy or not.
+
+See *GSSTDA* documentation for further information: 
 ```{r}
 data("full_data")
 data("survival_time")
@@ -32,25 +42,45 @@ data("case_tag")
 
 
 Declare the necessary parameters of the GSSTDA object.
+
+The *gen_select_type* parameter is used to choose the option on how to select 
+the genes to be used in the mapper. Choose between "Abs" and "Top_Bot". The
+*percent_gen_select* parameter is the percentage of genes to be selected to be 
+used in mapper.
 ```{r}
 # Gene selection information
 gen_select_type <- "Top_Bot"
 percent_gen_select <- 10 # Percentage of genes to be selected
+```
 
-
+For the mapper, it is necessary to know the number of intervals into which the 
+values of the filter functions will be divided and the overlap between them. 
+Default are 5 and 40 respectively. 
+```{r}
 #Mapper information
-num_intervals <- 10
-percent_overlap <- 0.4
+num_intervals <- 5
+percent_overlap <- 40
 distance_type <- "cor"
 clustering_type <- "hierarchical"
-num_bins_when_clustering <- 10
-linkage_type <- "single"
-
+num_bins_when_clustering <- 10 # only necessary if the type of clustering is hierarchical 
+linkage_type <- "single" # only necessary if the type of clustering is hierarchical 
 ```
+
+
+The package allows the various steps required for GSSTDA to be performed 
+separately or together in one function. 
+
 
 ### OPTION #1 (the three blocks of the G-SS-TDA process are in separate function):
 
 # First step of the process: DGSA.
+
+This analysis, developed by Nicolau *et al.* is independent of the rest of the 
+process and can be used with the data to perform other analyses that aren't mapper 
+at a later stage. It allows the calculation of the "disease component" which 
+consists of, through linear models, eliminating the part of the data 
+that is considered normal or healthy and keeping only the component that is 
+due to the disease.  
 ```{r}
 DGSA_object <- DGSA(full_data, survival_time, survival_event, case_tag)
 
@@ -62,13 +92,12 @@ DGSA_object <- DGSA(full_data, survival_time, survival_event, case_tag)
 geneSelection_object <- geneSelection(DGSA_object, gen_select_type, percent_gen_select)
 
 ```
-Another option to execute the second step of the process. Create a object "data_object" with the require information.
+
+Another option to execute the second step of the process. Create a object "data_object" with the require information. This could be used when you do not want to apply DGSA (RBR, duda).
 ```{r}
-# Crete data object
-data_object <- list("full_data" = DGSA_object[["full_data"]],
-                 "survival_time" = DGSA_object[["survival_time"]],
-                 "survival_event" = DGSA_object[["survival_event"]],
-                 "case_tag" = case_tag)
+# Create data object
+data_object <- list("full_data" = full_data, "survival_time" = survival_time,
+                 "survival_event" = survival_event, "case_tag" = case_tag)
 class(data_object) <- "data_object"
 
 
@@ -132,3 +161,4 @@ Plot the mapper graph.
 ```{r}
 plot_mapper(GSSTDA_obj[["mapper_obj"]])
 ```
+
