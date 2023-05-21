@@ -18,6 +18,10 @@ belong (clustering_all_levels), a list including the individuals contained
 in each detected node (node_samples), their size (node_sizes), the
 average of the filter function values of the individuals of each node
 (node_average_filt) and the adjacency matrix linking the nodes (adj_matrix).
+Finally, information is provided on the number of nodes, the average node
+size, the standard deviation of the node size, the number of connections
+between nodes, the proportion of connections to all possible connections
+and the number of ramifications.
 }
 \description{
 Wrapping function to carry out the complete process.

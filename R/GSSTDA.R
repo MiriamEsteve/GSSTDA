@@ -111,7 +111,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   filter_values <- geneSelection_object[["filter_values"]]
 
   ################### BLOCK III: Create mapper object where the arguments are checked ###################
-  print("\nBLOCK III: The mapper process is started")
+  cat("\nBLOCK III: The mapper process is started")
 
   # Transpose genes_disease_component: rows = patient, columns = genes
   #genes_disease_component <- t(genes_disease_component)
@@ -125,7 +125,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
                        clustering_type, num_bins_when_clustering, linkage_type, optimal_clustering_mode,
                        na.rm = "checked")
 
-  print("\nBLOCK III: The mapper process is finished")
+  cat("\nBLOCK III: The mapper process is finished")
 
 
   ############################################  Create the object #########################################

@@ -1,6 +1,6 @@
 #' @title Survival analysis based on gene expression levels.
 #' @description It carries out univariate cox proportional hazard models for
-#' the expression levels of each gene included in the provided dataset (matrix_disease_component)
+#' the expression levels of each gene included in the provided dataset (case_disease_component)
 #' and their link with relapse-free or overall survival.
 #' @param case_disease_component Disease component matrix (output of the function
 #' \code{generate_disease_component}) having selected only the columns

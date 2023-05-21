@@ -11,6 +11,10 @@
 #' in each detected node (node_samples), their size (node_sizes), the
 #' average of the filter function values of the individuals of each node
 #' (node_average_filt) and the adjacency matrix linking the nodes (adj_matrix).
+#' Finally, information is provided on the number of nodes, the average node
+#' size, the standard deviation of the node size, the number of connections
+#' between nodes, the proportion of connections to all possible connections
+#' and the number of ramifications.
 #' @export
 #'
 #' @examples
@@ -36,40 +40,16 @@ one_D_Mapper <- function(mapper_object_ini){
   #Computing adjacency matrix.
   adj_matrix_out <- compute_node_adjacency(node_samples)
 
-  #Generating the object of the output data
-  mapper_object <- list("interval_data" = interval_data,
-                           "sample_in_level" = samp_in_lev,
-                           "clustering_all_levels" = test_clust_all_levels,
-                           "node_samples" = node_samples,
-                           "node_sizes" = unlist(lapply(node_samples,length)),
-                           "node_average_filt" = lapply(node_samples,function(x,y) mean(y[x]),filter_values),
-                           "adj_matrix" = adj_matrix_out)
+  node_sizes = unlist(lapply(node_samples,length))
+  # average of the filter function of each node
+  node_average_filt = lapply(node_samples,function(x,y) mean(y[x]),filter_values)
 
-  class(mapper_object) <- "mapper_object"
-  return(mapper_object)
-}
+  # additional parameters
+  n_nodes <- length(node_sizes)
+  av_node_size <- mean(node_sizes)
+  sd_node_size <- stats::sd(node_sizes)
 
-
-#' @title Get information from results
-#' @description This functions retrieves additional information about the
-#' mapper results.
-#' @param mapper_object Result object from a \code{mapper} function.
-#' @return A mapper_information object (a list) with informative parameters
-#' of the mapper result, in this order: the number of nodes, the average node
-#' size, the standard deviation of the node size, the number of connections
-#' between nodes, the proportion of connections to all possible connections
-#' and the number of ramifications.
-#' @export
-#' @examples
-#' \dontrun{
-#' get_information_from_results(mapper_object)
-#' }
-get_information_from_results <- function(mapper_object){
-  n_nodes <- length(mapper_object[["node_sizes"]])
-  av_node_size <- mean(mapper_object[["node_sizes"]])
-  sd_node_size <- stats::sd(mapper_object[["node_sizes"]])
-
-  adj_mat <- mapper_object[["adj_matrix"]]
+  adj_mat <- adj_matrix_out
   upper_tri <- upper.tri(adj_mat)
   lower_tri <- lower.tri(adj_mat)
 
@@ -83,16 +63,22 @@ get_information_from_results <- function(mapper_object){
   n_ramifications <- sum(n_ramifications)
 
   #Generating the object of the output data
-  mapper_information <- list("node_sizes" = n_nodes,
-                                "average_nodes"= av_node_size,
-                                "standard_desviation_nodes " = sd_node_size,
-                                "number_connections" = n_connections,
-                                "proportion_connections" = prop_connections,
-                                "number_ramifications" = n_ramifications)
+  mapper_object <- list("interval_data" = interval_data,
+                        "sample_in_level" = samp_in_lev,
+                        "clustering_all_levels" = test_clust_all_levels,
+                        "node_samples" = node_samples,
+                        "node_sizes" = node_sizes,
+                        "node_average_filt" = node_average_filt,
+                        "adj_matrix" = adj_matrix_out,
+                        "n_sizes" = n_nodes,
+                        "average_nodes"= av_node_size,
+                        "standard_desviation_nodes" = sd_node_size,
+                        "number_connections" = n_connections,
+                        "proportion_connections" = prop_connections,
+                        "number_ramifications" = n_ramifications)
 
-  class(mapper_information) <- "mapper_information"
-
-  return(mapper_information)
+  class(mapper_object) <- "mapper_object"
+  return(mapper_object)
 }
 
 

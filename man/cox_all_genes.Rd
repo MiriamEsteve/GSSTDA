@@ -29,7 +29,7 @@ the p-value for each Z value.
 }
 \description{
 It carries out univariate cox proportional hazard models for
-the expression levels of each gene included in the provided dataset (matrix_disease_component)
+the expression levels of each gene included in the provided dataset (case_disease_component)
 and their link with relapse-free or overall survival.
 }
 \examples{

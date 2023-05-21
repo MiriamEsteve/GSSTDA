@@ -44,7 +44,7 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
   case_tag <- return_check[[5]]
 
   ################### BLOCK I: Pre-process. DGSA (using "NT" control_tag) ##############################
-  print("\nBLOCK I: The pre-process DGSA is started")
+  cat("\nBLOCK I: The pre-process DGSA is started")
   #   Select the normal tissue data gene expression matrix.
   normal_tiss <- full_data[,which(case_tag == control_tag)]
 
@@ -55,7 +55,7 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
   #   Obtain the disease component of the normal_space
   matrix_disease_component <- generate_disease_component(full_data, normal_space)
 
-  print("\nBLOCK I: The pre-process DGSA is finished")
+  cat("\nBLOCK I: The pre-process DGSA is finished\n")
 
   ############################################  Create the object #########################################
   DGSA_object <- list("full_data" = full_data,
@@ -162,7 +162,7 @@ geneSelection <- function(data_object, gen_select_type,
 gene_selection <- function(full_data, survival_time, survival_event, control_tag_cases,
                            gen_select_type, num_gen_select){
 
-  print("\nBLOCK II: The gene selection is started")
+  cat("\nBLOCK II: The gene selection is started\n")
   #Remove NAN's values (case_tag == control_tag) of survival_time and survival_event
   survival_time <- survival_time[-control_tag_cases]
   survival_event <- survival_event[-control_tag_cases]
@@ -183,7 +183,7 @@ gene_selection <- function(full_data, survival_time, survival_event, control_tag
   # Filter the genes_disease_component
   filter_values <- lp_norm_k_powers_surv(genes_disease_component, 2, 1, cox_all_matrix)
 
-  print("\nBLOCK II: The gene selection is finished")
+  cat("\nBLOCK II: The gene selection is finished\n")
 
   geneSelection_object <- list( "data" = full_data,
                                 "cox_all_matrix" = cox_all_matrix,
