@@ -48,12 +48,21 @@ lowest value (negative value, i.e. best prognosis). "Top_Bot" default option.}
 \item{num_gen_select}{Number of genes to be selected to be used in mapper.}
 }
 \value{
-A \code{geneSelection} object. It contains: the full_data without NAN's values,
-the control tag of the healthy patient, the matrix with the normal space and
-the matrix of the disease components.
+A \code{geneSelection_object}. It contains:
+\itemize{
+\item the \code{full_data} without NAN's values (\code{data})
+\item the \code{cox_all_matrix} (a matrix with the results of the application of
+proportional hazard models: with the regression coefficients, the odds ratios,
+the standard errors of each coefficient, the Z values (coef/se_coef) and
+the p-values for each Z value)
+\item a vector with the name of the selected genes
+\item the matrix of disease components with only the rows of the selected genes
+(\code{genes_disease_component})
+\item and the vector of the values of the filter function.
+}
 }
 \description{
-Private function to select Gene
+Private function to gene selection
 }
 \examples{
 \dontrun{

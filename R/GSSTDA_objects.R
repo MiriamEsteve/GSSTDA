@@ -1,6 +1,12 @@
-#' @title DGSA
-#'
-#' @description Disease-Specific Genomic Analysis (DGSA)
+#' @title Disease-Specific Genomic Analysis
+#' @description Disease-Specific Genomic Analysis (DGSA).
+#' This analysis, developed by Nicolau *et al.*, allows the calculation of
+#' the "disease component" of a expression matrix which consists of, through
+#' linear models, eliminating the part of the data  that is considered normal
+#' or healthy and keeping only the component that is due to the disease. It
+#' is intended to precede other techniques like classification or clustering.
+#' For more information see *Disease-specific genomic analysis: identifying
+#' the signature of pathologic biology* (doi: 10.1093/bioinformatics/btm033).
 #' @param full_data Input matrix whose columns correspond to the patients and
 #' rows to the genes.
 #' @param survival_time Numerical vector of the same length as the number of
@@ -23,9 +29,12 @@
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 #' option.
-#' @return A \code{DGSA} object. It contains: the full_data without NAN's values,
-#' the control tag of the healthy patient, the matrix with the normal space and
-#' the matrix of the disease components.
+#' @return A \code{DGSA} object. It contains: the \code{full_data} without NAN's
+#' values, the \code{case_control} vector without NAN's values, the label
+#' designated for healthy samples (\code{control_tag}), the matrix with the
+#' normal space (linear space generated from normal tissue samples) and the
+#' matrix of the disease components (the transformed full_data matrix from
+#' which the normal component has been removed).
 #' @export
 #' @examples
 #' \dontrun{
@@ -72,9 +81,19 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
 }
 
 
-#' @title geneSelection
-#'
-#' @description Gene selection
+#' @title Gene selection and filter function
+#' @description Gene selection and calculation of filter function values.
+#' After fitting a Cox proportional hazard model to each gene, this function
+#' makes a selection of genes according to both their variability within
+#' the database and their relationship with survival. Subsequently, with the
+#' genes selected, the values of the filtering functions are calculated for
+#' each patient. The filter function allows to summarise each vector of each
+#' individual in a single data. This function takes into account the survival
+#' associated with each gene. In particular, the implemented filter function
+#' performs the vector magnitude in the \[L_{p}\] norm (as well as k powers
+#' of this magnitude) of the vector resulting of weighting each element of
+#' the column vector by the Z score obtained in the cox proportional
+#' hazard model.
 #' @param data_object Object with:
 #' - full_data Input matrix whose columns correspond to the patients and
 #' rows to the genes.
@@ -107,9 +126,16 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 #' option.
-#' @return A \code{DGSA} object. It contains: the full_data without NAN's values,
-#' the control tag of the healthy patient, the matrix with the normal space and
-#' the matrix of the disease components.
+#' @return A \code{geneSelection_object}. It contains:
+#' - the \code{full_data} without NAN's values (\code{data})
+#' - the \code{cox_all_matrix} (a matrix with the results of the application of
+#' proportional hazard models: with the regression coefficients, the odds ratios,
+#' the standard errors of each coefficient, the Z values (coef/se_coef) and
+#' the p-values for each Z value)
+#' - a vector with the name of the selected genes
+#' - the matrix of disease components with only the rows of the selected genes
+#' (\code{genes_disease_component})
+#' - and the vector of the values of the filter function.
 #' @export
 #' @examples
 #' \dontrun{
@@ -121,8 +147,7 @@ geneSelection <- function(data_object, gen_select_type,
 }
 
 #' @title gene_selection
-#'
-#' @description Private function to select Gene
+#' @description Private function to gene selection
 #' @param full_data Input matrix whose columns correspond to the patients and
 #' rows to the genes.
 #' @param survival_time Numerical vector of the same length as the number of
@@ -150,10 +175,16 @@ geneSelection <- function(data_object, gen_select_type,
 #' worst survival prognosis) and the other half are those with the
 #' lowest value (negative value, i.e. best prognosis). "Top_Bot" default option.
 #' @param num_gen_select Number of genes to be selected to be used in mapper.
-#' @return A \code{geneSelection} object. It contains: the full_data without NAN's values,
-#' the control tag of the healthy patient, the matrix with the normal space and
-#' the matrix of the disease components.
-#'
+#' @return A \code{geneSelection_object}. It contains:
+#' - the \code{full_data} without NAN's values (\code{data})
+#' - the \code{cox_all_matrix} (a matrix with the results of the application of
+#' proportional hazard models: with the regression coefficients, the odds ratios,
+#' the standard errors of each coefficient, the Z values (coef/se_coef) and
+#' the p-values for each Z value)
+#' - a vector with the name of the selected genes
+#' - the matrix of disease components with only the rows of the selected genes
+#' (\code{genes_disease_component})
+#' - and the vector of the values of the filter function.
 #' @export
 #' @examples
 #' \dontrun{
@@ -226,7 +257,8 @@ geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_
 
   matrix_disease_component <- data_object[["matrix_disease_component"]]
   #Check and obtain gene selection (we use in the gene_select_surv)
-  num_gen_select <- check_gene_selection(nrow(matrix_disease_component), gen_select_type, percent_gen_select)
+  num_gen_select <- check_gene_selection(nrow(matrix_disease_component),
+                                         gen_select_type, percent_gen_select)
 
   control_tag <- data_object[["control_tag"]]
   survival_event <- data_object[["survival_event"]]

@@ -54,7 +54,8 @@ percent_gen_select <- 10 # Percentage of genes to be selected
 ```
 
 For the mapper, it is necessary to know the number of intervals into which the 
-values of the filter functions will be divided and the overlap between them (\code{percent_overlap}). Default are 5 and 40 respectively. It is also 
+values of the filter functions will be divided and the overlap between them 
+(\code{percent_overlap}). Default are 5 and 40 respectively. It is also 
 necessary to choose the type of distance to be used for clustering within each 
 interval (choose between correlation ("cor"), default, and euclidean 
 ("euclidean")) and the clustering  type (choose between "hierarchical", default, 
@@ -90,8 +91,8 @@ separately or together in one function.
 # First step of the process: DGSA.
 
 This analysis, developed by Nicolau *et al.* is independent of the rest of the 
-process and can be used with the data to perform other analyses that are not mapper 
-at a later stage. It allows the calculation of the "disease component" which 
+process and can be used with the data for further analysis other than mapper. 
+It allows the calculation of the "disease component" which 
 consists of, through linear models, eliminating the part of the data 
 that is considered normal or healthy and keeping only the component that is 
 due to the disease.  
@@ -131,7 +132,12 @@ geneSelection_object <- geneSelection(data_object, gen_select_type, percent_gen_
 # with only the selected genes and the filter function obtained in the gene selection step.
 
 Mapper condenses the information of high-dimensional datasets into a combinatory 
-graph that is referred to as the skeleton of the dataset. To do so, it divides the dataset into different levels according to its value of the filtering function. These levels overlap each other. Within each level, an independent clustering is performed using the input matrix and the indicated distance type. Subsequently, clusters from different levels that share patients with each other are joined by a vertex.
+graph that is referred to as the skeleton of the dataset. To do so, it divides 
+the dataset into different levels according to its value of the filtering function. 
+These levels overlap each other. Within each level, an independent clustering 
+is performed using the input matrix and the indicated distance type. 
+Subsequently, clusters from different levels that share patients with each other 
+are joined by a vertex.
 
 This function is independent from the rest and could be used without having done 
 DGSA and gene selection
@@ -151,7 +157,8 @@ mapper_object <- mapper(full_data = geneSelection_object[["genes_disease_compone
 
 Obtain information from the DGSA block created in the previous step.
 
-This function returns the 100 genes with the highest variability within the dataset and builds a heat map with them.
+This function returns the 100 genes with the highest variability within 
+the dataset and builds a heat map with them.
 ```{r}
 DGSA_information <- results_DGSA(DGSA_object[["matrix_disease_component"]], case_tag)
 print(DGSA_information)

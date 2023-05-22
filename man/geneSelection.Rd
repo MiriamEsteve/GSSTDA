@@ -2,7 +2,7 @@
 % Please edit documentation in R/GSSTDA_objects.R
 \name{geneSelection}
 \alias{geneSelection}
-\title{geneSelection}
+\title{Gene selection and filter function}
 \usage{
 geneSelection(data_object, gen_select_type, percent_gen_select, na.rm = TRUE)
 }
@@ -46,12 +46,32 @@ If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 option.}
 }
 \value{
-A \code{DGSA} object. It contains: the full_data without NAN's values,
-the control tag of the healthy patient, the matrix with the normal space and
-the matrix of the disease components.
+A \code{geneSelection_object}. It contains:
+\itemize{
+\item the \code{full_data} without NAN's values (\code{data})
+\item the \code{cox_all_matrix} (a matrix with the results of the application of
+proportional hazard models: with the regression coefficients, the odds ratios,
+the standard errors of each coefficient, the Z values (coef/se_coef) and
+the p-values for each Z value)
+\item a vector with the name of the selected genes
+\item the matrix of disease components with only the rows of the selected genes
+(\code{genes_disease_component})
+\item and the vector of the values of the filter function.
+}
 }
 \description{
-Gene selection
+Gene selection and calculation of filter function values.
+After fitting a Cox proportional hazard model to each gene, this function
+makes a selection of genes according to both their variability within
+the database and their relationship with survival. Subsequently, with the
+genes selected, the values of the filtering functions are calculated for
+each patient. The filter function allows to summarise each vector of each
+individual in a single data. This function takes into account the survival
+associated with each gene. In particular, the implemented filter function
+performs the vector magnitude in the [L_{p}] norm (as well as k powers
+of this magnitude) of the vector resulting of weighting each element of
+the column vector by the Z score obtained in the cox proportional
+hazard model.
 }
 \examples{
 \dontrun{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/GSSTDA_objects.R
 \name{DGSA}
 \alias{DGSA}
-\title{DGSA}
+\title{Disease-Specific Genomic Analysis}
 \usage{
 DGSA(full_data, survival_time, survival_event, case_tag, na.rm = TRUE)
 }
@@ -35,12 +35,22 @@ If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 option.}
 }
 \value{
-A \code{DGSA} object. It contains: the full_data without NAN's values,
-the control tag of the healthy patient, the matrix with the normal space and
-the matrix of the disease components.
+A \code{DGSA} object. It contains: the \code{full_data} without NAN's
+values, the \code{case_control} vector without NAN's values, the label
+designated for healthy samples (\code{control_tag}), the matrix with the
+normal space (linear space generated from normal tissue samples) and the
+matrix of the disease components (the transformed full_data matrix from
+which the normal component has been removed).
 }
 \description{
-Disease-Specific Genomic Analysis (DGSA)
+Disease-Specific Genomic Analysis (DGSA).
+This analysis, developed by Nicolau \emph{et al.}, allows the calculation of
+the "disease component" of a expression matrix which consists of, through
+linear models, eliminating the part of the data  that is considered normal
+or healthy and keeping only the component that is due to the disease. It
+is intended to precede other techniques like classification or clustering.
+For more information see \emph{Disease-specific genomic analysis: identifying
+the signature of pathologic biology} (doi: 10.1093/bioinformatics/btm033).
 }
 \examples{
 \dontrun{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/GSSTDA.R
 \name{GSSTDA}
 \alias{GSSTDA}
-\title{GSSTDA}
+\title{Gene Structure Survival using Topological Data Analysis (GSSTDA).}
 \usage{
 GSSTDA(
   full_data,
@@ -87,21 +87,47 @@ If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 option.}
 }
 \value{
-A \code{GSSTDA} object. It contains: the matrix with the normal
-space, the matrix of the disease components, a matrix with the results of
-the application of proportional hazard models for each gene (cox_all_matrix),
-the genes selected for mapper, the matrix of the disease components with
-information from these genes only and a \code{mapper_obj} object.
-This \code{mapper_obj} object contains the values of the intervals
-(interval_data), the samples included in each interval (sample_in_level),
-information about the cluster to which the individuals in each interval
-belong (clustering_all_levels), a list including the individuals contained
-in each detected node (node_samples), their size (node_sizes), the
-average of the filter function values of the individuals of each node
-(node_average_filt) and the adjacency matrix linking the nodes (adj_matrix).
+A \code{GSSTDA} object. It contains:
+\itemize{
+\item the matrix with the normal space \code{normal_space},
+\item the matrix of the disease components normal_space \code{matrix_disease_component},
+\item a matrix with the results of the application of proportional hazard models
+for each gene (\code{cox_all_matrix)},
+\item the genes selected for mapper \code{genes_disease_componen},
+\item the matrix of the disease components with information from these genes only
+\code{genes_disease_component}
+\item and a \code{mapper_obj} object. This \code{mapper_obj} object contains the
+values of the intervals (interval_data), the samples included in each
+interval (sample_in_level), information about the cluster to which the
+individuals in each interval belong (clustering_all_levels), a list including
+the individuals contained in each detected node (node_samples), their size
+(node_sizes), the average of the filter function values of the individuals
+of each node (node_average_filt) and the adjacency matrix linking the nodes
+(adj_matrix). Moreover, information is provided on the number of nodes,
+the average node size, the standard deviation of the node size, the number
+of connections between nodes, the proportion of connections to all possible
+connections and the number of ramifications.
+}
 }
 \description{
-Gene Structure Survival using Topological Data Analysis
+Gene Structure Survival using Topological Data Analysis.
+This function implements an analysis for expression array data
+based on the \emph{Progression Analysis of Disease} developed by Nicolau
+\emph{et al.} (doi: 10.1073/pnas.1102826108) that allows the information
+contained in an expression matrix to be condensed into a combinatory graph.
+The novelty is that information on survival is integrated into the analysis.
+
+The analysis consists of 3 parts: a preprocessing of the data, the gene
+selection and the filter function, and the mapper algorithm. The
+preprocessing is specifically the Disease Specific Genomic Analysis (proposed
+by Nicolau \emph{et al.}) that consists of, through linear models, eliminating the
+part of the data that is considered "healthy" and keeping only the component
+that is due to the disease. The genes are then selected according to their
+variability and whether they are related to survival and the values of the
+filtering function for each patient are calculated taking into account the
+survival associated with each gene. Finally, the mapper algorithm is applied
+from the disease component matrix and the values of the filter function
+obtaining a combinatory graph.
 }
 \examples{
 \dontrun{
