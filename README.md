@@ -120,6 +120,8 @@ the dataset and builds a heat map with them.
 DGSA_information <- results_DGSA(DGSA_object[["matrix_disease_component"]], case_tag)
 print(DGSA_information)
 ```
+<img src="man/figures/print_DGSA_information.png" width="100%" />
+
 
 Obtain information from the mapper object created in the G-SS-TDA process.
 ```{r}
@@ -130,6 +132,7 @@ Plot the mapper graph.
 ```{r}
 plot_mapper(mapper_object)
 ```
+<img src="man/figures/plot_mapper_object.png" width="100%" />
 
 
 ### OPTION #2 (all process integrate in the same function):
@@ -157,6 +160,8 @@ This function returns the 100 genes with the highest variability within the data
 DGSA_information <- results_DGSA(GSSTDA_obj[["matrix_disease_component"]], case_tag)
 print(DGSA_information)
 ```
+<img src="man/figures/print_DGSA_information.png" width="100%" />
+
 
 Obtain information from the mapper object created in the G-SS-TDA process.
 ```{r}
@@ -167,3 +172,4 @@ Plot the mapper graph.
 ```{r}
 plot_mapper(GSSTDA_obj[["mapper_obj"]])
 ```
+<img src="man/figures/plot_mapper_object.png" width="100%" />
