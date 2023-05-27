@@ -5,8 +5,10 @@ You can install the development version from
 [GitHub](https://github.com/MiriamEsteve/EAT) with:
 
 ``` r
-devtools::install_github("MiriamEsteve/G-SS-TDA")
+library(devtools)
+devtools::install_github("jokergoo/ComplexHeatmap")
 
+devtools::install_github("MiriamEsteve/G-SS-TDA")
 library(GSSTDA)
 ```
 
