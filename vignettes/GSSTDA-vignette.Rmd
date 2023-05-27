@@ -80,7 +80,7 @@ distance_type <- "cor"
 clustering_type <- "hierarchical"
 linkage_type <- "single" # only necessary if the type of clustering is hierarchical 
 # num_bins_when_clustering <- 10 # only necessary if the type of clustering is hierarchical 
-                                 # and the optimal_clustering_mode is "standard"
+                                 # and the optimal_clustering_mode is "silhouette"
                                  # (this is not the case)
 ```
 

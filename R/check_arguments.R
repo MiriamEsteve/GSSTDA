@@ -211,8 +211,8 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
     opt_clust_modes <- c("standard","silhouette")
     option <- readline(prompt="Choose one of the folowing optimal cluster number method: standard/silhouette: ")
 
-    if(option != "silhouette"){
-      optimal_clustering_mode <- "standard"
+    if(option != "standard"){
+      optimal_clustering_mode <- "silhouette"
     }
   }
 
