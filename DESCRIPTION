@@ -42,7 +42,8 @@ Imports:
     utils,
 	visNetwork,
 	ComplexHeatmap,
-	circlize
+	circlize,
+	devtools
 Suggests: 
     rmarkdown,
     knitr,
