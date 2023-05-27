@@ -19,6 +19,9 @@ knitr::opts_chunk$set(
 This vignette represents an introduction to the use of the package G-SS-TDA. 
 
 ```{r setup}
+library(devtools)
+devtools::install_github("jokergoo/ComplexHeatmap")
+
 library(GSSTDA)
 ```
 
