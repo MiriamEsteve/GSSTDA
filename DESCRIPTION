@@ -27,7 +27,7 @@ Authors@R:
 		   email = "afalco@uchceu.es")
     )
 Description: Mapper-based survival analysis with transcriptomics data is designed to carry out. Mapper-based survival analysis is a modification of Progression Analysis of Disease (PAD) where survival data is taken into account in the filtering function.
-License: MIT + file LICENSE
+License: MIT
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
