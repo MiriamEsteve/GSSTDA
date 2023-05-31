@@ -112,7 +112,7 @@ check_vectors <- function(full_data, survival_time, survival_event, case_tag, na
 #'
 #' @export
 #' @examples
-#' \donttest{check_arg_mapper(full_data, filter_values, distance_type, clustering_type, linkage_type)}
+#' \dontrun{check_filter_values(full_data, filter_values)}
 check_filter_values <- function(full_data, filter_values, na.rm = TRUE){
   # Check if filter_values is a vector
   if(!is.vector(filter_values)){
@@ -191,7 +191,7 @@ check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select)
 #'
 #' @export
 #' @examples
-#' \dontrun{check_arg_mapper(full_data, filter_values = c(), distance_type = "cor",
+#' \donttest{check_arg_mapper(full_data = c(), filter_values = c(), distance_type = "cor",
 #'           clustering_type = "hierarchical", linkage_type = "single")}
 check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type, na.rm = TRUE){
   #Check distance_type

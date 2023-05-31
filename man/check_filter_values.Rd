@@ -25,5 +25,5 @@ If \code{FALSE}, an error occurs in case of \code{NA} rows.}
 Checking the filter_values introduces in the \code{mapper} object.
 }
 \examples{
-\donttest{check_arg_mapper(full_data, filter_values, distance_type, clustering_type, linkage_type)}
+\dontrun{check_filter_values(full_data, filter_values)}
 }
