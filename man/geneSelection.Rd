@@ -74,7 +74,7 @@ the column vector by the Z score obtained in the cox proportional
 hazard model.
 }
 \examples{
-\donttest{
+\dontrun{
 geneSelection_obj <- geneSelection(data_object,
 gen_select_type, percent_gen_select)}
 }

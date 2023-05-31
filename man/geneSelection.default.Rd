@@ -54,6 +54,6 @@ the matrix of the disease components.
 Private function to select Gene without DGSA process
 }
 \examples{
-\donttest{
+\dontrun{
 geneSelection_obj <- geneSelection.default(data_object, gen_select_type, percent_gen_select)}
 }

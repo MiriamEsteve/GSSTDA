@@ -21,5 +21,5 @@ num_gen_select Number of genes to be selected according to the percent_gen_selec
 Checking the arguments introduces in the gene selection process.
 }
 \examples{
-\donttest{check_gene_selection(num_genes, gen_select_type, percent_gen_select)}
+\dontrun{check_gene_selection(num_genes, gen_select_type, percent_gen_select)}
 }

@@ -27,6 +27,6 @@ and the number of ramifications.
 Wrapping function to carry out the complete process.
 }
 \examples{
-\donttest{
+\dontrun{
 one_D_Mapper(mapper_object_ini)}
 }

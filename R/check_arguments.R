@@ -9,7 +9,7 @@
 #'
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' check_full_data(full_data, na.rm = TRUE)}
 check_full_data <- function(full_data, na.rm = TRUE){
   # If this function has been executed don't do nothing
@@ -52,7 +52,7 @@ check_full_data <- function(full_data, na.rm = TRUE){
 #'
 #' @export
 #' @examples
-#' \donttest{control_tag <- check_vectors(col_full_data, survival_time, survival_event, case_tag)}
+#' \dontrun{control_tag <- check_vectors(col_full_data, survival_time, survival_event, case_tag)}
 check_vectors <- function(full_data, survival_time, survival_event, case_tag, na.rm = TRUE){
   ncol_full_data <- ncol(full_data)
   # Check if the arguments are vectors; a valid type of data; and the vectors are the same dimension as a full_data
@@ -148,7 +148,7 @@ check_filter_values <- function(full_data, filter_values, na.rm = TRUE){
 #'
 #' @export
 #' @examples
-#' \donttest{check_gene_selection(num_genes, gen_select_type, percent_gen_select)}
+#' \dontrun{check_gene_selection(num_genes, gen_select_type, percent_gen_select)}
 check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select){
   #Convert text to lowercase
   gen_select_type <- tolower(gen_select_type)

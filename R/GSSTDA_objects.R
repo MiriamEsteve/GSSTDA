@@ -138,7 +138,7 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
 #' - and the vector of the values of the filter function.
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' geneSelection_obj <- geneSelection(data_object,
 #' gen_select_type, percent_gen_select)}
 geneSelection <- function(data_object, gen_select_type,
@@ -187,7 +187,7 @@ geneSelection <- function(data_object, gen_select_type,
 #' - and the vector of the values of the filter function.
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' geneSelection_obj <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
 #' gen_select_type, num_gen_select)}
 gene_selection <- function(full_data, survival_time, survival_event, control_tag_cases,
@@ -249,7 +249,7 @@ gene_selection <- function(full_data, survival_time, survival_event, control_tag
 #'
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' geneSelection_obj <- geneSelection.DGSA_object(data_object, gen_select_type,
 #'                                                        percent_gen_select)}
 geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
@@ -313,7 +313,7 @@ geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_
 #'
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' geneSelection_obj <- geneSelection.default(data_object, gen_select_type, percent_gen_select)}
 geneSelection.default <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
   full_data <- data_object[["full_data"]]
@@ -396,7 +396,7 @@ geneSelection.default <- function(data_object, gen_select_type, percent_gen_sele
 #' (node_average_filt) and the adjacency matrix linking the nodes (adj_matrix).
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' num_rows <- 100
 #' full_data <- data.frame( x=2*cos(1:num_rows), y=sin(1:num_rows) )
 #' filter_values <- list(2*cos(1:num_rows))

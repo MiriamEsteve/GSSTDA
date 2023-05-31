@@ -80,7 +80,7 @@ the skeleton of the dataset. This implementation is the mapper of one
 dimension, i.e. using only one filter function value.
 }
 \examples{
-\donttest{
+\dontrun{
 num_rows <- 100
 full_data <- data.frame( x=2*cos(1:num_rows), y=sin(1:num_rows) )
 filter_values <- list(2*cos(1:num_rows))

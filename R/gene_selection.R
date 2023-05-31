@@ -20,7 +20,7 @@
 #' @export
 #' @import survival
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' cox_all_genes(case_disease_component,survival_time,survival_event)
 #' }
 cox_all_genes <- function(case_disease_component, survival_time, survival_event){
@@ -67,7 +67,7 @@ cox_all_genes <- function(case_disease_component, survival_time, survival_event)
 #' @return Character vector with the names of the selected genes.
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' gene_selection_surv(case_disease_component, cox_all_matrix, gen_select_type, num_gen_select)
 #' }
 gene_selection_surv <- function(case_disease_component, cox_all_matrix, gen_select_type, num_gen_select){

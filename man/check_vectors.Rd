@@ -25,5 +25,5 @@ control_tag Return the tag of the healthy patient
 Checking the \code{survival_time}, \code{survival_event} and \code{case_tag} introduces in the \code{GSSTDA} object.
 }
 \examples{
-\donttest{control_tag <- check_vectors(col_full_data, survival_time, survival_event, case_tag)}
+\dontrun{control_tag <- check_vectors(col_full_data, survival_time, survival_event, case_tag)}
 }

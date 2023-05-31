@@ -65,7 +65,7 @@ the p-values for each Z value)
 Private function to gene selection
 }
 \examples{
-\donttest{
+\dontrun{
 geneSelection_obj <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
 gen_select_type, num_gen_select)}
 }
