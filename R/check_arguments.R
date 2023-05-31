@@ -191,7 +191,7 @@ check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select)
 #'
 #' @export
 #' @examples
-#' \donttest{check_arg_mapper(filter_values, distance_type = "cor",
+#' \dontrun{check_arg_mapper(full_data, filter_values = c(), distance_type = "cor",
 #'           clustering_type = "hierarchical", linkage_type = "single")}
 check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type, na.rm = TRUE){
   #Check distance_type
@@ -225,7 +225,7 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
     stop(paste("Invalid linkage method selected. Choose one of the folowing: ", paste(link_types,collapse = ", ")))
   }
 
-  # Check if filter_values == "" the filter_values is not calculated yet. So, we checked only the others args
+  # Check if filter_values == [] the filter_values is not calculated yet. So, we checked only the others args
   if(length(filter_values) != 0 & na.rm != "checked"){
     full_data_and_filter_values <- check_filter_values(full_data, filter_values)
     full_data <- full_data_and_filter_values[[1]]
