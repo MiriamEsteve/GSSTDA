@@ -25,7 +25,3 @@ This function returns a list of vectors containing the
 individuals included at each level, i.e. the vectors of individuals with
 a value of the filter function within each of the intervals.
 }
-\examples{
-\dontrun{
-samples_in_levels(interval_data,filter_values)}
-}

@@ -19,7 +19,3 @@ of the individuals at each node.
 Extract the nodes information based on information about
 clustering. The individuals who are part of each node are identified
 }
-\examples{
-\dontrun{
-levels_to_nodes(clust_all_levels_list)}
-}

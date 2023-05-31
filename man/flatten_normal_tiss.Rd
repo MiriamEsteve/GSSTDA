@@ -21,7 +21,7 @@ as reported in "Disease-specific genomic analysis: identifying
 the signature of pathology biology".
 }
 \examples{
-\dontrun{
+\donttest{
 normal_tissue_matrix <- matrix(stats::rnorm(36), nrow=6)
 flatten_normal_tiss(normal_tissue_matrix)
 }

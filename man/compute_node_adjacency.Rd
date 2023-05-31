@@ -19,7 +19,3 @@ It returns a matrix of magnitude n nodes x n nodes that stores a
 It computes the adjacency matrix between nodes. Two nodes
 are considered connected if they share at least one individual.
 }
-\examples{
-\dontrun{
-compute_node_adjacency(nodes_list)}
-}

@@ -130,8 +130,8 @@ from the disease component matrix and the values of the filter function
 obtaining a combinatory graph.
 }
 \examples{
-\dontrun{
-GSSTDA <- GSSTDA(full_data,  survival_time, survival_event, case_tag,
+\donttest{
+GSSTDA_object <- GSSTDA(full_data,  survival_time, survival_event, case_tag,
                  gen_select_type="Top_Bot", percent_gen_select=10,
                  num_intervals = 4, percent_overlap = 50,
                  distance_type = "euclidean", num_bins_when_clustering = 8,

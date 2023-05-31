@@ -18,7 +18,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' one_D_Mapper(mapper_object_ini)}
 one_D_Mapper <- function(mapper_object_ini){
 
@@ -96,7 +96,7 @@ one_D_Mapper <- function(mapper_object_ini){
 #' @export
 #' @import visNetwork
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' plot_mapper(mapper_object)}
 plot_mapper <- function(mapper_object,trans_node_size = TRUE,exp_to_res = 1/2){
   arr_ind <- base::which(arr.ind = TRUE,mapper_object[["adj_matrix"]] == 1)

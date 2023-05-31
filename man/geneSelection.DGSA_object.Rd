@@ -33,7 +33,7 @@ the matrix of the disease components.
 Private function to select Gene with DGSA object
 }
 \examples{
-\dontrun{
+\donttest{
 geneSelection_obj <- geneSelection.DGSA_object(data_object, gen_select_type,
                                                        percent_gen_select)}
 }

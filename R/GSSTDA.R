@@ -91,8 +91,8 @@
 #' connections and the number of ramifications.
 #' @export
 #' @examples
-#' \dontrun{
-#' GSSTDA <- GSSTDA(full_data,  survival_time, survival_event, case_tag,
+#' \donttest{
+#' GSSTDA_object <- GSSTDA(full_data,  survival_time, survival_event, case_tag,
 #'                  gen_select_type="Top_Bot", percent_gen_select=10,
 #'                  num_intervals = 4, percent_overlap = 50,
 #'                  distance_type = "euclidean", num_bins_when_clustering = 8,
@@ -135,7 +135,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   filter_values <- geneSelection_object[["filter_values"]]
 
   ################### BLOCK III: Create mapper object where the arguments are checked ###################
-  cat("\nBLOCK III: The mapper process is started")
+  message("\nBLOCK III: The mapper process is started")
 
   # Transpose genes_disease_component: rows = patient, columns = genes
   #genes_disease_component <- t(genes_disease_component)
@@ -149,7 +149,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
                        clustering_type, num_bins_when_clustering, linkage_type, optimal_clustering_mode,
                        na.rm = "checked")
 
-  cat("\nBLOCK III: The mapper process is finished")
+  message("\nBLOCK III: The mapper process is finished")
 
 
   ############################################  Create the object #########################################

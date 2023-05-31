@@ -58,8 +58,3 @@ filtering function, the samples with a value within that interval
 are clustered using the proposed clustering algorithm and the
 proposed method to determine the optimal number of clusters.
 }
-\examples{
-\dontrun{
-clust_all_levels(full_data, samp_in_lev, distance_type, clustering_type,
-                 linkage_type, optimal_clustering_mode, num_bins_when_clustering)}
-}

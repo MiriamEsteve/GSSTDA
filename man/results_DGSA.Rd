@@ -19,6 +19,10 @@ another value should be used to indicate whether the patient's sample is
 tumourous. The user will then be asked which one indicates whether
 the patient is healthy. Only two values are valid in the vector in total.}
 }
+\value{
+A heatmap of the 100 genes with the highest variability in the matrix
+disease component.
+}
 \description{
 It calculates the 100 genes with the highest variability in the matrix
 disease component between samples and use them to draw the heat map.

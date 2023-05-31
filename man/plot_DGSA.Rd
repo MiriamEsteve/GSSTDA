@@ -19,6 +19,9 @@ another value should be used to indicate whether the patient's sample is
 tumourous. The user will then be asked which one indicates whether
 the patient is healthy. Only two values are valid in the vector in total.}
 }
+\value{
+The heatmap of the DGSA result.
+}
 \description{
 It draws the heatmap of the DGSA result by selecting the 100 genes with
 the highest variability between samples.

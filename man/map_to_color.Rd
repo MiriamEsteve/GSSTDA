@@ -21,7 +21,3 @@ red.
 Auxiliary function that maps a numeric vector, the average node
 filtering function values, to a color vector.
 }
-\examples{
-\dontrun{
-map_to_color(base::log2(2))}
-}

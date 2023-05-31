@@ -24,7 +24,3 @@ values.
 It calculates the intervals of the given output values of a filter function
 according to the given number and percentage of overlap.
 }
-\examples{
-\dontrun{
-get_intervals_One_D(filter_values,num_intervals,percent_overlap)}
-}

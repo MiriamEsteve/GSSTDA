@@ -19,9 +19,6 @@ knitr::opts_chunk$set(
 This vignette represents an introduction to the use of the package G-SS-TDA. 
 
 ```{r setup}
-library(devtools)
-devtools::install_github("jokergoo/ComplexHeatmap")
-
 library(GSSTDA)
 ```
 
@@ -41,10 +38,6 @@ data("full_data")
 data("survival_time")
 data("survival_event")
 data("case_tag")
-
-N <- nrow(full_data)
-num_select <- trunc((20/100) * N)
-full_data<- full_data[1:num_select,]
 ```
 
 

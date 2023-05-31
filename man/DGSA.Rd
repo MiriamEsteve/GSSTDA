@@ -53,6 +53,6 @@ For more information see \emph{Disease-specific genomic analysis: identifying
 the signature of pathologic biology} (doi: 10.1093/bioinformatics/btm033).
 }
 \examples{
-\dontrun{
+\donttest{
 DGSA_obj <- DGSA(full_data,  survival_time, survival_event, case_tag)}
 }

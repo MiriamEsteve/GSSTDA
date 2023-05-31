@@ -33,7 +33,7 @@ the expression levels of each gene included in the provided dataset (case_diseas
 and their link with relapse-free or overall survival.
 }
 \examples{
-\dontrun{
+\donttest{
 cox_all_genes(case_disease_component,survival_time,survival_event)
 }
 }

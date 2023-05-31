@@ -24,7 +24,7 @@ for singular values is \eqn{\sqrt(4/ 3)}". It should be used after
 the function \code{flatten_normal_tiss}.
 }
 \examples{
-\dontrun{
+\donttest{
 denoise_rectangular_matrix(matrix(c(1,2,3,4,5,2,3,1,2,3),ncol = 2))
 }
 }

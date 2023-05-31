@@ -37,7 +37,7 @@
 #' which the normal component has been removed).
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' DGSA_obj <- DGSA(full_data,  survival_time, survival_event, case_tag)}
 DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TRUE){
   ################################ Prepare data and check data ########################################
@@ -53,7 +53,7 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
   case_tag <- return_check[[5]]
 
   ################### BLOCK I: Pre-process. DGSA (using "NT" control_tag) ##############################
-  cat("\nBLOCK I: The pre-process DGSA is started")
+  message("\nBLOCK I: The pre-process DGSA is started")
   #   Select the normal tissue data gene expression matrix.
   normal_tiss <- full_data[,which(case_tag == control_tag)]
 
@@ -64,7 +64,7 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
   #   Obtain the disease component of the normal_space
   matrix_disease_component <- generate_disease_component(full_data, normal_space)
 
-  cat("\nBLOCK I: The pre-process DGSA is finished\n")
+  message("\nBLOCK I: The pre-process DGSA is finished\n")
 
   ############################################  Create the object #########################################
   DGSA_object <- list("full_data" = full_data,
@@ -138,7 +138,7 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
 #' - and the vector of the values of the filter function.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' geneSelection_obj <- geneSelection(data_object,
 #' gen_select_type, percent_gen_select)}
 geneSelection <- function(data_object, gen_select_type,
@@ -187,13 +187,13 @@ geneSelection <- function(data_object, gen_select_type,
 #' - and the vector of the values of the filter function.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' geneSelection_obj <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
 #' gen_select_type, num_gen_select)}
 gene_selection <- function(full_data, survival_time, survival_event, control_tag_cases,
                            gen_select_type, num_gen_select){
 
-  cat("\nBLOCK II: The gene selection is started\n")
+  message("\nBLOCK II: The gene selection is started\n")
   #Remove NAN's values (case_tag == control_tag) of survival_time and survival_event
   survival_time <- survival_time[-control_tag_cases]
   survival_event <- survival_event[-control_tag_cases]
@@ -214,7 +214,7 @@ gene_selection <- function(full_data, survival_time, survival_event, control_tag
   # Filter the genes_disease_component
   filter_values <- lp_norm_k_powers_surv(genes_disease_component, 2, 1, cox_all_matrix)
 
-  cat("\nBLOCK II: The gene selection is finished\n")
+  message("\nBLOCK II: The gene selection is finished\n")
 
   geneSelection_object <- list( "data" = full_data,
                                 "cox_all_matrix" = cox_all_matrix,
@@ -249,7 +249,7 @@ gene_selection <- function(full_data, survival_time, survival_event, control_tag
 #'
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' geneSelection_obj <- geneSelection.DGSA_object(data_object, gen_select_type,
 #'                                                        percent_gen_select)}
 geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
@@ -313,7 +313,7 @@ geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_
 #'
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' geneSelection_obj <- geneSelection.default(data_object, gen_select_type, percent_gen_select)}
 geneSelection.default <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
   full_data <- data_object[["full_data"]]
@@ -321,7 +321,6 @@ geneSelection.default <- function(data_object, gen_select_type, percent_gen_sele
   survival_time <- data_object[["survival_time"]]
   case_tag <- data_object[["case_tag"]]
 
-  print("gene_selection_classes")
   ################################ Prepare data and check data ########################################
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data, na.rm)
@@ -397,7 +396,7 @@ geneSelection.default <- function(data_object, gen_select_type, percent_gen_sele
 #' (node_average_filt) and the adjacency matrix linking the nodes (adj_matrix).
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' num_rows <- 100
 #' full_data <- data.frame( x=2*cos(1:num_rows), y=sin(1:num_rows) )
 #' filter_values <- list(2*cos(1:num_rows))

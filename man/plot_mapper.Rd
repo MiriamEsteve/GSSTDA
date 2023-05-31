@@ -25,6 +25,6 @@ This function produces an interactive network plot using
 the \code{visNetork} function from the mapper results.
 }
 \examples{
-\dontrun{
+\donttest{
 plot_mapper(mapper_object)}
 }

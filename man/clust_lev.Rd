@@ -56,8 +56,3 @@ particular interval of the filter function) with the proposed clustering
 algorithm and the proposed method to determine the optimal number
 of clusters.
 }
-\examples{
-\dontrun{
-clust_lev(full_data_i, distance_type, clustering_type, linkage_type,
-          optimal_clustering_mode, num_bins_when_clustering,level_name)}
-}

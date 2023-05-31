@@ -9,7 +9,7 @@
 #'
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' check_full_data(full_data, na.rm = TRUE)}
 check_full_data <- function(full_data, na.rm = TRUE){
   # If this function has been executed don't do nothing
@@ -52,7 +52,7 @@ check_full_data <- function(full_data, na.rm = TRUE){
 #'
 #' @export
 #' @examples
-#' \dontrun{control_tag <- check_vectors(col_full_data, survival_time, survival_event, case_tag)}
+#' \donttest{control_tag <- check_vectors(col_full_data, survival_time, survival_event, case_tag)}
 check_vectors <- function(full_data, survival_time, survival_event, case_tag, na.rm = TRUE){
   ncol_full_data <- ncol(full_data)
   # Check if the arguments are vectors; a valid type of data; and the vectors are the same dimension as a full_data
@@ -76,7 +76,7 @@ check_vectors <- function(full_data, survival_time, survival_event, case_tag, na
     survival_event <- survival_event[without_nan_patient]
     survival_time <- survival_time[without_nan_patient]
     ncol_full_data <- ncol(full_data)
-    print("NAN's values in patient was removed in case_tag, full_data, survival_time and survival_event")
+    message("NAN's values in patient was removed in case_tag, full_data, survival_time and survival_event")
   }
   if(length(unique(case_tag)) != 2){
     stop("case_tag must has only two type of tags.")
@@ -112,7 +112,7 @@ check_vectors <- function(full_data, survival_time, survival_event, case_tag, na
 #'
 #' @export
 #' @examples
-#' \dontrun{check_arg_mapper(full_data, filter_values, distance_type, clustering_type, linkage_type)}
+#' \donttest{check_arg_mapper(full_data, filter_values, distance_type, clustering_type, linkage_type)}
 check_filter_values <- function(full_data, filter_values, na.rm = TRUE){
   # Check if filter_values is a vector
   if(!is.vector(filter_values)){
@@ -148,7 +148,7 @@ check_filter_values <- function(full_data, filter_values, na.rm = TRUE){
 #'
 #' @export
 #' @examples
-#' \dontrun{check_gene_selection(num_genes, gen_select_type, percent_gen_select)}
+#' \donttest{check_gene_selection(num_genes, gen_select_type, percent_gen_select)}
 check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select){
   #Convert text to lowercase
   gen_select_type <- tolower(gen_select_type)
@@ -191,7 +191,8 @@ check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select)
 #'
 #' @export
 #' @examples
-#' \dontrun{check_arg_mapper(filter_values, distance_type, clustering_type, linkage_type)}
+#' \donttest{check_arg_mapper(filter_values, distance_type = "cor",
+#'           clustering_type = "hierarchical", linkage_type = "single")}
 check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type, na.rm = TRUE){
   #Check distance_type
   distances <- c("cor","euclidean")
@@ -216,7 +217,7 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
     }
   }
 
-  cat("The optimal clustering mode is '", optimal_clustering_mode, "' by default")
+  message("The optimal clustering mode is '", optimal_clustering_mode, "' by default")
 
   #Check linkage_type
   link_types <- c("single","average","complete")

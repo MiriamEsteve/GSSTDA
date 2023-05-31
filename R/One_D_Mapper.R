@@ -10,9 +10,6 @@
 #' @param percent_overlap Percentage of overlap between intervals.
 #' @return Returns a list with the set of intervals for the filtering function
 #' values.
-#' @examples
-#' \dontrun{
-#' get_intervals_One_D(filter_values,num_intervals,percent_overlap)}
 get_intervals_One_D <- function(filter_values,num_intervals,percent_overlap){
   range_filt <- max(filter_values) - min(filter_values)
   n_ov <- num_intervals -1
@@ -48,9 +45,6 @@ get_intervals_One_D <- function(filter_values,num_intervals,percent_overlap){
 #' @return A list of character vectors with the samples included
 #' in each of the levels (i.e. each of the intervals of the values of the
 #' filter functions).
-#' @examples
-#' \dontrun{
-#' samples_in_levels(interval_data,filter_values)}
 samples_in_levels <- function(interval_data,filter_values){
   return(lapply(interval_data,function(x,y) names(which(y >= x[[1]] & y < x[[2]])),filter_values))
 }
@@ -89,10 +83,6 @@ samples_in_levels <- function(interval_data,filter_values){
 #' names of the samples and the vector values are the node number
 #' to which the individual belongs.
 #' @import cluster
-#' @examples
-#' \dontrun{
-#' clust_lev(full_data_i, distance_type, clustering_type, linkage_type,
-#'           optimal_clustering_mode, num_bins_when_clustering,level_name)}
 clust_lev <- function(full_data_i, distance_type, clustering_type, linkage_type,
                       optimal_clustering_mode, num_bins_when_clustering, level_name){
   #Distance type
@@ -137,7 +127,7 @@ clust_lev <- function(full_data_i, distance_type, clustering_type, linkage_type,
       histogram <- graphics::hist(c(heights,max_dist_lev), breaks=breaks_for_bins, plot=FALSE)
       hist_gap <- (histogram$counts == 0)
       if(all(!hist_gap)){
-        print("There is no gap... therefore only one cluster...")
+        warning("There is no gap... therefore only one cluster...")
         cluster_indices_level <- base::rep(1,ncol(full_data_i))
         names(cluster_indices_level) <- base::colnames(full_data_i)
         return(cluster_indices_level)
@@ -204,10 +194,6 @@ clust_lev <- function(full_data_i, distance_type, clustering_type, linkage_type,
 #' about the nodes at each level and the individuals contained in them. The
 #' names of the vector values are the names of the samples and the vector
 #' values are the node number of that level to which the individual belongs.
-#' @examples
-#' \dontrun{
-#' clust_all_levels(full_data, samp_in_lev, distance_type, clustering_type,
-#'                  linkage_type, optimal_clustering_mode, num_bins_when_clustering)}
 clust_all_levels <- function(full_data, samp_in_lev, distance_type, clustering_type,
                              linkage_type, optimal_clustering_mode, num_bins_when_clustering){
 
@@ -240,9 +226,6 @@ clust_all_levels <- function(full_data, samp_in_lev, distance_type, clustering_t
 #' @return A list including the individuals content of each detected node.
 #' List of character vectors. Each of the vectors contains the names
 #' of the individuals at each node.
-#' @examples
-#' \dontrun{
-#' levels_to_nodes(clust_all_levels_list)}
 levels_to_nodes <- function(clust_all_levels_list){
   nodes_list <- list()
   node_counter <- 1
@@ -267,9 +250,6 @@ levels_to_nodes <- function(clust_all_levels_list){
 #' individuals at each node.
 #' @return It returns a matrix of magnitude n nodes x n nodes that stores a
 #' 1 if there are shared samples in two given nodes and a 0 otherwise.
-#' @examples
-#' \dontrun{
-#' compute_node_adjacency(nodes_list)}
 compute_node_adjacency <- function(nodes_list){
   adj_matrix <- base::matrix(0,nrow = base::length(nodes_list),ncol = base::length(nodes_list))
   for(i in 1:(base::length(nodes_list))){
@@ -296,9 +276,6 @@ compute_node_adjacency <- function(nodes_list){
 #' @return A vector of the same length of x with colors ranging from blue to
 #' red.
 #' @import grDevices
-#' @examples
-#' \dontrun{
-#' map_to_color(base::log2(2))}
 map_to_color <- function(x,limits=NULL){
   pallette_ob <-  grDevices::colorRampPalette(colors = c("blue","red"))(100)
   if(is.null(limits)){
