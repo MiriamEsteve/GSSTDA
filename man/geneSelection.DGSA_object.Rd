@@ -34,6 +34,8 @@ Private function to select Gene with DGSA object
 }
 \examples{
 \dontrun{
-geneSelection_obj <- geneSelection.DGSA_object(data_object, gen_select_type,
-                                                       percent_gen_select)}
+DGSA_obj <- DGSA(full_data, survival_time, survival_event, case_tag, na.rm = "checked")
+
+geneSelection.DGSA_object(DGSA_obj, gen_select_type = "top_bot", percent_gen_select=10,
+na.rm = TRUE)}
 }

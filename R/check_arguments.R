@@ -6,11 +6,6 @@
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #' @return Return \code{full_data} without NAN's and as a matrix
-#'
-#' @export
-#' @examples
-#' \dontrun{
-#' check_full_data(full_data, na.rm = TRUE)}
 check_full_data <- function(full_data, na.rm = TRUE){
   # If this function has been executed don't do nothing
   if(na.rm == "checked"){
@@ -49,10 +44,6 @@ check_full_data <- function(full_data, na.rm = TRUE){
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #' @return control_tag Return the tag of the healthy patient
-#'
-#' @export
-#' @examples
-#' \dontrun{control_tag <- check_vectors(col_full_data, survival_time, survival_event, case_tag)}
 check_vectors <- function(full_data, survival_time, survival_event, case_tag, na.rm = TRUE){
   ncol_full_data <- ncol(full_data)
   # Check if the arguments are vectors; a valid type of data; and the vectors are the same dimension as a full_data
@@ -109,10 +100,6 @@ check_vectors <- function(full_data, survival_time, survival_event, case_tag, na
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #'
 #' @return \code{filter_value} and \code{full_data} without NAN's
-#'
-#' @export
-#' @examples
-#' \dontrun{check_filter_values(full_data, filter_values)}
 check_filter_values <- function(full_data, filter_values, na.rm = TRUE){
   # Check if filter_values is a vector
   if(!is.vector(filter_values)){
@@ -145,10 +132,6 @@ check_filter_values <- function(full_data, filter_values, na.rm = TRUE){
 #' @param percent_gen_select Percentage of genes to be selected
 #'
 #' @return num_gen_select Number of genes to be selected according to the percent_gen_select value
-#'
-#' @export
-#' @examples
-#' \dontrun{check_gene_selection(num_genes, gen_select_type, percent_gen_select)}
 check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select){
   #Convert text to lowercase
   gen_select_type <- tolower(gen_select_type)
@@ -188,11 +171,6 @@ check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select)
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #'
 #' @return \code{optimal_clustering_mode}
-#'
-#' @export
-#' @examples
-#' \donttest{check_arg_mapper(full_data = c(), filter_values = c(), distance_type = "cor",
-#'           clustering_type = "hierarchical", linkage_type = "single")}
 check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type, na.rm = TRUE){
   #Check distance_type
   distances <- c("cor","euclidean")

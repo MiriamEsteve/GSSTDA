@@ -41,8 +41,3 @@ hazard model to the level of each gene. For further information see
 "Topology based data analysis identifies a subgroup of breast cancers
 with a unique mutational profile and excellent survival"
 }
-\examples{
-\dontrun{
-gene_selection_surv(case_disease_component, cox_all_matrix, gen_select_type, num_gen_select)
-}
-}

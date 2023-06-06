@@ -26,5 +26,19 @@ the \code{visNetork} function from the mapper results.
 }
 \examples{
 \dontrun{
+# Create data object
+data_object <- list("full_data" = full_data, "survival_time" = survival_time,
+                   "survival_event" = survival_event, "case_tag" = case_tag)
+class(data_object) <- "data_object"
+Select gene from data object
+geneSelection_object <- geneSelection(data_object, gen_select_type, percent_gen_select)
+
+mapper_object <- mapper(full_data = geneSelection_object[["genes_disease_component"]],
+filter_values = geneSelection_object[["filter_values"]],
+num_intervals = num_intervals,
+percent_overlap = percent_overlap, distance_type = distance_type,
+clustering_type = clustering_type,
+linkage_type = linkage_type,
+optimal_clustering_mode = optimal_clustering_mode)
 plot_mapper(mapper_object)}
 }

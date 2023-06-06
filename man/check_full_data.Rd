@@ -19,7 +19,3 @@ Return \code{full_data} without NAN's and as a matrix
 \description{
 Checking the full_data introduces in the package
 }
-\examples{
-\dontrun{
-check_full_data(full_data, na.rm = TRUE)}
-}

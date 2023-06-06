@@ -23,9 +23,10 @@ from an expression matrix and the denoised flattened matrix constructed
 from "healthy tissue data".
 }
 \examples{
+\donttest{
 full_data <- matrix(stats::rnorm(120),ncol=20)
 normal_tissue <- full_data[,11:20]
 normal_tissue_f <- flatten_normal_tiss(normal_tissue)
 normal_tissue_f_d <- denoise_rectangular_matrix(normal_tissue_f)
-disease_component <- generate_disease_component(full_data,normal_tissue_f_d)
+disease_component <- generate_disease_component(full_data,normal_tissue_f_d)}
 }

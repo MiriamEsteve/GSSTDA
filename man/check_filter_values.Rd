@@ -24,6 +24,3 @@ If \code{FALSE}, an error occurs in case of \code{NA} rows.}
 \description{
 Checking the filter_values introduces in the \code{mapper} object.
 }
-\examples{
-\dontrun{check_filter_values(full_data, filter_values)}
-}

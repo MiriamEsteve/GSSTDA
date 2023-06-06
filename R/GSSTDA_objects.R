@@ -138,9 +138,12 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
 #' - and the vector of the values of the filter function.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' data_object <- list("full_data" = full_data, "survival_time" = survival_time,
+#' "survival_event" = survival_event, "case_tag" = case_tag)
+#' class(data_object) <- "data_object"
 #' geneSelection_obj <- geneSelection(data_object,
-#' gen_select_type, percent_gen_select)}
+#' gen_select_type ="top_bot", percent_gen_select=10)}
 geneSelection <- function(data_object, gen_select_type,
                           percent_gen_select, na.rm = TRUE){
   UseMethod("geneSelection")
@@ -188,8 +191,11 @@ geneSelection <- function(data_object, gen_select_type,
 #' @export
 #' @examples
 #' \dontrun{
+#' gen_select_type <- "Top_Bot"
+#' percent_gen_select <- 10
+#' control_tag_cases <- which(case_tag == "NT")
 #' geneSelection_obj <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
-#' gen_select_type, num_gen_select)}
+#' gen_select_type ="top_bot", num_gen_select = 10)}
 gene_selection <- function(full_data, survival_time, survival_event, control_tag_cases,
                            gen_select_type, num_gen_select){
 
@@ -246,12 +252,13 @@ gene_selection <- function(full_data, survival_time, survival_event, control_tag
 #' @return A \code{geneSelection} object. It contains: the full_data without NAN's values,
 #' the control tag of the healthy patient, the matrix with the normal space and
 #' the matrix of the disease components.
-#'
 #' @export
 #' @examples
 #' \dontrun{
-#' geneSelection_obj <- geneSelection.DGSA_object(data_object, gen_select_type,
-#'                                                        percent_gen_select)}
+#' DGSA_obj <- DGSA(full_data, survival_time, survival_event, case_tag, na.rm = "checked")
+#'
+#' geneSelection.DGSA_object(DGSA_obj, gen_select_type = "top_bot", percent_gen_select=10,
+#' na.rm = TRUE)}
 geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
   print(class(data_object))
 
@@ -272,7 +279,7 @@ geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_
   return(geneSelection_object)
 }
 
-#' @title gene_selection_classes.matrix
+#' @title gene_selection_classes.default
 #'
 #' @description Private function to select Gene without DGSA process
 #' @param data_object Object with:
@@ -310,11 +317,14 @@ geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_
 #' @return A \code{geneSelection} object. It contains: the full_data without NAN's values,
 #' the control tag of the healthy patient, the matrix with the normal space and
 #' the matrix of the disease components.
-#'
 #' @export
 #' @examples
 #' \dontrun{
-#' geneSelection_obj <- geneSelection.default(data_object, gen_select_type, percent_gen_select)}
+#' data_object <- list("full_data" = full_data, "survival_time" = survival_time,
+#' "survival_event" = survival_event, "case_tag" = case_tag)
+#' class(data_object) <- "data_object"
+#' geneSelection.default(data_object, gen_select_type = "top_bot",
+#' percent_gen_select=10, na.rm = "checked")}
 geneSelection.default <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
   full_data <- data_object[["full_data"]]
   survival_event <- data_object[["survival_event"]]
@@ -398,13 +408,12 @@ geneSelection.default <- function(data_object, gen_select_type, percent_gen_sele
 #' @examples
 #' \dontrun{
 #' num_rows <- 100
-#' full_data <- data.frame( x=2*cos(1:num_rows), y=sin(1:num_rows) )
-#' filter_values <- list(2*cos(1:num_rows))
+#' filter_values <- c()
 #' mapper_obj <- mapper(full_data, filter_values, num_intervals = 4,
 #'                      percent_overlap = 0.5, distance_type = "euclidean",
 #'                      num_bins_when_clustering = 8,
 #'                      clustering_type = "hierarchical",
-#'                      linkage_type = "single")}
+#'                      linkage_type = "single", na.rm = TRUE)}
 mapper <- function(full_data, filter_values, num_intervals = 5, percent_overlap = 40,
                    distance_type = "cor", clustering_type = "hierarchical",
                    num_bins_when_clustering = 10, linkage_type = "single",

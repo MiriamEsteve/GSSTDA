@@ -66,6 +66,9 @@ Private function to gene selection
 }
 \examples{
 \dontrun{
+gen_select_type <- "Top_Bot"
+percent_gen_select <- 10
+control_tag_cases <- which(case_tag == "NT")
 geneSelection_obj <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
-gen_select_type, num_gen_select)}
+gen_select_type ="top_bot", num_gen_select = 10)}
 }

@@ -17,12 +17,7 @@
 #' to the value of coef/se_coef (the higher the Z value, the higher the
 #' significance of the variable) and the \code{Pr_z} column corresponds to
 #' the p-value for each Z value.
-#' @export
 #' @import survival
-#' @examples
-#' \dontrun{
-#' cox_all_genes(case_disease_component,survival_time,survival_event)
-#' }
 cox_all_genes <- function(case_disease_component, survival_time, survival_event){
   message("Calculating the matrix of Zcox")
   pb <- utils::txtProgressBar(min = 0, max = nrow(case_disease_component), style = 3)
@@ -65,11 +60,6 @@ cox_all_genes <- function(case_disease_component, survival_time, survival_event)
 #' @param num_gen_select Number of genes to be selected (those with the highest
 #' product value).
 #' @return Character vector with the names of the selected genes.
-#' @export
-#' @examples
-#' \dontrun{
-#' gene_selection_surv(case_disease_component, cox_all_matrix, gen_select_type, num_gen_select)
-#' }
 gene_selection_surv <- function(case_disease_component, cox_all_matrix, gen_select_type, num_gen_select){
   # Same operation to both methods
   probes_test <- apply(case_disease_component, 1,stats::sd)+1

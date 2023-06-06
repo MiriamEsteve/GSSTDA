@@ -82,11 +82,10 @@ dimension, i.e. using only one filter function value.
 \examples{
 \dontrun{
 num_rows <- 100
-full_data <- data.frame( x=2*cos(1:num_rows), y=sin(1:num_rows) )
-filter_values <- list(2*cos(1:num_rows))
+filter_values <- c()
 mapper_obj <- mapper(full_data, filter_values, num_intervals = 4,
                      percent_overlap = 0.5, distance_type = "euclidean",
                      num_bins_when_clustering = 8,
                      clustering_type = "hierarchical",
-                     linkage_type = "single")}
+                     linkage_type = "single", na.rm = TRUE)}
 }

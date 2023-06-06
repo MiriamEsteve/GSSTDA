@@ -74,7 +74,10 @@ the column vector by the Z score obtained in the cox proportional
 hazard model.
 }
 \examples{
-\dontrun{
+\donttest{
+data_object <- list("full_data" = full_data, "survival_time" = survival_time,
+"survival_event" = survival_event, "case_tag" = case_tag)
+class(data_object) <- "data_object"
 geneSelection_obj <- geneSelection(data_object,
-gen_select_type, percent_gen_select)}
+gen_select_type ="top_bot", percent_gen_select=10)}
 }

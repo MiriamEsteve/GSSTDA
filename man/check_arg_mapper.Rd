@@ -44,7 +44,3 @@ If \code{FALSE}, an error occurs in case of \code{NA} rows.}
 \description{
 Checking the arguments introduces in the \code{mapper} object.
 }
-\examples{
-\donttest{check_arg_mapper(full_data = c(), filter_values = c(), distance_type = "cor",
-          clustering_type = "hierarchical", linkage_type = "single")}
-}

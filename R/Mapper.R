@@ -15,11 +15,6 @@
 #' size, the standard deviation of the node size, the number of connections
 #' between nodes, the proportion of connections to all possible connections
 #' and the number of ramifications.
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' one_D_Mapper(mapper_object_ini)}
 one_D_Mapper <- function(mapper_object_ini){
 
   full_data <- mapper_object_ini[["full_data"]]
@@ -97,6 +92,20 @@ one_D_Mapper <- function(mapper_object_ini){
 #' @import visNetwork
 #' @examples
 #' \dontrun{
+#' # Create data object
+#' data_object <- list("full_data" = full_data, "survival_time" = survival_time,
+#'                    "survival_event" = survival_event, "case_tag" = case_tag)
+#' class(data_object) <- "data_object"
+#' Select gene from data object
+#' geneSelection_object <- geneSelection(data_object, gen_select_type, percent_gen_select)
+#'
+#' mapper_object <- mapper(full_data = geneSelection_object[["genes_disease_component"]],
+#' filter_values = geneSelection_object[["filter_values"]],
+#' num_intervals = num_intervals,
+#' percent_overlap = percent_overlap, distance_type = distance_type,
+#' clustering_type = clustering_type,
+#' linkage_type = linkage_type,
+#' optimal_clustering_mode = optimal_clustering_mode)
 #' plot_mapper(mapper_object)}
 plot_mapper <- function(mapper_object,trans_node_size = TRUE,exp_to_res = 1/2){
   arr_ind <- base::which(arr.ind = TRUE,mapper_object[["adj_matrix"]] == 1)
