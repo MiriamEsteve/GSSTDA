@@ -80,20 +80,15 @@ the skeleton of the dataset. This implementation is the mapper of one
 dimension, i.e. using only one filter function value.
 }
 \examples{
-\dontrun{
-num_rows <- 100
-gen_select_type <- "Top_Bot"
-percent_gen_select <- 10
+\donttest{
 control_tag_cases <- which(case_tag == "NT")
-geneSelection_obj <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
+geneSelection_object <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
 gen_select_type ="top_bot", num_gen_select = 10)
 
-
-mapper_obj <- mapper(full_data = geneSelection_object[["genes_disease_component"]],
-                     filter_values = geneSelection_object[["filter_values"]],
-                     num_intervals = 4,
-                     percent_overlap = 0.5, distance_type = "euclidean",
-                     num_bins_when_clustering = 8,
-                     clustering_type = "hierarchical",
-                     linkage_type = "single", na.rm = TRUE)}
+mapper_object <- mapper(full_data = geneSelection_object[["genes_disease_component"]],
+filter_values = geneSelection_object[["filter_values"]],
+num_intervals = 5,
+percent_overlap = 40, distance_type = "cor",
+clustering_type = "hierarchical",
+linkage_type = "single")}
 }

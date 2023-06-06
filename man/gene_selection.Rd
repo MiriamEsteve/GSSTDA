@@ -65,7 +65,7 @@ the p-values for each Z value)
 Private function to gene selection
 }
 \examples{
-\dontrun{
+\donttest{
 gen_select_type <- "Top_Bot"
 percent_gen_select <- 10
 control_tag_cases <- which(case_tag == "NT")

@@ -190,7 +190,7 @@ geneSelection <- function(data_object, gen_select_type,
 #' - and the vector of the values of the filter function.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' gen_select_type <- "Top_Bot"
 #' percent_gen_select <- 10
 #' control_tag_cases <- which(case_tag == "NT")
@@ -254,11 +254,11 @@ gene_selection <- function(full_data, survival_time, survival_event, control_tag
 #' the matrix of the disease components.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' DGSA_obj <- DGSA(full_data, survival_time, survival_event, case_tag, na.rm = "checked")
 #'
-#' geneSelection.DGSA_object(DGSA_obj, gen_select_type = "top_bot", percent_gen_select=10,
-#' na.rm = TRUE)}
+#' geneSelection_object <- geneSelection(DGSA_obj, gen_select_type ="top_bot",
+#'                                       percent_gen_select = 10)}
 geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
   print(class(data_object))
 
@@ -319,12 +319,12 @@ geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_
 #' the matrix of the disease components.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data_object <- list("full_data" = full_data, "survival_time" = survival_time,
 #' "survival_event" = survival_event, "case_tag" = case_tag)
 #' class(data_object) <- "data_object"
-#' geneSelection.default(data_object, gen_select_type = "top_bot",
-#' percent_gen_select=10, na.rm = "checked")}
+#' geneSelection_object <- geneSelection(data_object, gen_select_type ="top_bot",
+#'                                       percent_gen_select = 10)}
 geneSelection.default <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
   full_data <- data_object[["full_data"]]
   survival_event <- data_object[["survival_event"]]
@@ -406,22 +406,17 @@ geneSelection.default <- function(data_object, gen_select_type, percent_gen_sele
 #' (node_average_filt) and the adjacency matrix linking the nodes (adj_matrix).
 #' @export
 #' @examples
-#' \dontrun{
-#' num_rows <- 100
-#' gen_select_type <- "Top_Bot"
-#' percent_gen_select <- 10
+#' \donttest{
 #' control_tag_cases <- which(case_tag == "NT")
-#' geneSelection_obj <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
+#' geneSelection_object <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
 #' gen_select_type ="top_bot", num_gen_select = 10)
 #'
-#'
-#' mapper_obj <- mapper(full_data = geneSelection_object[["genes_disease_component"]],
-#'                      filter_values = geneSelection_object[["filter_values"]],
-#'                      num_intervals = 4,
-#'                      percent_overlap = 0.5, distance_type = "euclidean",
-#'                      num_bins_when_clustering = 8,
-#'                      clustering_type = "hierarchical",
-#'                      linkage_type = "single", na.rm = TRUE)}
+#' mapper_object <- mapper(full_data = geneSelection_object[["genes_disease_component"]],
+#' filter_values = geneSelection_object[["filter_values"]],
+#' num_intervals = 5,
+#' percent_overlap = 40, distance_type = "cor",
+#' clustering_type = "hierarchical",
+#' linkage_type = "single")}
 mapper <- function(full_data, filter_values, num_intervals = 5, percent_overlap = 40,
                    distance_type = "cor", clustering_type = "hierarchical",
                    num_bins_when_clustering = 10, linkage_type = "single",

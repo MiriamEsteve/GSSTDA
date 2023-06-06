@@ -33,9 +33,9 @@ the matrix of the disease components.
 Private function to select Gene with DGSA object
 }
 \examples{
-\dontrun{
+\donttest{
 DGSA_obj <- DGSA(full_data, survival_time, survival_event, case_tag, na.rm = "checked")
 
-geneSelection.DGSA_object(DGSA_obj, gen_select_type = "top_bot", percent_gen_select=10,
-na.rm = TRUE)}
+geneSelection_object <- geneSelection(DGSA_obj, gen_select_type ="top_bot",
+                                      percent_gen_select = 10)}
 }

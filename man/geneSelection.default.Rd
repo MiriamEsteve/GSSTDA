@@ -54,10 +54,10 @@ the matrix of the disease components.
 Private function to select Gene without DGSA process
 }
 \examples{
-\dontrun{
+\donttest{
 data_object <- list("full_data" = full_data, "survival_time" = survival_time,
 "survival_event" = survival_event, "case_tag" = case_tag)
 class(data_object) <- "data_object"
-geneSelection.default(data_object, gen_select_type = "top_bot",
-percent_gen_select=10, na.rm = "checked")}
+geneSelection_object <- geneSelection(data_object, gen_select_type ="top_bot",
+                                      percent_gen_select = 10)}
 }

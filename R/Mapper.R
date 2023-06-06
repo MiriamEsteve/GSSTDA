@@ -91,21 +91,22 @@ one_D_Mapper <- function(mapper_object_ini){
 #' @export
 #' @import visNetwork
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Create data object
 #' data_object <- list("full_data" = full_data, "survival_time" = survival_time,
 #'                    "survival_event" = survival_event, "case_tag" = case_tag)
 #' class(data_object) <- "data_object"
-#' Select gene from data object
-#' geneSelection_object <- geneSelection(data_object, gen_select_type, percent_gen_select)
+#'
+#' #Select gene from data object
+#' geneSelection_object <- geneSelection(data_object, gen_select_type="top_bot",
+#'  percent_gen_select=10)
 #'
 #' mapper_object <- mapper(full_data = geneSelection_object[["genes_disease_component"]],
 #' filter_values = geneSelection_object[["filter_values"]],
-#' num_intervals = num_intervals,
-#' percent_overlap = percent_overlap, distance_type = distance_type,
-#' clustering_type = clustering_type,
-#' linkage_type = linkage_type,
-#' optimal_clustering_mode = optimal_clustering_mode)
+#' num_intervals = 5,
+#' percent_overlap = 40, distance_type = "cor",
+#' clustering_type = "hierarchical",
+#' linkage_type = "single")
 #' plot_mapper(mapper_object)}
 plot_mapper <- function(mapper_object,trans_node_size = TRUE,exp_to_res = 1/2){
   arr_ind <- base::which(arr.ind = TRUE,mapper_object[["adj_matrix"]] == 1)
