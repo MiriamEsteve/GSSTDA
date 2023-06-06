@@ -28,7 +28,7 @@ check_full_data <- function(full_data, na.rm = TRUE){
     # Remove rows (genes) with NA's values
     full_data <- full_data[rowSums(is.na(full_data))==0,]
 
-    print(paste(nrow(full_data) - nrow_ini, " missing values and NaN's are omitted in the genes (rows)"))
+    message(paste(nrow(full_data) - nrow_ini, " missing values and NaN's are omitted in the genes (rows)"))
   }
   return(full_data)
 }

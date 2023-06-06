@@ -408,8 +408,16 @@ geneSelection.default <- function(data_object, gen_select_type, percent_gen_sele
 #' @examples
 #' \dontrun{
 #' num_rows <- 100
-#' filter_values <- c()
-#' mapper_obj <- mapper(full_data, filter_values, num_intervals = 4,
+#' gen_select_type <- "Top_Bot"
+#' percent_gen_select <- 10
+#' control_tag_cases <- which(case_tag == "NT")
+#' geneSelection_obj <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
+#' gen_select_type ="top_bot", num_gen_select = 10)
+#'
+#'
+#' mapper_obj <- mapper(full_data = geneSelection_object[["genes_disease_component"]],
+#'                      filter_values = geneSelection_object[["filter_values"]],
+#'                      num_intervals = 4,
 #'                      percent_overlap = 0.5, distance_type = "euclidean",
 #'                      num_bins_when_clustering = 8,
 #'                      clustering_type = "hierarchical",
