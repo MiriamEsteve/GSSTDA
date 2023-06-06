@@ -26,7 +26,3 @@ and the number of ramifications.
 \description{
 Wrapping function to carry out the complete process.
 }
-\examples{
-\dontrun{
-one_D_Mapper(mapper_object_ini)}
-}
