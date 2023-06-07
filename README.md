@@ -8,7 +8,7 @@ You can install the development version from
 library(devtools)
 devtools::install_github("jokergoo/ComplexHeatmap")
 
-devtools::install_github("MiriamEsteve/G-SS-TDA")
+devtools::install_github("MiriamEsteve/GSSTDA")
 library(GSSTDA)
 ```
 
