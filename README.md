@@ -1,7 +1,12 @@
 # GSSTDA: Gene Structure Survival using Topological Data Analysis
 ## Installation
+You can install the released version of eat from [CRAN](https://CRAN.R-project.org) with:
 
-You can install the development version from
+``` r
+install.packages("GSSTDA")
+```
+
+And you can install the development version from
 [GitHub](https://github.com/MiriamEsteve/EAT) with:
 
 ``` r
