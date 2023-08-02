@@ -4,6 +4,8 @@
 #'
 #' @param mapper_object_ini Mapper TDA initializated object generated
 #' by \code{mapper} function.
+#'
+#' @export
 #' @return A \code{mapper_obj} object. It contains the values of the intervals
 #' (interval_data), the samples included in each interval (sample_in_level),
 #' information about the cluster to which the individuals in each interval
