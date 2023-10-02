@@ -1,11 +1,12 @@
 #' @title Survival analysis based on gene expression levels.
 #' @description It carries out univariate cox proportional hazard models for
-#' the expression levels of each gene included in the provided dataset (case_disease_component)
-#' and their link with relapse-free or overall survival.
-#' @param case_disease_component Disease component matrix (output of the function
-#' \code{generate_disease_component}) having selected only the columns
-#' belonging to disease samples. The names of the rows must be the names of the genes.
-#' @param survival_time Numeric vector that includes time to the event information
+#' the expression levels of each gene included in the provided dataset
+#' (case_full_data) and their link with relapse-free or overall survival.
+#' @param case_full_data Input matrix whose columns correspond to the patients
+#' and rows to the genes, having selected only the columns belonging to disease
+#' samples. The names of the rows must be the names of the genes.
+#' @param survival_time Numeric vector that includes time to the event
+#' information
 #' @param survival_event Numeric vector that indicates if relapse or death
 #' have been produced (0 and 1s).
 #' @return A matrix with the results of the application of proportional
@@ -18,20 +19,21 @@
 #' significance of the variable) and the \code{Pr_z} column corresponds to
 #' the p-value for each Z value.
 #' @import survival
-cox_all_genes <- function(case_disease_component, survival_time, survival_event){
+cox_all_genes <- function(case_full_data, survival_time, survival_event){
   message("Calculating the matrix of Zcox")
-  pb <- utils::txtProgressBar(min = 0, max = nrow(case_disease_component), style = 3)
+  pb <- utils::txtProgressBar(min = 0, max = nrow(case_full_data), style = 3)
 
   list_out <- list()
-  for(i in 1:nrow(case_disease_component)){
+  for(i in 1:nrow(case_full_data)){
     utils::setTxtProgressBar(pb, i)
 
-    temp <- summary(survival::coxph(survival::Surv(survival_time,survival_event)~case_disease_component[i,]))$coefficients[1,]
+    temp <- summary(survival::coxph(survival::Surv(survival_time,survival_event)
+                                    ~case_full_data[i,]))$coefficients[1,]
     list_out[[i]] <- temp
   }
   cox_all_matrix <- data.frame(do.call("rbind",list_out))
   colnames(cox_all_matrix) <-  c("coef","exp_coef","se_coef","z","Pr_z")
-  rownames(cox_all_matrix) <- rownames(case_disease_component)
+  rownames(cox_all_matrix) <- rownames(case_full_data)
   cox_all_matrix <- as.matrix(cox_all_matrix)
   return(cox_all_matrix)
 }

@@ -10,7 +10,8 @@ gene_selection(
   survival_event,
   control_tag_cases,
   gen_select_type,
-  num_gen_select
+  num_gen_select,
+  matrix_disease_component = NULL
 )
 }
 \arguments{
@@ -29,13 +30,8 @@ For the patients with tumour sample should be indicated whether
 the patient has died (1) or not (0). Only these values are valid
 and healthy patients must have an NA value.}
 
-\item{control_tag_cases}{Character vector of the same length as the number of
-columns of full_data. Patients must be in the same order as in full_data.
-It must be indicated for each patient whether he/she is healthy or not.
-One value should be used to indicate whether the patient is healthy and
-another value should be used to indicate whether the patient's sample is
-tumourous. The user will then be asked which one indicates whether
-the patient is healthy. Only two values are valid in the vector in total.}
+\item{control_tag_cases}{Numeric vector with the indices of the columns
+corresponding to the healthy sample patients.}
 
 \item{gen_select_type}{Option. Options on how to select the genes to be
 used in the mapper. Select the "Abs" option, which means that the
@@ -46,11 +42,18 @@ worst survival prognosis) and the other half are those with the
 lowest value (negative value, i.e. best prognosis). "Top_Bot" default option.}
 
 \item{num_gen_select}{Number of genes to be selected to be used in mapper.}
+
+\item{matrix_disease_component}{Optional, only necessary in case of gene
+selection after DGSA has been performed. Matrix of the disease components
+(the transformed \code{full_data} matrix from which the normal component has
+been removed) from the \code{DGSA_function}.}
 }
 \value{
 A \code{geneSelection_object}. It contains:
 \itemize{
-\item the \code{full_data} without NAN's values (\code{data})
+\item the matrix with which the gene selection has been performed without NAN's
+values (\code{data}). It is the \code{matrix_disease_component} in case it has been
+performed from a \code{DGSA_object} or \code{full_data} in the opposite case.
 \item the \code{cox_all_matrix} (a matrix with the results of the application of
 proportional hazard models: with the regression coefficients, the odds ratios,
 the standard errors of each coefficient, the Z values (coef/se_coef) and

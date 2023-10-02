@@ -35,12 +35,13 @@ If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 option.}
 }
 \value{
-A \code{DGSA} object. It contains: the \code{full_data} without NAN's
-values, the \code{case_control} vector without NAN's values, the label
-designated for healthy samples (\code{control_tag}), the matrix with the
-normal space (linear space generated from normal tissue samples) and the
-matrix of the disease components (the transformed full_data matrix from
-which the normal component has been removed).
+A \code{DGSA} object. It contains: the \code{full_data} without
+NAN's values, the label designated for healthy samples (\code{control_tag}),
+the \code{case_tag} vector without NAN's values, the \code{survival_event},
+the the \code{survival_time} the matrix with the normal space (linear space
+generated from normal tissue samples) and the matrix of the disease
+components (the transformed full_data matrix from which the normal component
+has been removed).
 }
 \description{
 Disease-Specific Genomic Analysis (DGSA).

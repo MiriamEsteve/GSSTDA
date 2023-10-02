@@ -4,14 +4,15 @@
 \alias{cox_all_genes}
 \title{Survival analysis based on gene expression levels.}
 \usage{
-cox_all_genes(case_disease_component, survival_time, survival_event)
+cox_all_genes(case_full_data, survival_time, survival_event)
 }
 \arguments{
-\item{case_disease_component}{Disease component matrix (output of the function
-\code{generate_disease_component}) having selected only the columns
-belonging to disease samples. The names of the rows must be the names of the genes.}
+\item{case_full_data}{Input matrix whose columns correspond to the patients
+and rows to the genes, having selected only the columns belonging to disease
+samples. The names of the rows must be the names of the genes.}
 
-\item{survival_time}{Numeric vector that includes time to the event information}
+\item{survival_time}{Numeric vector that includes time to the event
+information}
 
 \item{survival_event}{Numeric vector that indicates if relapse or death
 have been produced (0 and 1s).}
@@ -29,6 +30,6 @@ the p-value for each Z value.
 }
 \description{
 It carries out univariate cox proportional hazard models for
-the expression levels of each gene included in the provided dataset (case_disease_component)
-and their link with relapse-free or overall survival.
+the expression levels of each gene included in the provided dataset
+(case_full_data) and their link with relapse-free or overall survival.
 }

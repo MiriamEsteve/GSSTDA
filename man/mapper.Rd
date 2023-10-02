@@ -41,8 +41,8 @@ default option.}
 
 \item{num_bins_when_clustering}{Number of bins to generate the
 histogram employed by the standard optimal number of cluster finder
-method. Parameter not necessary if the "optimal_clust_mode" option
-is "silhouette" or the "clust_type" is "PAM". 10 default option.}
+method. Parameter not necessary if the "optimal_clustering_mode" option
+is "silhouette" or the "clustering_type" is "PAM". 10 default option.}
 
 \item{linkage_type}{Linkage criteria used in hierarchical clustering.
 Choose between "single" for single-linkage clustering, "complete" for
