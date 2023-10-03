@@ -9,17 +9,18 @@ check_vectors(full_data, survival_time, survival_event, case_tag, na.rm = TRUE)
 \arguments{
 \item{full_data}{The genes of the full_data (maybe remove by na.rm = TRUE)}
 
-\item{survival_time}{Time between disease diagnosis and death (if not dead until the end of follow-up).}
+\item{survival_time}{Time between disease diagnosis and event (if there was
+no event until the end of follow-up).}
 
-\item{survival_event}{\code{logical}. Whether the patient has died or not.}
+\item{survival_event}{\code{logical}. Whether or not the event has occurred.}
 
-\item{case_tag}{The tag of the healthy patient (healthy or not).}
+\item{case_tag}{The tag of the healthy sample (healthy or not).}
 
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 If \code{FALSE}, an error occurs in case of \code{NA} rows.}
 }
 \value{
-control_tag Return the tag of the healthy patient
+control_tag Return the tag of the healthy sample.
 }
 \description{
 Checking the \code{survival_time}, \code{survival_event} and \code{case_tag} introduces in the \code{GSSTDA} object.

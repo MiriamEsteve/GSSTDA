@@ -5,7 +5,7 @@
 #'   (platform HG-U133_Plus_2).
 #'
 #' @name full_data
-#' @format Gene expression matrix with  20825 rows and 121 columns.
+#' @format Gene expression matrix with  4165 rows and 121 columns.
 #' \describe{The columns correspond to the patients and the rows to
 #'   the genes. The column names correspond to the patient identifier
 #'   in GEO. The row names correspond to the gene names.
@@ -20,6 +20,8 @@
 #' not target genes with valid gene id were filtered and  those probes
 #' targeting the same gene were collapse by thanking those presenting the
 #' highest row variance using the \code{WGCNA::collapseRows} function.
+#' Subsequently, due to CRAN publication requirements, the number of genes
+#' is randomly reduced to 4165 genes.
 #' @usage
 #' data(full_data, package = "GSSTDA")
 "full_data"
@@ -44,11 +46,11 @@
 #' Survival event vector
 #'
 #' Character vector of length 121 containing whether or not the patient
-#' is deceased.
+#' is relapsed.
 #'
 #' @name survival_event
 #' @format  Character vector of length 121.
-#' \describe{A value of "0" indicates that the patient did not pass away
+#' \describe{A value of "0" indicates that the patient did not relapse
 #'  during follow-up, a value of "1" indicates that the patient did. Samples
 #'  from healthy tissue contain a value of \code{NA}.
 #' }
@@ -62,8 +64,8 @@
 #' Survival time vector
 #'
 #' Numeric vector of length 121 containing the time in months until
-#' the death of the patient or until the end of the follow-up in case the
-#' patient has not passed away.
+#' the relapse of the patient or until the end of the follow-up in case the
+#' patient has not relapsed.
 #'
 #' @name survival_time
 #' @format  Numeric vector of length 121.

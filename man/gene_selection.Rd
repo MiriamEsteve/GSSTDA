@@ -19,16 +19,18 @@ gene_selection(
 rows to the genes.}
 
 \item{survival_time}{Numerical vector of the same length as the number of
-columns of full_data. Patients must be in the same order as in full_data.
-For the patients with tumour sample should be indicated the time between
-disease diagnosis and death (if not dead until the end of follow-up)
-and healthy patients must have an NA value.}
+columns of \code{full_data}. In addition, the patients must be in the same
+order as in \code{full_data}. For the patients whose sample is pathological
+should be indicated the time between the disease diagnosis and event
+(death, relapse or other). If the event has not occurred, it should be
+indicated the time until the end of follow-up. Patients whose sample is
+from healthy tissue must have an NA value}
 
 \item{survival_event}{Numerical vector of the same length as the number of
-columns of full_data. Patients must be in the same order as in full_data.
-For the patients with tumour sample should be indicated whether
-the patient has died (1) or not (0). Only these values are valid
-and healthy patients must have an NA value.}
+columns of \code{full_data}. Patients must be in the same order as in
+\code{full_data}. For the the patients with pathological sample should
+be indicated whether the event has occurred (1) or not (0). Only these
+values are valid and healthy patients must have an NA value.}
 
 \item{control_tag_cases}{Numeric vector with the indices of the columns
 corresponding to the healthy sample patients.}

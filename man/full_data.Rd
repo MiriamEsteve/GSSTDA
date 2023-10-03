@@ -5,7 +5,7 @@
 \alias{full_data}
 \title{Gene expression matrix}
 \format{
-Gene expression matrix with  20825 rows and 121 columns.
+Gene expression matrix with  4165 rows and 121 columns.
 \describe{The columns correspond to the patients and the rows to
 the genes. The column names correspond to the patient identifier
 in GEO. The row names correspond to the gene names.
@@ -31,5 +31,7 @@ fRMA method implemented in the \code{fRMA} package. Filtered probes that did
 not target genes with valid gene id were filtered and  those probes
 targeting the same gene were collapse by thanking those presenting the
 highest row variance using the \code{WGCNA::collapseRows} function.
+Subsequently, due to CRAN publication requirements, the number of genes
+is randomly reduced to 4165 genes.
 }
 \keyword{datasets}

@@ -21,22 +21,25 @@
 #' @param full_data Input matrix whose columns correspond to the patients and
 #' rows to the genes.
 #' @param survival_time Numerical vector of the same length as the number of
-#' columns of full_data. Patients must be in the same order as in full_data.
-#' For the patients with tumour sample should be indicated the time between
-#' disease diagnosis and death (if not dead until the end of follow-up)
-#' and healthy patients must have an NA value.
+#' columns of \code{full_data}. In addition, the patients must be in the same
+#' order as in \code{full_data}. For the patients whose sample is pathological
+#' should be indicated the time between the disease diagnosis and event
+#' (death, relapse or other). If the event has not occurred, it should be
+#' indicated the time until the end of follow-up. Patients whose sample is
+#' from healthy tissue must have an NA value
 #' @param survival_event Numerical vector of the same length as the number of
-#' columns of full_data. Patients must be in the same order as in full_data.
-#' For the patients with tumour sample should be indicated whether
-#' the patient has died (1) or not (0). Only these values are valid
-#' and healthy patients must have an NA value.
+#' columns of \code{full_data}. Patients must be in the same order as in
+#' \code{full_data}. For the the patients with pathological sample should
+#' be indicated whether the event has occurred (1) or not (0). Only these
+#' values are valid and healthy patients must have an NA value.
 #' @param case_tag Character vector of the same length as the number of
-#' columns of full_data. Patients must be in the same order as in full_data.
-#' It must be indicated for each patient whether he/she is healthy or not.
-#' One value should be used to indicate whether the patient is healthy and
-#' another value should be used to indicate whether the patient's sample is
-#' tumourous. The user will then be asked which one indicates whether
-#' the patient is healthy. Only two values are valid in the vector in total.
+#' columns of \code{full_data}. Patients must be in the same order as in
+#' \code{full_data}. It must be indicated for each patient whether its
+#' sample is from pathological or healthy tissue. One value should be used to
+#' indicate whether the patient's sample is healthy and another value should
+#' be used to indicate whether the patient's sample is pathological.
+#' The user will then be asked which one indicates whether the patient is
+#' healthy. Only two values are valid in the vector in total.
 #' @param gen_select_type Option. Options on how to select the genes to be
 #' used in the mapper. Select the "Abs" option, which means that the
 #' genes with the highest absolute value are chosen, or the

@@ -24,13 +24,17 @@ library(GSSTDA)
 
 Loading data:
 
-* The *full data* is the expression matrix, 
-* the *survival_time* is a vector with time between disease diagnosis and death, 
-or other type of event, (if there has been no death, until the end of follow-up), 
-* the *survival_event* is a vector with information  on whether or not the patient 
-has died (or other type of event) 
-* and the *case_tag* with information from each patient on whether he/she is 
-healthy or not.
+* The *full data* is the expression matrix whose columns correspond to the patients and
+rows to the genes, 
+* the *survival_time* is a vector in which, in the case of patients whose sample 
+is pathological, the time between the disease diagnosis and event
+(in this case relapse) is indicated. If the patient has not relapsed, the time 
+until the end of follow-up is indicated. Patients whose sample is
+from healthy tissue have an NA value, 
+* the *survival_event* is a vector with information on whether the event (in 
+this case relapse) has occurred in each patient,
+* and the *case_tag* with information for each patient on whether his or her
+sample is pathological or healthy tissue.
 
 See *GSSTDA* documentation for further information.
 ```{r}
@@ -63,7 +67,8 @@ and "PAM" (“partition around medoids”) options).
 
 For hierarchical clustering only, you will be asked by the console to choose 
 the mode in which the number of clusters will be chosen (choose between 
-"silhouette", default, and "standard"). If the mode is "standard" you can 
+"silhouette", default, and "standard"). If you use the package's own data 
+we recommend to use "silhouette". If the mode is "standard" you can 
 indicate the number of bins to generate the histogram (\code{num_bins_when_clustering}, 
 by default 10). If the clustering method is "PAM", the default method will be "silhouette". 
 Also, if the clustering type is hierarchical you can choose the type of linkage criteria 
@@ -112,7 +117,7 @@ geneSelection_object <- geneSelection(DGSA_object, gen_select_type, percent_gen_
 
 ```
 
-Another option to execute the second step of the process. Create a object "data_object" with the require information. This could be used when you do not want to apply DGSA (RBR, duda).
+Another option to execute the second step of the process. Create a object "data_object" with the require information. This could be used when you do not want to apply DGSA.
 
 ```{r}
 # Create data object

@@ -20,7 +20,7 @@ data(survival_time, package = "GSSTDA")
 }
 \description{
 Numeric vector of length 121 containing the time in months until
-the death of the patient or until the end of the follow-up in case the
-patient has not passed away.
+the relapse of the patient or until the end of the follow-up in case the
+patient has not relapsed.
 }
 \keyword{datasets}

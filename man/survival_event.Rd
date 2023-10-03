@@ -6,7 +6,7 @@
 \title{Survival event vector}
 \format{
 Character vector of length 121.
-\describe{A value of "0" indicates that the patient did not pass away
+\describe{A value of "0" indicates that the patient did not relapse
 during follow-up, a value of "1" indicates that the patient did. Samples
 from healthy tissue contain a value of \code{NA}.
 }
@@ -21,6 +21,6 @@ data(survival_event, package = "GSSTDA")
 }
 \description{
 Character vector of length 121 containing whether or not the patient
-is deceased.
+is relapsed.
 }
 \keyword{datasets}
