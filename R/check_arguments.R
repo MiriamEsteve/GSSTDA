@@ -188,15 +188,16 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
   optimal_clustering_mode <- "silhouette"
 
   if(clustering_type == "hierarchical"){
-    opt_clust_modes <- c("standard","silhouette")
     option <- readline(prompt="Choose one of the following optimal cluster number method: standard/silhouette: ")
 
     if(option != "standard"){
       optimal_clustering_mode <- "silhouette"
     }
+    else{
+      optimal_clustering_mode <- "standard"
+    }
   }
-
-  message("The optimal clustering mode is '", optimal_clustering_mode, "' by default")
+  message("The optimal clustering mode is '", optimal_clustering_mode, " '")
 
   #Check linkage_type
   link_types <- c("single","average","complete")
