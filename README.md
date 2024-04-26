@@ -84,7 +84,7 @@ geneSelection_object <- geneSelection(DGSA_object, gen_select_type, percent_gen_
 
 ```
 
-Another option to execute the second step of the process. Create a object "data_object" with the require information. This could be used when you do not want to apply DGSA (RBR, duda).
+Another option to execute the second step of the process. Create a object "data_object" with the require information. This could be used when you do not want to apply DGSA.
 
 ```{r}
 # Create data object
