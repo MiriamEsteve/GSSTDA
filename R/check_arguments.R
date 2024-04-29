@@ -158,7 +158,7 @@ check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select)
 #' to the input matrix, i.e, a vector with the filtering function
 #' values for each included sample.
 #' @param distance_type Type of distance to be used for clustering.
-#' Choose between correlation ("cor") and euclidean ("euclidean"). "cor"
+#' Choose between correlation ("correlation") and euclidean ("euclidean"). "correlation"
 #' default option.
 #' @param clustering_type Type of clustering method. Choose between
 #' "hierarchical" and "PAM" (“partition around medoids”) options.
@@ -174,7 +174,7 @@ check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select)
 #' @return \code{optimal_clustering_mode}
 check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type, na.rm = TRUE){
   #Check distance_type
-  distances <- c("cor","euclidean")
+  distances <- c("correlation","euclidean")
   if(!distance_type %in% distances){
     stop(paste("Invalid distance selected. Choose one of the folowing: ", paste(distances, collapse = ", ")))
   }

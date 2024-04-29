@@ -17,6 +17,34 @@ devtools::install_github("MiriamEsteve/GSSTDA")
 library(GSSTDA)
 ```
 
+### Installing the "ComplexHeatmap" Dependency from Bioconductor
+The "ComplexHeatmap" package is a Bioconductor package required for some functionalities of our R package. To ensure it is correctly installed, please follow these steps:
+
+*1. Install Bioconductor Manager*: First, ensure that the Bioconductor manager package is installed. You can do this by running the following command in your R console:
+```{r}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+```
+
+*2. Install ComplexHeatmap*: Once you have the Bioconductor manager installed, you can install the "ComplexHeatmap" package by executing:
+```{r}
+BiocManager::install("ComplexHeatmap")
+```
+
+*3. Load the package*: After installation, load "ComplexHeatmap" into your R session to verify that the installation was successful:
+```{r}
+library(ComplexHeatmap)
+```
+
+*4. Check for updates*: Bioconductor packages are updated regularly. It's a good practice to check for updates to ensure you have the latest version of "ComplexHeatmap". You can check for updates and install them by running:
+```{r}
+BiocManager::install()  # This updates all installed Bioconductor packages
+```
+
+By following these instructions, you should have the "ComplexHeatmap" package installed and ready for use with our package. If you encounter any issues during installation, please consult the Bioconductor support site or reach out for help through the community forums
+
+
 ## Loading data
 * The *full data* is the expression matrix, 
 * the *survival_time* is a vector with time between disease diagnosis and death, 

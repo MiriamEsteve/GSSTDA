@@ -396,7 +396,7 @@ geneSelection.default <- function(data_object, gen_select_type, percent_gen_sele
 #' @param percent_overlap Percentage of overlap between intervals. Expressed
 #' as a percentage. 40 default option.
 #' @param distance_type Type of distance to be used for clustering.
-#' Choose between correlation ("cor") and euclidean ("euclidean"). "cor"
+#' Choose between correlation ("correlation") and euclidean ("euclidean"). "correlation"
 #' default option.
 #' @param clustering_type Type of clustering method. Choose between
 #' "hierarchical" and "PAM" (“partition around medoids”) options.
@@ -435,11 +435,11 @@ geneSelection.default <- function(data_object, gen_select_type, percent_gen_sele
 #' mapper_object <- mapper(full_data = geneSelection_object[["genes_disease_component"]],
 #' filter_values = geneSelection_object[["filter_values"]],
 #' num_intervals = 5,
-#' percent_overlap = 40, distance_type = "cor",
+#' percent_overlap = 40, distance_type = "correlation",
 #' clustering_type = "hierarchical",
 #' linkage_type = "single")}
 mapper <- function(full_data, filter_values, num_intervals = 5, percent_overlap = 40,
-                   distance_type = "cor", clustering_type = "hierarchical",
+                   distance_type = "correlation", clustering_type = "hierarchical",
                    num_bins_when_clustering = 10, linkage_type = "single",
                    optimal_clustering_mode="", na.rm=TRUE){
   # Don't call by GSSTDA function
