@@ -19,7 +19,7 @@ clust_lev(
 corresponding to the individuals belonging to the level.}
 
 \item{distance_type}{Type of distance to be used for clustering.
-Choose between correlation ("cor") and euclidean ("euclidean").}
+Choose between correlation ("correlation") and euclidean ("euclidean").}
 
 \item{clustering_type}{Type of clustering method.
 Choose between "hierarchical" and "PAM" (“partition around medoids”)

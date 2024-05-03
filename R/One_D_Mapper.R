@@ -59,7 +59,7 @@ samples_in_levels <- function(interval_data,filter_values){
 #' @param full_data_i Matrix with the columns of the input matrix
 #' corresponding to the individuals belonging to the level.
 #' @param distance_type Type of distance to be used for clustering.
-#' Choose between correlation ("cor") and euclidean ("euclidean").
+#' Choose between correlation ("correlation") and euclidean ("euclidean").
 #' @param clustering_type Type of clustering method.
 #' Choose between "hierarchical" and "PAM" (“partition around medoids”)
 #' options.
@@ -86,7 +86,7 @@ samples_in_levels <- function(interval_data,filter_values){
 clust_lev <- function(full_data_i, distance_type, clustering_type, linkage_type,
                       optimal_clustering_mode, num_bins_when_clustering, level_name){
   #Distance type
-  if(distance_type == "cor"){
+  if(distance_type == "correlation"){
     level_dist <- stats::as.dist(1-stats::cor(full_data_i))
   }else{
     level_dist <- stats::dist(base::t(full_data_i),method = distance_type)
@@ -174,7 +174,7 @@ clust_lev <- function(full_data_i, distance_type, clustering_type, linkage_type,
 #' of the filter functions). It is the output of the \code{samples_in_levels}
 #' function.
 #' @param distance_type Type of distance to be used for clustering.
-#' Choose between correlation ("cor") and euclidean ("euclidean").
+#' Choose between correlation ("correlation") and euclidean ("euclidean").
 #' @param clustering_type Type of clustering method. Choose between
 #' "hierarchical" and "PAM" (“partition around medoids”) options.
 #' @param linkage_type Linkage criteria used in hierarchical clustering.

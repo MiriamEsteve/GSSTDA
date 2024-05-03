@@ -32,13 +32,13 @@ data_object <- list("full_data" = full_data, "survival_time" = survival_time,
 class(data_object) <- "data_object"
 
 #Select gene from data object
-geneSelection_object <- geneSelection(data_object, gen_select_type="top_bot",
+gene_selection_object <- gene_selection(data_object, gen_select_type="top_bot",
  percent_gen_select=10)
 
-mapper_object <- mapper(full_data = geneSelection_object[["genes_disease_component"]],
-filter_values = geneSelection_object[["filter_values"]],
+mapper_object <- mapper(full_data = gene_selection_object[["genes_disease_component"]],
+filter_values = gene_selection_object[["filter_values"]],
 num_intervals = 5,
-percent_overlap = 40, distance_type = "cor",
+percent_overlap = 40, distance_type = "correlation",
 clustering_type = "hierarchical",
 linkage_type = "single")
 plot_mapper(mapper_object)}

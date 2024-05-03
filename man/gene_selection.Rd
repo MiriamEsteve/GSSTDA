@@ -2,38 +2,36 @@
 % Please edit documentation in R/GSSTDA_objects.R
 \name{gene_selection}
 \alias{gene_selection}
-\title{gene_selection}
+\title{Gene selection and filter function}
 \usage{
-gene_selection(
-  full_data,
-  survival_time,
-  survival_event,
-  control_tag_cases,
-  gen_select_type,
-  num_gen_select,
-  matrix_disease_component = NULL
-)
+gene_selection(data_object, gen_select_type, percent_gen_select, na.rm = TRUE)
 }
 \arguments{
-\item{full_data}{Input matrix whose columns correspond to the patients and
-rows to the genes.}
-
-\item{survival_time}{Numerical vector of the same length as the number of
-columns of \code{full_data}. In addition, the patients must be in the same
+\item{data_object}{Object with:
+\itemize{
+\item full_data Input matrix whose columns correspond to the patients and
+rows to the genes.
+\item survival_time Numerical vector of the same length as the number of columns
+of \code{full_data}. In addition, the patients must be in the same
 order as in \code{full_data}. For the patients whose sample is pathological
 should be indicated the time between the disease diagnosis and event
 (death, relapse or other). If the event has not occurred, it should be
 indicated the time until the end of follow-up. Patients whose sample is
-from healthy tissue must have an NA value}
-
-\item{survival_event}{Numerical vector of the same length as the number of
+from healthy tissue must have an NA value
+\item survival_event Numerical vector of the same length as the number of
 columns of \code{full_data}. Patients must be in the same order as in
 \code{full_data}. For the the patients with pathological sample should
 be indicated whether the event has occurred (1) or not (0). Only these
-values are valid and healthy patients must have an NA value.}
-
-\item{control_tag_cases}{Numeric vector with the indices of the columns
-corresponding to the healthy sample patients.}
+values are valid and healthy patients must have an NA value.
+\item case_tag Character vector of the same length as the number of
+columns of \code{full_data}. Patients must be in the same order as in
+\code{full_data}. It must be indicated for each patient whether its
+sample is from pathological or healthy tissue. One value should be used to
+indicate whether the patient's sample is healthy and another value should
+be used to indicate whether the patient's sample is pathological.
+The user will then be asked which one indicates whether the patient is
+healthy. Only two values are valid in the vector in total.
+}}
 
 \item{gen_select_type}{Option. Options on how to select the genes to be
 used in the mapper. Select the "Abs" option, which means that the
@@ -43,19 +41,17 @@ genes are those with the highest value (positive value, i.e.
 worst survival prognosis) and the other half are those with the
 lowest value (negative value, i.e. best prognosis). "Top_Bot" default option.}
 
-\item{num_gen_select}{Number of genes to be selected to be used in mapper.}
+\item{percent_gen_select}{Percentage (from zero to one hundred) of genes
+to be selected to be used in mapper. 10 default option.}
 
-\item{matrix_disease_component}{Optional, only necessary in case of gene
-selection after DGSA has been performed. Matrix of the disease components
-(the transformed \code{full_data} matrix from which the normal component has
-been removed) from the \code{DGSA_function}.}
+\item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
+If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
+option.}
 }
 \value{
-A \code{geneSelection_object}. It contains:
+A \code{gene_selection_object}. It contains:
 \itemize{
-\item the matrix with which the gene selection has been performed without NAN's
-values (\code{data}). It is the \code{matrix_disease_component} in case it has been
-performed from a \code{DGSA_object} or \code{full_data} in the opposite case.
+\item the \code{full_data} without NAN's values (\code{data})
 \item the \code{cox_all_matrix} (a matrix with the results of the application of
 proportional hazard models: with the regression coefficients, the odds ratios,
 the standard errors of each coefficient, the Z values (coef/se_coef) and
@@ -67,13 +63,24 @@ the p-values for each Z value)
 }
 }
 \description{
-Private function to gene selection
+Gene selection and calculation of filter function values.
+After fitting a Cox proportional hazard model to each gene, this function
+makes a selection of genes according to both their variability within
+the database and their relationship with survival. Subsequently, with the
+genes selected, the values of the filtering functions are calculated for
+each patient. The filter function allows to summarise each vector of each
+individual in a single data. This function takes into account the survival
+associated with each gene. In particular, the implemented filter function
+performs the vector magnitude in the [L_{p}] norm (as well as k powers
+of this magnitude) of the vector resulting of weighting each element of
+the column vector by the Z score obtained in the cox proportional
+hazard model.
 }
 \examples{
 \donttest{
-gen_select_type <- "Top_Bot"
-percent_gen_select <- 10
-control_tag_cases <- which(case_tag == "NT")
-geneSelection_obj <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
-gen_select_type ="top_bot", num_gen_select = 10)}
+data_object <- list("full_data" = full_data, "survival_time" = survival_time,
+"survival_event" = survival_event, "case_tag" = case_tag)
+class(data_object) <- "data_object"
+gene_selection_obj <- gene_selection(data_object,
+gen_select_type ="top_bot", percent_gen_select=10)}
 }

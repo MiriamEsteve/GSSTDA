@@ -100,13 +100,13 @@ one_D_Mapper <- function(mapper_object_ini){
 #' class(data_object) <- "data_object"
 #'
 #' #Select gene from data object
-#' geneSelection_object <- geneSelection(data_object, gen_select_type="top_bot",
+#' gene_selection_object <- gene_selection(data_object, gen_select_type="top_bot",
 #'  percent_gen_select=10)
 #'
-#' mapper_object <- mapper(full_data = geneSelection_object[["genes_disease_component"]],
-#' filter_values = geneSelection_object[["filter_values"]],
+#' mapper_object <- mapper(full_data = gene_selection_object[["genes_disease_component"]],
+#' filter_values = gene_selection_object[["filter_values"]],
 #' num_intervals = 5,
-#' percent_overlap = 40, distance_type = "cor",
+#' percent_overlap = 40, distance_type = "correlation",
 #' clustering_type = "hierarchical",
 #' linkage_type = "single")
 #' plot_mapper(mapper_object)}
@@ -125,6 +125,19 @@ plot_mapper <- function(mapper_object,trans_node_size = TRUE,exp_to_res = 1/2){
   nodes_to_net$color <- map_to_color(base::log2(base::unlist(mapper_object[["node_average_filt"]]) + 2))
   edges_to_net <- df_out[,c(1,2)]-1
   base::colnames(edges_to_net) <- c("from","to")
-  visNetwork::visNetwork(nodes_to_net,edges_to_net[!edges_to_net$from == edges_to_net$to,],)
-}
 
+  nodes <- data.frame(
+    id = nodes_to_net$id,
+    label = nodes_to_net$label,
+    size = nodes_to_net$size,  # Example sizes
+    title = paste("Node Size:", round(nodes_to_net$size, 4)),  # Tooltip content
+    color = nodes_to_net$color,
+    stringsAsFactors = FALSE  # Ensure string handling
+  )
+
+  visNetwork::visNetwork(nodes,edges_to_net[!edges_to_net$from == edges_to_net$to,],) %>%
+    visNetwork::visNodes(shape = "dot", scaling = list(label = list(enabled = TRUE, min = 10, max = 30))) %>%
+    visNetwork::visEdges(smooth = FALSE) %>%
+    visNetwork::visLayout(randomSeed = 2) %>%
+    visNetwork::visPhysics(solver = "forceAtlas2Based")
+}

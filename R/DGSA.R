@@ -193,7 +193,7 @@ generate_disease_component <- function(full_data, normal_space){
 }
 
 
-#' @title plot DGSA
+#' @title plot dgsa
 #' @description
 #' It draws the heatmap of the DGSA result by selecting the 100 genes with
 #' the highest variability between samples.
@@ -211,7 +211,7 @@ generate_disease_component <- function(full_data, normal_space){
 #' @import circlize
 #' @export
 #' @return The heatmap of the DGSA result.
-plot_DGSA <- function(selected_matrix_disease_component, case_tag){
+plot_dgsa <- function(selected_matrix_disease_component, case_tag){
   col_fun = circlize::colorRamp2(c(-4, 0,4),
                                  c("red", "black", "green"))
   row_text_size = 10
@@ -231,7 +231,7 @@ plot_DGSA <- function(selected_matrix_disease_component, case_tag){
                                                top_annotation = ha))
 }
 
-#' @title results DGSA
+#' @title results dgsa
 #' @description
 #' It calculates the 100 genes with the highest variability in the matrix
 #' disease component between samples and use them to draw the heat map.
@@ -248,14 +248,14 @@ plot_DGSA <- function(selected_matrix_disease_component, case_tag){
 #' @export
 #' @return A heatmap of the 100 genes with the highest variability in the matrix
 #' disease component.
-results_DGSA <- function(matrix_disease_component, case_tag){
+results_dgsa <- function(matrix_disease_component, case_tag){
   genes_sd <- apply(matrix_disease_component,1,stats::sd)
   selected_genes_sd <- names(genes_sd[order(genes_sd,decreasing = T)])[1:100]
   selected_matrix_disease_component_sd <- matrix_disease_component[selected_genes_sd,]
 
   # DT::datatable(selected_matrix_disease_component_sd)
 
-  plot_DGSA(selected_matrix_disease_component_sd, case_tag)
+  plot_dgsa(selected_matrix_disease_component_sd, case_tag)
 
   return(selected_genes_sd)
 }

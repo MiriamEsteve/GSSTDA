@@ -61,7 +61,7 @@ For the mapper, it is necessary to know the number of intervals into which the
 values of the filter functions will be divided and the overlap between them 
 (\code{percent_overlap}). Default are 5 and 40 respectively. It is also 
 necessary to choose the type of distance to be used for clustering within each 
-interval (choose between correlation ("cor"), default, and euclidean 
+interval (choose between correlation ("correlation"), default, and euclidean 
 ("euclidean")) and the clustering  type (choose between "hierarchical", default, 
 and "PAM" (“partition around medoids”) options).
 
@@ -78,7 +78,7 @@ Also, if the clustering type is hierarchical you can choose the type of linkage 
 #Mapper information
 num_intervals <- 5
 percent_overlap <- 40
-distance_type <- "cor"
+distance_type <- "correlation"
 clustering_type <- "hierarchical"
 linkage_type <- "single" # only necessary if the type of clustering is hierarchical 
 # num_bins_when_clustering <- 10 # only necessary if the type of clustering is hierarchical 
@@ -103,7 +103,7 @@ that is considered normal or healthy and keeping only the component that is
 due to the disease.  
 
 ```{r}
-DGSA_object <- DGSA(full_data, survival_time, survival_event, case_tag)
+dgsa_object <- dgsa(full_data, survival_time, survival_event, case_tag)
 
 
 ```
@@ -113,7 +113,7 @@ DGSA_object <- DGSA(full_data, survival_time, survival_event, case_tag)
 After performing a survival analysis of each gene, this function selects the genes to be used in the mapper according to both their variability within the database and their relationship with survival. Subsequently, with the genes selected, the values of the filtering functions are calculated for each patient. The filter function allows summarizing each vector of each individual into a single data point. This function takes into account the survival associated with each gene. Additionally, we have incorporated a method for testing the Proportional Hazards (PH) assumption directly within our package. This is achieved using the `survival` CRAN package, a well-established resource for conducting survival analysis in R. Specifically, we utilize the `cox.zph` function from the `survival` package to test the PH assumption. This function assesses whether the proportional hazards assumption holds for the covariates included in the model, providing diagnostics that are crucial for the correct interpretation of the Cox model outputs.
 
 ```{r}
-geneSelection_object <- geneSelection(DGSA_object, gen_select_type, percent_gen_select)
+gene_selection_object <- gene_selection(dgsa_object, gen_select_type, percent_gen_select)
 
 ```
 
@@ -127,7 +127,7 @@ class(data_object) <- "data_object"
 
 
 #Select gene from data object
-geneSelection_object <- geneSelection(data_object, gen_select_type, percent_gen_select)
+gene_selection_object <- gene_selection(data_object, gen_select_type, percent_gen_select)
 
 
 ```
@@ -148,8 +148,8 @@ This function is independent from the rest and could be used without having done
 DGSA and gene selection
 
 ```{r}
-mapper_object <- mapper(full_data = geneSelection_object[["genes_disease_component"]], 
-                        filter_values = geneSelection_object[["filter_values"]],
+mapper_object <- mapper(full_data = gene_selection_object[["genes_disease_component"]], 
+                        filter_values = gene_selection_object[["filter_values"]],
                         num_intervals = num_intervals,
                         percent_overlap = percent_overlap, distance_type = distance_type,
                         clustering_type = clustering_type,
@@ -165,8 +165,8 @@ Obtain information from the DGSA block created in the previous step.
 This function returns the 100 genes with the highest variability within 
 the dataset and builds a heat map with them.
 ```{r}
-DGSA_information <- results_DGSA(DGSA_object[["matrix_disease_component"]], case_tag)
-print(DGSA_information)
+dgsa_information <- results_dgsa(dgsa_object[["matrix_disease_component"]], case_tag)
+print(dgsa_information)
 ```
 
 Obtain information from the mapper object created in the G-SS-TDA process.
@@ -184,7 +184,7 @@ plot_mapper(mapper_object)
 
 It creates the GSSTDA object with full data set, internally pre-process using the DGSA technique, and the mapper information.
 ```{r}
-GSSTDA_obj <- GSSTDA(full_data = full_data, survival_time = survival_time, 
+gsstda_obj <- gsstda(full_data = full_data, survival_time = survival_time, 
                      survival_event = survival_event, case_tag = case_tag, 
                      gen_select_type = gen_select_type, 
                      percent_gen_select = percent_gen_select, 
@@ -202,17 +202,17 @@ Obtain information from the DGSA block created in the previous step.
 
 This function returns the 100 genes with the highest variability within the dataset and builds a heat map with them.
 ```{r}
-DGSA_information <- results_DGSA(GSSTDA_obj[["matrix_disease_component"]], case_tag)
-print(DGSA_information)
+dgsa_information <- results_dgsa(gsstda_obj[["matrix_disease_component"]], case_tag)
+print(dgsa_information)
 ```
 
 Obtain information from the mapper object created in the G-SS-TDA process.
 ```{r}
-print(GSSTDA_obj[["mapper_obj"]])
+print(gsstda_obj[["mapper_obj"]])
 ```
 
 Plot the mapper graph.
 ```{r}
-plot_mapper(GSSTDA_obj[["mapper_obj"]])
+plot_mapper(gsstda_obj[["mapper_obj"]])
 ```
 

@@ -9,7 +9,7 @@ mapper(
   filter_values,
   num_intervals = 5,
   percent_overlap = 40,
-  distance_type = "cor",
+  distance_type = "correlation",
   clustering_type = "hierarchical",
   num_bins_when_clustering = 10,
   linkage_type = "single",
@@ -32,7 +32,7 @@ partition based on filtering values. 5 default option.}
 as a percentage. 40 default option.}
 
 \item{distance_type}{Type of distance to be used for clustering.
-Choose between correlation ("cor") and euclidean ("euclidean"). "cor"
+Choose between correlation ("correlation") and euclidean ("euclidean"). "correlation"
 default option.}
 
 \item{clustering_type}{Type of clustering method. Choose between
@@ -82,13 +82,13 @@ dimension, i.e. using only one filter function value.
 \examples{
 \donttest{
 control_tag_cases <- which(case_tag == "NT")
-geneSelection_object <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
-gen_select_type ="top_bot", num_gen_select = 10)
+gene_selection_object <- gene_selection_(full_data, survival_time, survival_event,
+control_tag_cases, gen_select_type ="top_bot", num_gen_select = 10)
 
-mapper_object <- mapper(full_data = geneSelection_object[["genes_disease_component"]],
-filter_values = geneSelection_object[["filter_values"]],
+mapper_object <- mapper(full_data = gene_selection_object[["genes_disease_component"]],
+filter_values = gene_selection_object[["filter_values"]],
 num_intervals = 5,
-percent_overlap = 40, distance_type = "cor",
+percent_overlap = 40, distance_type = "correlation",
 clustering_type = "hierarchical",
 linkage_type = "single")}
 }

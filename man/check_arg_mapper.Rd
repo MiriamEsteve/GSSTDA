@@ -22,7 +22,7 @@ to the input matrix, i.e, a vector with the filtering function
 values for each included sample.}
 
 \item{distance_type}{Type of distance to be used for clustering.
-Choose between correlation ("cor") and euclidean ("euclidean"). "cor"
+Choose between correlation ("correlation") and euclidean ("euclidean"). "correlation"
 default option.}
 
 \item{clustering_type}{Type of clustering method. Choose between

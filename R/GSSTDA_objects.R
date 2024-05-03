@@ -32,7 +32,7 @@
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 #' option.
-#' @return A \code{DGSA} object. It contains: the \code{full_data} without
+#' @return A \code{dgsa} object. It contains: the \code{full_data} without
 #' NAN's values, the label designated for healthy samples (\code{control_tag}),
 #' the \code{case_tag} vector without NAN's values, the \code{survival_event},
 #' the the \code{survival_time} the matrix with the normal space (linear space
@@ -42,8 +42,8 @@
 #' @export
 #' @examples
 #' \donttest{
-#' DGSA_obj <- DGSA(full_data,  survival_time, survival_event, case_tag)}
-DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TRUE){
+#' dgsa_obj <- dgsa(full_data,  survival_time, survival_event, case_tag)}
+dgsa <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TRUE){
   ################################ Prepare data and check data ########################################
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data, na.rm)
@@ -71,7 +71,7 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
   message("\nBLOCK I: The pre-process DGSA is finished\n")
 
   ############################################  Create the object #########################################
-  DGSA_object <- list("full_data" = full_data,
+  dgsa_object <- list("full_data" = full_data,
                       "control_tag" = control_tag,
                       "case_tag" = case_tag,
                       "survival_event" = survival_event,
@@ -79,9 +79,9 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
                       "normal_space" = normal_space,
                       "matrix_disease_component" = matrix_disease_component)
 
-  class(DGSA_object) <- "DGSA_object"
+  class(dgsa_object) <- "dgsa_object"
 
-  return(DGSA_object)
+  return(dgsa_object)
 }
 
 
@@ -133,7 +133,7 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 #' option.
-#' @return A \code{geneSelection_object}. It contains:
+#' @return A \code{gene_selection_object}. It contains:
 #' - the \code{full_data} without NAN's values (\code{data})
 #' - the \code{cox_all_matrix} (a matrix with the results of the application of
 #' proportional hazard models: with the regression coefficients, the odds ratios,
@@ -149,14 +149,14 @@ DGSA <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TR
 #' data_object <- list("full_data" = full_data, "survival_time" = survival_time,
 #' "survival_event" = survival_event, "case_tag" = case_tag)
 #' class(data_object) <- "data_object"
-#' geneSelection_obj <- geneSelection(data_object,
+#' gene_selection_obj <- gene_selection(data_object,
 #' gen_select_type ="top_bot", percent_gen_select=10)}
-geneSelection <- function(data_object, gen_select_type,
+gene_selection <- function(data_object, gen_select_type,
                           percent_gen_select, na.rm = TRUE){
-  UseMethod("geneSelection")
+  UseMethod("gene_selection")
 }
 
-#' @title gene_selection
+#' @title Private gene_selection_
 #' @description Private function to gene selection
 #' @param full_data Input matrix whose columns correspond to the patients and
 #' rows to the genes.
@@ -185,11 +185,11 @@ geneSelection <- function(data_object, gen_select_type,
 #' @param matrix_disease_component Optional, only necessary in case of gene
 #' selection after DGSA has been performed. Matrix of the disease components
 #' (the transformed \code{full_data} matrix from which the normal component has
-#' been removed) from the \code{DGSA_function}.
-#' @return A \code{geneSelection_object}. It contains:
+#' been removed) from the \code{dgsa_function}.
+#' @return A \code{gene_selection_object}. It contains:
 #' - the matrix with which the gene selection has been performed without NAN's
 #' values (\code{data}). It is the \code{matrix_disease_component} in case it has been
-#' performed from a \code{DGSA_object} or \code{full_data} in the opposite case.
+#' performed from a \code{dgsa_object} or \code{full_data} in the opposite case.
 #' - the \code{cox_all_matrix} (a matrix with the results of the application of
 #' proportional hazard models: with the regression coefficients, the odds ratios,
 #' the standard errors of each coefficient, the Z values (coef/se_coef) and
@@ -204,9 +204,9 @@ geneSelection <- function(data_object, gen_select_type,
 #' gen_select_type <- "Top_Bot"
 #' percent_gen_select <- 10
 #' control_tag_cases <- which(case_tag == "NT")
-#' geneSelection_obj <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
-#' gen_select_type ="top_bot", num_gen_select = 10)}
-gene_selection <- function(full_data, survival_time, survival_event,
+#' gene_selection_obj <- gene_selection_(full_data, survival_time, survival_event,
+#' control_tag_cases, gen_select_type ="top_bot", num_gen_select = 10)}
+gene_selection_ <- function(full_data, survival_time, survival_event,
                            control_tag_cases, gen_select_type, num_gen_select,
                            matrix_disease_component = NULL){
 
@@ -238,18 +238,18 @@ gene_selection <- function(full_data, survival_time, survival_event,
 
   message("\nBLOCK II: The gene selection is finished\n")
 
-  geneSelection_object <- list( "data" = matrix_disease_component,
+  gene_selection_object <- list( "data" = matrix_disease_component,
                                 "cox_all_matrix" = cox_all_matrix,
                                 "genes_selected" = genes_selected,
                                 "genes_disease_component" = genes_disease_component,
                                 "filter_values" = filter_values
   )
-  class(geneSelection_object) <- "geneSelection_object"
+  class(gene_selection_object) <- "gene_selection_object"
 
-  return(geneSelection_object)
+  return(gene_selection_object)
 }
 
-#' @title gene_selection_classes.DGSA_object
+#' @title gene_selection_classes.dgsa_object
 #'
 #' @description Private function to select Gene with DGSA object
 #' @param data_object DGSA object information
@@ -265,17 +265,17 @@ gene_selection <- function(full_data, survival_time, survival_event,
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 #' option.
-#' @return A \code{geneSelection} object. It contains: the full_data without NAN's values,
+#' @return A \code{gene_selection} object. It contains: the full_data without NAN's values,
 #' the control tag of the healthy patient, the matrix with the normal space and
 #' the matrix of the disease components.
 #' @export
 #' @examples
 #' \donttest{
-#' DGSA_obj <- DGSA(full_data, survival_time, survival_event, case_tag, na.rm = "checked")
+#' dgsa_obj <- dgsa(full_data, survival_time, survival_event, case_tag, na.rm = "checked")
 #'
-#' geneSelection_object <- geneSelection(DGSA_obj, gen_select_type ="top_bot",
+#' gene_selection_object <- gene_selection(dgsa_obj, gen_select_type ="top_bot",
 #'                                       percent_gen_select = 10)}
-geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
+gene_selection.dgsa_object <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
   print(class(data_object))
 
   matrix_disease_component <- data_object[["matrix_disease_component"]]
@@ -290,11 +290,11 @@ geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_
   case_tag <- data_object[["case_tag"]]
 
   control_tag_cases <- which(case_tag == control_tag)
-  geneSelection_object <- gene_selection(full_data, survival_time, survival_event,
+  gene_selection_object <- gene_selection_(full_data, survival_time, survival_event,
                                          control_tag_cases, gen_select_type, num_gen_select,
                                          matrix_disease_component)
 
-  return(geneSelection_object)
+  return(gene_selection_object)
 }
 
 #' @title gene_selection_classes.default
@@ -335,7 +335,7 @@ geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 #' option.
-#' @return A \code{geneSelection} object. It contains: the full_data without NAN's values,
+#' @return A \code{gene_selection} object. It contains: the full_data without NAN's values,
 #' the control tag of the healthy patient, the matrix with the normal space and
 #' the matrix of the disease components.
 #' @export
@@ -344,9 +344,9 @@ geneSelection.DGSA_object <- function(data_object, gen_select_type, percent_gen_
 #' data_object <- list("full_data" = full_data, "survival_time" = survival_time,
 #' "survival_event" = survival_event, "case_tag" = case_tag)
 #' class(data_object) <- "data_object"
-#' geneSelection_object <- geneSelection(data_object, gen_select_type ="top_bot",
+#' gene_selection_object <- gene_selection(data_object, gen_select_type ="top_bot",
 #'                                       percent_gen_select = 10)}
-geneSelection.default <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
+gene_selection.default <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
   full_data <- data_object[["full_data"]]
   survival_event <- data_object[["survival_event"]]
   survival_time <- data_object[["survival_time"]]
@@ -369,10 +369,10 @@ geneSelection.default <- function(data_object, gen_select_type, percent_gen_sele
 
   control_tag_cases <- which(case_tag == control_tag)
 
-  geneSelection_object <- gene_selection(full_data, survival_time, survival_event,
+  gene_selection_object <- gene_selection_(full_data, survival_time, survival_event,
                                          control_tag_cases, gen_select_type, num_gen_select)
 
-  return(geneSelection_object)
+  return(gene_selection_object)
 }
 
 
@@ -429,11 +429,11 @@ geneSelection.default <- function(data_object, gen_select_type, percent_gen_sele
 #' @examples
 #' \donttest{
 #' control_tag_cases <- which(case_tag == "NT")
-#' geneSelection_object <- gene_selection(full_data, survival_time, survival_event, control_tag_cases,
-#' gen_select_type ="top_bot", num_gen_select = 10)
+#' gene_selection_object <- gene_selection_(full_data, survival_time, survival_event,
+#' control_tag_cases, gen_select_type ="top_bot", num_gen_select = 10)
 #'
-#' mapper_object <- mapper(full_data = geneSelection_object[["genes_disease_component"]],
-#' filter_values = geneSelection_object[["filter_values"]],
+#' mapper_object <- mapper(full_data = gene_selection_object[["genes_disease_component"]],
+#' filter_values = gene_selection_object[["filter_values"]],
 #' num_intervals = 5,
 #' percent_overlap = 40, distance_type = "correlation",
 #' clustering_type = "hierarchical",

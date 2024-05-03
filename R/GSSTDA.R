@@ -56,7 +56,7 @@
 #' of overlap between intervals. Expressed as a percentage. 40 default option.
 #' @param distance_type Parameter for the mapper algorithm.
 #' Type of distance to be used for clustering. Choose between correlation
-#' ("cor") and euclidean ("euclidean"). "cor" default option.
+#' ("correlation") and euclidean ("euclidean"). "correlation" default option.
 #' @param clustering_type Parameter for the mapper algorithm. Type of
 #' clustering method. Choose between "hierarchical" and "PAM"
 #' (“partition around medoids”) options. "hierarchical" default option.
@@ -73,7 +73,7 @@
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 #' option.
-#' @return A \code{GSSTDA} object. It contains:
+#' @return A \code{gsstda} object. It contains:
 #' - the matrix with the normal space \code{normal_space},
 #' - the matrix of the disease components normal_space \code{matrix_disease_component},
 #' - a matrix with the results of the application of proportional hazard models
@@ -95,13 +95,13 @@
 #' @export
 #' @examples
 #' \donttest{
-#' GSSTDA_object <- GSSTDA(full_data,  survival_time, survival_event, case_tag,
+#' gsstda_object <- gsstda(full_data,  survival_time, survival_event, case_tag,
 #'                  gen_select_type="Top_Bot", percent_gen_select=10,
 #'                  num_intervals = 4, percent_overlap = 50,
 #'                  distance_type = "euclidean", num_bins_when_clustering = 8,
 #'                  clustering_type = "hierarchical", linkage_type = "single")}
-GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_select_type="Top_Bot",
-                   percent_gen_select=10, num_intervals=5, percent_overlap=40, distance_type="cor",
+gsstda <- function(full_data, survival_time, survival_event, case_tag, gen_select_type="Top_Bot",
+                   percent_gen_select=10, num_intervals=5, percent_overlap=40, distance_type="correlation",
                    clustering_type="hierarchical", num_bins_when_clustering=10, linkage_type="single",
                    na.rm=TRUE){
   ################################ Prepare data and check data ########################################
@@ -122,20 +122,20 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
 
 
   ################### BLOCK I: Pre-process. DGSA (using "NT" control_tag) ##############################
-  DGSA_obj <- DGSA(full_data, survival_time, survival_event, case_tag, na.rm = "checked")
-  matrix_disease_component <- DGSA_obj[["matrix_disease_component"]]
-  control_tag <- DGSA_obj[["control_tag"]]
-  full_data <- DGSA_obj[["full_data"]]
-  survival_event <- DGSA_obj[["survival_event"]]
-  survival_time <- DGSA_obj[["survival_time"]]
-  case_tag <- DGSA_obj[["case_tag"]]
+  dgsa_obj <- dgsa(full_data, survival_time, survival_event, case_tag, na.rm = "checked")
+  matrix_disease_component <- dgsa_obj[["matrix_disease_component"]]
+  control_tag <- dgsa_obj[["control_tag"]]
+  full_data <- dgsa_obj[["full_data"]]
+  survival_event <- dgsa_obj[["survival_event"]]
+  survival_time <- dgsa_obj[["survival_time"]]
+  case_tag <- dgsa_obj[["case_tag"]]
 
   ################### BLOCK II: Gene selection (using "T" control_tag) ##################################
-  geneSelection_object <- geneSelection(DGSA_obj, gen_select_type, percent_gen_select)
-  cox_all_matrix <- geneSelection_object[["cox_all_matrix"]]
-  genes_selected <- geneSelection_object[["genes_selected"]]
-  genes_disease_component <- geneSelection_object[["genes_disease_component"]]
-  filter_values <- geneSelection_object[["filter_values"]]
+  gene_selection_object <- gene_selection(dgsa_obj, gen_select_type, percent_gen_select)
+  cox_all_matrix <- gene_selection_object[["cox_all_matrix"]]
+  genes_selected <- gene_selection_object[["genes_selected"]]
+  genes_disease_component <- gene_selection_object[["genes_disease_component"]]
+  filter_values <- gene_selection_object[["filter_values"]]
 
   ################### BLOCK III: Create mapper object where the arguments are checked ###################
   message("\nBLOCK III: The mapper process is started")
@@ -156,7 +156,7 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
 
 
   ############################################  Create the object #########################################
-  GSSTDA_object <- list("normal_space" = DGSA_obj[["normal_space"]],
+  gsstda_object <- list("normal_space" = dgsa_obj[["normal_space"]],
                         "matrix_disease_component" = matrix_disease_component,
                         "cox_all_matrix" = cox_all_matrix,
                         "genes_selected" = genes_selected,
@@ -164,6 +164,6 @@ GSSTDA <- function(full_data, survival_time, survival_event, case_tag, gen_selec
                         "mapper_obj" = mapper_obj
                         )
 
-  class(GSSTDA_object) <- "GSSTDA_obj"
-  return(GSSTDA_object)
+  class(gsstda_object) <- "gsstda_obj"
+  return(gsstda_object)
 }
