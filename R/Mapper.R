@@ -123,7 +123,7 @@ plot_mapper <- function(mapper_object,trans_node_size = TRUE,exp_to_res = 1/2){
   if(trans_node_size){
     nodes_to_net$node_size <- (nodes_to_net$node_size)^exp_to_res
   }
-  base::colnames(nodes_to_net) <- c("id","label","size", "ori_size","color")
+  base::colnames(nodes_to_net) <- c("id","label","size", "ori_size")
   nodes_to_net$color <- map_to_color(base::log2(base::unlist(mapper_object[["node_average_filt"]]) + 2))
   edges_to_net <- df_out[,c(1,2)]-1
   base::colnames(edges_to_net) <- c("from","to")
