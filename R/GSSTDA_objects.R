@@ -386,7 +386,7 @@ gene_selection.default <- function(data_object, gen_select_type, percent_gen_sel
 #' a combinatory graph or simplicial complex that is referred to as
 #' the skeleton of the dataset. This implementation is the mapper of one
 #' dimension, i.e. using only one filter function value.
-#' @param full_data Input matrix whose columns correspond to the individuals
+#' @param data Input matrix whose columns correspond to the individuals
 #' and rows to the features.
 #' @param filter_values Vector obtained after applying the filtering function
 #' to the input matrix, i.e, a vector with the filtering function
@@ -432,30 +432,30 @@ gene_selection.default <- function(data_object, gen_select_type, percent_gen_sel
 #' gene_selection_object <- gene_selection_(full_data, survival_time, survival_event,
 #' control_tag_cases, gen_select_type ="top_bot", num_gen_select = 10)
 #'
-#' mapper_object <- mapper(full_data = gene_selection_object[["genes_disease_component"]],
+#' mapper_object <- mapper(data = gene_selection_object[["genes_disease_component"]],
 #' filter_values = gene_selection_object[["filter_values"]],
 #' num_intervals = 5,
 #' percent_overlap = 40, distance_type = "correlation",
 #' clustering_type = "hierarchical",
 #' linkage_type = "single")}
-mapper <- function(full_data, filter_values, num_intervals = 5, percent_overlap = 40,
+mapper <- function(data, filter_values, num_intervals = 5, percent_overlap = 40,
                    distance_type = "correlation", clustering_type = "hierarchical",
                    num_bins_when_clustering = 10, linkage_type = "single",
                    optimal_clustering_mode="", na.rm=TRUE){
   # Don't call by GSSTDA function
   if (na.rm != "checked"){
-    # Check the full_data introduces
-    full_data <- check_full_data(full_data)
+    # Check the data introduces
+    data <- check_full_data(data)
     # Check mapper arguments
-    check_return <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type,
+    check_return <- check_arg_mapper(data, filter_values, distance_type, clustering_type,
                                      linkage_type)
 
-    full_data <- check_return[[1]]
+    data <- check_return[[1]]
     filter_values <- check_return[[2]]
     optimal_clustering_mode <- check_return[[3]]
   }
 
-  mapper_object_ini <- list("full_data" = full_data,
+  mapper_object_ini <- list("data" = data,
                             "filter_values" = filter_values,
                             "num_intervals" = num_intervals,
                             "percent_overlap" = percent_overlap/100,
