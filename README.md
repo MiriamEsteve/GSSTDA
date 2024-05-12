@@ -135,7 +135,7 @@ Mapper condenses the information of high-dimensional datasets into a combinatory
 This function is independent from the rest and could be used without having done DGSA and gene selection
 
 ```{r}
-mapper_object <- mapper(full_data = gene_selection_object[["genes_disease_component"]], 
+mapper_object <- mapper(data = gene_selection_object[["genes_disease_component"]], 
                         filter_values = gene_selection_object[["filter_values"]],
                         num_intervals = num_intervals,
                         percent_overlap = percent_overlap, distance_type = distance_type,

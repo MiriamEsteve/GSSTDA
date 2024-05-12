@@ -56,7 +56,7 @@ samples_in_levels <- function(interval_data,filter_values){
 #' particular interval of the filter function) with the proposed clustering
 #' algorithm and the proposed method to determine the optimal number
 #' of clusters.
-#' @param full_data_i Matrix with the columns of the input matrix
+#' @param data_i Matrix with the columns of the input matrix
 #' corresponding to the individuals belonging to the level.
 #' @param distance_type Type of distance to be used for clustering.
 #' Choose between correlation ("correlation") and euclidean ("euclidean").
@@ -83,13 +83,13 @@ samples_in_levels <- function(interval_data,filter_values){
 #' names of the samples and the vector values are the node number
 #' to which the individual belongs.
 #' @import cluster
-clust_lev <- function(full_data_i, distance_type, clustering_type, linkage_type,
+clust_lev <- function(data_i, distance_type, clustering_type, linkage_type,
                       optimal_clustering_mode, num_bins_when_clustering, level_name){
   #Distance type
   if(distance_type == "correlation"){
-    level_dist <- stats::as.dist(1-stats::cor(full_data_i))
+    level_dist <- stats::as.dist(1-stats::cor(data_i))
   }else{
-    level_dist <- stats::dist(base::t(full_data_i),method = distance_type)
+    level_dist <- stats::dist(base::t(data_i),method = distance_type)
   }
 
   #Clustering type
@@ -98,7 +98,7 @@ clust_lev <- function(full_data_i, distance_type, clustering_type, linkage_type,
   if(clustering_type == "PAM"){
     av_sil <- c()
     n_clust <- c()
-    for(i in 1:(ncol(full_data_i)-1)){
+    for(i in 1:(ncol(data_i)-1)){
       temp_clust <- cluster::pam(x =level_dist,diss = TRUE,k = i)
       if(i == 1){
         av_sil <- c(av_sil,0)
@@ -113,8 +113,8 @@ clust_lev <- function(full_data_i, distance_type, clustering_type, linkage_type,
       cluster_indices_level <- cluster::pam(x =level_dist,diss = TRUE,k = op_clust)$clustering
       return(cluster_indices_level)
     }else{
-      cluster_indices_level <- rep(1,ncol(full_data_i))
-      names(cluster_indices_level) <- colnames(full_data_i)
+      cluster_indices_level <- rep(1,ncol(data_i))
+      names(cluster_indices_level) <- colnames(data_i)
       return(cluster_indices_level)
     }
   } else if(clustering_type == "hierarchical"){
@@ -128,13 +128,13 @@ clust_lev <- function(full_data_i, distance_type, clustering_type, linkage_type,
       hist_gap <- (histogram$counts == 0)
       if(all(!hist_gap)){
         warning("There is no gap... therefore only one cluster...")
-        cluster_indices_level <- base::rep(1,ncol(full_data_i))
-        names(cluster_indices_level) <- base::colnames(full_data_i)
+        cluster_indices_level <- base::rep(1,ncol(data_i))
+        names(cluster_indices_level) <- base::colnames(data_i)
         return(cluster_indices_level)
       }else{
         threshold_value <- histogram$mids[min(which(hist_gap == TRUE))]
         cluster_indices_level <- base::as.vector(stats::cutree(level_hclust_out, h=threshold_value))
-        base::names(cluster_indices_level) <- base::colnames(full_data_i)
+        base::names(cluster_indices_level) <- base::colnames(data_i)
         return(cluster_indices_level)
       }
     }
@@ -167,7 +167,7 @@ clust_lev <- function(full_data_i, distance_type, clustering_type, linkage_type,
 #' filtering function, the samples with a value within that interval
 #' are clustered using the proposed clustering algorithm and the
 #' proposed method to determine the optimal number of clusters.
-#' @param full_data Input data matrix whose columns are the individuals
+#' @param data Input data matrix whose columns are the individuals
 #' and rows are the features.BR cambiar nombre.
 #' @param samp_in_lev A list of character vectors with the individuals
 #' included in each of the levels (i.e. each of the intervals of the values
@@ -194,13 +194,13 @@ clust_lev <- function(full_data_i, distance_type, clustering_type, linkage_type,
 #' about the nodes at each level and the individuals contained in them. The
 #' names of the vector values are the names of the samples and the vector
 #' values are the node number of that level to which the individual belongs.
-clust_all_levels <- function(full_data, samp_in_lev, distance_type, clustering_type,
+clust_all_levels <- function(data, samp_in_lev, distance_type, clustering_type,
                              linkage_type, optimal_clustering_mode, num_bins_when_clustering){
 
   list_out <- base::list()
   for(i in 1:base::length(samp_in_lev)){
     if(length(samp_in_lev[[i]]) > 2){
-      clust_level_temp <- clust_lev(full_data[,samp_in_lev[[i]]], distance_type, clustering_type,
+      clust_level_temp <- clust_lev(data[,samp_in_lev[[i]]], distance_type, clustering_type,
                                     linkage_type, optimal_clustering_mode, num_bins_when_clustering,
                                     base::paste("Level",i,sep="_"))
     }else{

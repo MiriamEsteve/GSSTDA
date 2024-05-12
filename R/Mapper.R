@@ -19,7 +19,7 @@
 #' and the number of ramifications.
 one_D_Mapper <- function(mapper_object_ini){
 
-  full_data <- mapper_object_ini[["full_data"]]
+  data <- mapper_object_ini[["data"]]
   filter_values <- mapper_object_ini[["filter_values"]]
 
   #Getting intervals.
@@ -29,7 +29,7 @@ one_D_Mapper <- function(mapper_object_ini){
   samp_in_lev <- samples_in_levels(interval_data, filter_values)
 
   #Clustering all levels.
-  test_clust_all_levels <- clust_all_levels(full_data, samp_in_lev, mapper_object_ini[["distance_type"]], mapper_object_ini[["clustering_type"]],
+  test_clust_all_levels <- clust_all_levels(data, samp_in_lev, mapper_object_ini[["distance_type"]], mapper_object_ini[["clustering_type"]],
                                             mapper_object_ini[["linkage_type"]], mapper_object_ini[["optimal_clustering_mode"]],  mapper_object_ini[["num_bins_when_clustering"]])
   #Transforming levels into nodes.
   node_samples <- levels_to_nodes(test_clust_all_levels)
@@ -103,7 +103,7 @@ one_D_Mapper <- function(mapper_object_ini){
 #' gene_selection_object <- gene_selection(data_object, gen_select_type="top_bot",
 #'  percent_gen_select=10)
 #'
-#' mapper_object <- mapper(full_data = gene_selection_object[["genes_disease_component"]],
+#' mapper_object <- mapper(data = gene_selection_object[["genes_disease_component"]],
 #' filter_values = gene_selection_object[["filter_values"]],
 #' num_intervals = 5,
 #' percent_overlap = 40, distance_type = "correlation",
@@ -118,10 +118,12 @@ plot_mapper <- function(mapper_object,trans_node_size = TRUE,exp_to_res = 1/2){
   base::colnames(df_out) <- c("from","to","from_name","to_name")
   nodes_to_net <- base::unique(base::data.frame(c(df_out[,1]-1,df_out[,2]-1),c(df_out[,3],df_out[,4])))
   nodes_to_net$node_size <- mapper_object[["node_sizes"]]
+  nodes_to_net$ori_size <- mapper_object[["node_sizes"]] #node size with trans_node_size
+
   if(trans_node_size){
     nodes_to_net$node_size <- (nodes_to_net$node_size)^exp_to_res
   }
-  base::colnames(nodes_to_net) <- c("id","label","size")
+  base::colnames(nodes_to_net) <- c("id","label","size", "ori_size","color")
   nodes_to_net$color <- map_to_color(base::log2(base::unlist(mapper_object[["node_average_filt"]]) + 2))
   edges_to_net <- df_out[,c(1,2)]-1
   base::colnames(edges_to_net) <- c("from","to")
@@ -130,7 +132,7 @@ plot_mapper <- function(mapper_object,trans_node_size = TRUE,exp_to_res = 1/2){
     id = nodes_to_net$id,
     label = nodes_to_net$label,
     size = nodes_to_net$size,  # Example sizes
-    title = paste("Node Size:", round(nodes_to_net$size, 4)),  # Tooltip content
+    title = paste("Node Size:", nodes_to_net$ori_size),  # Tooltip content
     color = nodes_to_net$color,
     stringsAsFactors = FALSE  # Ensure string handling
   )
