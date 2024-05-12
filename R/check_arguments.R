@@ -42,10 +42,11 @@ check_full_data <- function(full_data, na.rm = TRUE){
 #' no event until the end of follow-up).
 #' @param survival_event \code{logical}. Whether or not the event has occurred.
 #' @param case_tag The tag of the healthy sample (healthy or not).
+#' @param control_tag Tag of the healthy sample.E.g. "T"
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #' @return control_tag Return the tag of the healthy sample.
-check_vectors <- function(full_data, survival_time, survival_event, case_tag, na.rm = TRUE){
+check_vectors <- function(full_data, survival_time, survival_event, case_tag, control_tag, na.rm = TRUE){
   ncol_full_data <- ncol(full_data)
   # Check if the arguments are vectors; a valid type of data; and the vectors are the same dimension as a full_data
   if(!is.vector(survival_time) | !is.numeric(survival_time) | length(survival_time) != ncol_full_data){
@@ -78,7 +79,9 @@ check_vectors <- function(full_data, survival_time, survival_event, case_tag, na
   }
 
   control_tag_opt <- unique(case_tag)
-  control_tag <- readline(prompt=paste("What is the tag of the healthy patient (value in the case_tag)? (", control_tag_opt[1], " or ", control_tag_opt[2], "): " , sep="") )
+  if(is.na(control_tag)){
+    control_tag <- readline(prompt=paste("What is the tag of the healthy patient (value in the case_tag)? (", control_tag_opt[1], " or ", control_tag_opt[2], "): " , sep="") )
+  }
 
   if(!(control_tag %in% control_tag_opt)){
     print(paste("The case tag is '", control_tag_opt[1], "' by default"))
@@ -168,11 +171,16 @@ check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select)
 #' complete-linkage clustering or "average" for average linkage clustering
 #' (or UPGMA). Only necessary for hierarchical clustering.
 #' "single" default option.
+#' @param optimal_clustering_mode Method for selection optimal number of
+#' clusters. It is only necessary if the chosen type of algorithm is
+#' hierarchical. In this case, choose between "standard" (the method used
+#' in the original mapper article) or "silhouette". In the case of the PAM
+#' algorithm, the method will always be "silhouette".
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #'
 #' @return \code{optimal_clustering_mode}
-check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type, na.rm = TRUE){
+check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type, optimal_clustering_mode, na.rm = TRUE){
   #Check distance_type
   distances <- c("correlation","euclidean")
   if(!distance_type %in% distances){
@@ -185,16 +193,24 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
     stop(paste("Invalid clustering method selected. Choose one of the folowing: ", paste(clust_types,collapse = ", ")))
   }
 
-  optimal_clustering_mode <- "silhouette"
+  if(is.na(optimal_clustering_mode)){
+    optimal_clustering_mode <- "silhouette"
 
-  if(clustering_type == "hierarchical"){
-    option <- readline(prompt="Choose one of the following optimal cluster number method: standard/silhouette: ")
+    if(clustering_type == "hierarchical"){
+      option <- readline(prompt="Choose one of the following optimal cluster number method: standard/silhouette: ")
 
-    if(option != "standard"){
-      optimal_clustering_mode <- "silhouette"
+      if(option != "standard"){
+        optimal_clustering_mode <- "silhouette"
+      }
+      else{
+        optimal_clustering_mode <- "standard"
+      }
     }
-    else{
-      optimal_clustering_mode <- "standard"
+  }else{
+    #Check optimal_clustering_mode
+    optimal_clustering <- c("silhouette","standard")
+    if(!optimal_clustering_mode %in% optimal_clustering){
+      stop(paste("Invalid optimal_clustering selected. Choose one of the folowing: ", paste(optimal_clustering, collapse = ", ")))
     }
   }
   message("The optimal clustering mode is '", optimal_clustering_mode, " '")

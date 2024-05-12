@@ -153,8 +153,7 @@ mapper_object <- mapper(data = gene_selection_object[["genes_disease_component"]
                         num_intervals = num_intervals,
                         percent_overlap = percent_overlap, distance_type = distance_type,
                         clustering_type = clustering_type,
-                        linkage_type = linkage_type, 
-                        optimal_clustering_mode = optimal_clustering_mode)
+                        linkage_type = linkage_type)
 
 
 ```

@@ -29,6 +29,7 @@
 #' be used to indicate whether the patient's sample is pathological.
 #' The user will then be asked which one indicates whether the patient is
 #' healthy. Only two values are valid in the vector in total.
+#' @param control_tag Tag of the healthy sample.E.g. "T"
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 #' option.
@@ -42,14 +43,14 @@
 #' @export
 #' @examples
 #' \donttest{
-#' dgsa_obj <- dgsa(full_data,  survival_time, survival_event, case_tag)}
-dgsa <- function(full_data,  survival_time, survival_event, case_tag, na.rm = TRUE){
+#' dgsa_obj <- dgsa(full_data,  survival_time, survival_event, control_tag, case_tag)}
+dgsa <- function(full_data, survival_time, survival_event, case_tag, control_tag = NA, na.rm = TRUE){
   ################################ Prepare data and check data ########################################
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data, na.rm)
 
   #Select the control_tag
-  return_check <- check_vectors(full_data, survival_time, survival_event, case_tag, na.rm)
+  return_check <- check_vectors(full_data, survival_time, survival_event, case_tag, control_tag, na.rm)
   control_tag <- return_check[[1]]
   full_data <- return_check[[2]]
   survival_event <- return_check[[3]]
@@ -441,14 +442,14 @@ gene_selection.default <- function(data_object, gen_select_type, percent_gen_sel
 mapper <- function(data, filter_values, num_intervals = 5, percent_overlap = 40,
                    distance_type = "correlation", clustering_type = "hierarchical",
                    num_bins_when_clustering = 10, linkage_type = "single",
-                   optimal_clustering_mode="", na.rm=TRUE){
+                   optimal_clustering_mode = NA, na.rm=TRUE){
   # Don't call by GSSTDA function
   if (na.rm != "checked"){
     # Check the data introduces
     data <- check_full_data(data)
     # Check mapper arguments
     check_return <- check_arg_mapper(data, filter_values, distance_type, clustering_type,
-                                     linkage_type)
+                                     linkage_type, optimal_clustering_mode)
 
     data <- check_return[[1]]
     filter_values <- check_return[[2]]
