@@ -40,6 +40,7 @@
 #' be used to indicate whether the patient's sample is pathological.
 #' The user will then be asked which one indicates whether the patient is
 #' healthy. Only two values are valid in the vector in total.
+#' @param control_tag Tag of the healthy sample.E.g. "T"
 #' @param gen_select_type Option. Options on how to select the genes to be
 #' used in the mapper. Select the "Abs" option, which means that the
 #' genes with the highest absolute value are chosen, or the
@@ -105,7 +106,7 @@
 #'                  num_intervals = 4, percent_overlap = 50,
 #'                  distance_type = "euclidean", num_bins_when_clustering = 8,
 #'                  clustering_type = "hierarchical", linkage_type = "single")}
-gsstda <- function(full_data, survival_time, survival_event, case_tag, gen_select_type="Top_Bot",
+gsstda <- function(full_data, survival_time, survival_event, case_tag, control_tag = NA, gen_select_type="Top_Bot",
                    percent_gen_select=10, num_intervals=5, percent_overlap=40, distance_type="correlation",
                    clustering_type="hierarchical", num_bins_when_clustering=10, linkage_type="single",
                    optimal_clustering_mode = NA, na.rm=TRUE){
@@ -127,7 +128,7 @@ gsstda <- function(full_data, survival_time, survival_event, case_tag, gen_selec
 
 
   ################### BLOCK I: Pre-process. DGSA (using "NT" control_tag) ##############################
-  dgsa_obj <- dgsa(full_data, survival_time, survival_event, case_tag, na.rm = "checked")
+  dgsa_obj <- dgsa(full_data, survival_time, survival_event, case_tag, control_tag, na.rm = "checked")
   matrix_disease_component <- dgsa_obj[["matrix_disease_component"]]
   control_tag <- dgsa_obj[["control_tag"]]
   full_data <- dgsa_obj[["full_data"]]
