@@ -180,7 +180,7 @@ check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select)
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #'
 #' @return \code{optimal_clustering_mode}
-check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type, optimal_clustering_mode, na.rm = TRUE){
+check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type, optimal_clustering_mode = NA, na.rm = TRUE){
   #Check distance_type
   distances <- c("correlation","euclidean")
   if(!distance_type %in% distances){
@@ -193,6 +193,7 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
     stop(paste("Invalid clustering method selected. Choose one of the folowing: ", paste(clust_types,collapse = ", ")))
   }
 
+  paste("optimal_clustering_mode = ", optimal_clustering_mode)
   if(is.na(optimal_clustering_mode)){
     optimal_clustering_mode <- "silhouette"
 

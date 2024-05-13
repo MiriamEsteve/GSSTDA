@@ -70,6 +70,11 @@
 #' clustering, "complete" for complete-linkage clustering or "average" for
 #' average linkage clustering (or UPGMA). Only necessary for hierarchical
 #' clustering. "single" default option.
+#' @param optimal_clustering_mode Method for selection optimal number of
+#' clusters. It is only necessary if the chosen type of algorithm is
+#' hierarchical. In this case, choose between "standard" (the method used
+#' in the original mapper article) or "silhouette". In the case of the PAM
+#' algorithm, the method will always be "silhouette".
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 #' option.
@@ -103,7 +108,7 @@
 gsstda <- function(full_data, survival_time, survival_event, case_tag, gen_select_type="Top_Bot",
                    percent_gen_select=10, num_intervals=5, percent_overlap=40, distance_type="correlation",
                    clustering_type="hierarchical", num_bins_when_clustering=10, linkage_type="single",
-                   na.rm=TRUE){
+                   optimal_clustering_mode = NA, na.rm=TRUE){
   ################################ Prepare data and check data ########################################
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data, na.rm)
@@ -114,7 +119,7 @@ gsstda <- function(full_data, survival_time, survival_event, case_tag, gen_selec
   #Don't check filter_values because it is not created.
   filter_values <- c()
   check_return <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type,
-                                              linkage_type, na.rm)
+                                              linkage_type, optimal_clustering_mode, na.rm)
 
   full_data <- check_return[[1]]
   filter_values <- check_return[[2]]
