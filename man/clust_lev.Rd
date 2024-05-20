@@ -5,7 +5,7 @@
 \title{Get clusters for a particular data level}
 \usage{
 clust_lev(
-  full_data_i,
+  data_i,
   distance_type,
   clustering_type,
   linkage_type,
@@ -15,7 +15,7 @@ clust_lev(
 )
 }
 \arguments{
-\item{full_data_i}{Matrix with the columns of the input matrix
+\item{data_i}{Matrix with the columns of the input matrix
 corresponding to the individuals belonging to the level.}
 
 \item{distance_type}{Type of distance to be used for clustering.

@@ -5,7 +5,7 @@
 \title{Mapper object}
 \usage{
 mapper(
-  full_data,
+  data,
   filter_values,
   num_intervals = 5,
   percent_overlap = 40,
@@ -13,12 +13,12 @@ mapper(
   clustering_type = "hierarchical",
   num_bins_when_clustering = 10,
   linkage_type = "single",
-  optimal_clustering_mode = "",
+  optimal_clustering_mode = NA,
   na.rm = TRUE
 )
 }
 \arguments{
-\item{full_data}{Input matrix whose columns correspond to the individuals
+\item{data}{Input matrix whose columns correspond to the individuals
 and rows to the features.}
 
 \item{filter_values}{Vector obtained after applying the filtering function
@@ -85,7 +85,7 @@ control_tag_cases <- which(case_tag == "NT")
 gene_selection_object <- gene_selection_(full_data, survival_time, survival_event,
 control_tag_cases, gen_select_type ="top_bot", num_gen_select = 10)
 
-mapper_object <- mapper(full_data = gene_selection_object[["genes_disease_component"]],
+mapper_object <- mapper(data = gene_selection_object[["genes_disease_component"]],
 filter_values = gene_selection_object[["filter_values"]],
 num_intervals = 5,
 percent_overlap = 40, distance_type = "correlation",

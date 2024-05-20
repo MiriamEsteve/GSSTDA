@@ -35,7 +35,7 @@ class(data_object) <- "data_object"
 gene_selection_object <- gene_selection(data_object, gen_select_type="top_bot",
  percent_gen_select=10)
 
-mapper_object <- mapper(full_data = gene_selection_object[["genes_disease_component"]],
+mapper_object <- mapper(data = gene_selection_object[["genes_disease_component"]],
 filter_values = gene_selection_object[["filter_values"]],
 num_intervals = 5,
 percent_overlap = 40, distance_type = "correlation",

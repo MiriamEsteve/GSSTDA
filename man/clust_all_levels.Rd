@@ -5,7 +5,7 @@
 \title{Get clusters for all data level}
 \usage{
 clust_all_levels(
-  full_data,
+  data,
   samp_in_lev,
   distance_type,
   clustering_type,
@@ -15,7 +15,7 @@ clust_all_levels(
 )
 }
 \arguments{
-\item{full_data}{Input data matrix whose columns are the individuals
+\item{data}{Input data matrix whose columns are the individuals
 and rows are the features.BR cambiar nombre.}
 
 \item{samp_in_lev}{A list of character vectors with the individuals

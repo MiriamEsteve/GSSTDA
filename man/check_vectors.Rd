@@ -4,7 +4,14 @@
 \alias{check_vectors}
 \title{check_vectors}
 \usage{
-check_vectors(full_data, survival_time, survival_event, case_tag, na.rm = TRUE)
+check_vectors(
+  full_data,
+  survival_time,
+  survival_event,
+  case_tag,
+  control_tag,
+  na.rm = TRUE
+)
 }
 \arguments{
 \item{full_data}{The genes of the full_data (maybe remove by na.rm = TRUE)}
@@ -15,6 +22,8 @@ no event until the end of follow-up).}
 \item{survival_event}{\code{logical}. Whether or not the event has occurred.}
 
 \item{case_tag}{The tag of the healthy sample (healthy or not).}
+
+\item{control_tag}{Tag of the healthy sample.E.g. "T"}
 
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 If \code{FALSE}, an error occurs in case of \code{NA} rows.}
