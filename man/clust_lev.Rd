@@ -10,6 +10,7 @@ clust_lev(
   clustering_type,
   linkage_type,
   optimal_clustering_mode,
+  silhouette_threshold = 0.25,
   num_bins_when_clustering,
   level_name
 )
@@ -36,6 +37,13 @@ clusters. It is only necessary if the chosen type of algorithm is
 hierarchical. In this case, choose between "standard" (the method used
 in the original mapper article) or "silhouette". In the case of the PAM
 algorithm, the method will always be "silhouette".}
+
+\item{silhouette_threshold}{To select the optimum number of clusters within
+each interval of the filter function, the average silhouette values\eqn{\overline{s}}{s-bar}
+are computed for all possible partitions from \(2\) to \(n-1\), where \(n\)
+is the number of samples within a specific interval. The threshold of \(0.25\)
+for \eqn{\overline{s}}{s-bar} has been chosen based on standard practice, recognizing it
+as a moderate value that reflects adequate separation and cohesion within clusters.}
 
 \item{num_bins_when_clustering}{Number of bins to generate the histogram
 employed by the standard optimal number of cluster finder method.

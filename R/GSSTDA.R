@@ -76,6 +76,12 @@
 #' hierarchical. In this case, choose between "standard" (the method used
 #' in the original mapper article) or "silhouette". In the case of the PAM
 #' algorithm, the method will always be "silhouette".
+#' @param silhouette_threshold To select the optimum number of clusters within
+#'  each interval of the filter function, the average silhouette values\eqn{\overline{s}}{s-bar}
+#'   are computed for all possible partitions from \(2\) to \(n-1\), where \(n\)
+#'   is the number of samples within a specific interval. The threshold of \(0.25\)
+#'   for \eqn{\overline{s}}{s-bar} has been chosen based on standard practice, recognizing it
+#'   as a moderate value that reflects adequate separation and cohesion within clusters.
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 #' option.
@@ -109,7 +115,7 @@
 gsstda <- function(full_data, survival_time, survival_event, case_tag, control_tag = NA, gen_select_type="Top_Bot",
                    percent_gen_select=10, num_intervals=5, percent_overlap=40, distance_type="correlation",
                    clustering_type="hierarchical", num_bins_when_clustering=10, linkage_type="single",
-                   optimal_clustering_mode = NA, na.rm=TRUE){
+                   optimal_clustering_mode = NA, silhouette_threshold = 0.25, na.rm=TRUE){
   ################################ Prepare data and check data ########################################
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data, na.rm)
@@ -120,7 +126,7 @@ gsstda <- function(full_data, survival_time, survival_event, case_tag, control_t
   #Don't check filter_values because it is not created.
   filter_values <- c()
   check_return <- check_arg_mapper(full_data, filter_values, distance_type, clustering_type,
-                                              linkage_type, optimal_clustering_mode, na.rm)
+                                              linkage_type, optimal_clustering_mode, silhouette_threshold, na.rm)
 
   full_data <- check_return[[1]]
   filter_values <- check_return[[2]]
@@ -155,7 +161,7 @@ gsstda <- function(full_data, survival_time, survival_event, case_tag, control_t
   filter_values <- check_filter[[2]]
 
   mapper_obj <- mapper(genes_disease_component, filter_values, num_intervals, percent_overlap, distance_type,
-                       clustering_type, num_bins_when_clustering, linkage_type, optimal_clustering_mode,
+                       clustering_type, num_bins_when_clustering, linkage_type, optimal_clustering_mode, silhouette_threshold,
                        na.rm = "checked")
 
   message("\nBLOCK III: The mapper process is finished")

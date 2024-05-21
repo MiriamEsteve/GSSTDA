@@ -71,7 +71,7 @@ genes selected, the values of the filtering functions are calculated for
 each patient. The filter function allows to summarise each vector of each
 individual in a single data. This function takes into account the survival
 associated with each gene. In particular, the implemented filter function
-performs the vector magnitude in the [L_{p}] norm (as well as k powers
+performs the vector magnitude in the Lp norm (as well as k powers
 of this magnitude) of the vector resulting of weighting each element of
 the column vector by the Z score obtained in the cox proportional
 hazard model.

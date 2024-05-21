@@ -43,7 +43,7 @@
 #' @export
 #' @examples
 #' \donttest{
-#' dgsa_obj <- dgsa(full_data,  survival_time, survival_event, control_tag, case_tag)}
+#' dgsa_obj <- dgsa(full_data,  survival_time, survival_event, case_tag)}
 dgsa <- function(full_data, survival_time, survival_event, case_tag, control_tag = NA, na.rm = TRUE){
   ################################ Prepare data and check data ########################################
   #Check the arguments introduces in the function
@@ -95,7 +95,7 @@ dgsa <- function(full_data, survival_time, survival_event, case_tag, control_tag
 #' each patient. The filter function allows to summarise each vector of each
 #' individual in a single data. This function takes into account the survival
 #' associated with each gene. In particular, the implemented filter function
-#' performs the vector magnitude in the \[L_{p}\] norm (as well as k powers
+#' performs the vector magnitude in the Lp norm (as well as k powers
 #' of this magnitude) of the vector resulting of weighting each element of
 #' the column vector by the Z score obtained in the cox proportional
 #' hazard model.
@@ -416,6 +416,12 @@ gene_selection.default <- function(data_object, gen_select_type, percent_gen_sel
 #' hierarchical. In this case, choose between "standard" (the method used
 #' in the original mapper article) or "silhouette". In the case of the PAM
 #' algorithm, the method will always be "silhouette".
+#' @param silhouette_threshold To select the optimum number of clusters within
+#'  each interval of the filter function, the average silhouette values\eqn{\overline{s}}{s-bar}
+#'   are computed for all possible partitions from \(2\) to \(n-1\), where \(n\)
+#'   is the number of samples within a specific interval. The threshold of \(0.25\)
+#'   for \eqn{\overline{s}}{s-bar} has been chosen based on standard practice, recognizing it
+#'   as a moderate value that reflects adequate separation and cohesion within clusters.
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 #' option.
@@ -442,14 +448,14 @@ gene_selection.default <- function(data_object, gen_select_type, percent_gen_sel
 mapper <- function(data, filter_values, num_intervals = 5, percent_overlap = 40,
                    distance_type = "correlation", clustering_type = "hierarchical",
                    num_bins_when_clustering = 10, linkage_type = "single",
-                   optimal_clustering_mode = NA, na.rm=TRUE){
+                   optimal_clustering_mode = NA, silhouette_threshold = 0.25, na.rm=TRUE){
   # Don't call by GSSTDA function
   if (na.rm != "checked"){
     # Check the data introduces
     data <- check_full_data(data)
     # Check mapper arguments
     check_return <- check_arg_mapper(data, filter_values, distance_type, clustering_type,
-                                     linkage_type, optimal_clustering_mode)
+                                     linkage_type, optimal_clustering_mode, silhouette_threshold)
 
     data <- check_return[[1]]
     filter_values <- check_return[[2]]
@@ -465,7 +471,8 @@ mapper <- function(data, filter_values, num_intervals = 5, percent_overlap = 40,
                             "num_bins_when_clustering" = num_bins_when_clustering,
                             "clustering_type" = clustering_type,
                             "linkage_type" = linkage_type,
-                            "optimal_clustering_mode" = optimal_clustering_mode)
+                            "optimal_clustering_mode" = optimal_clustering_mode,
+                            "silhouette_threshold" = silhouette_threshold)
 
   class(mapper_object_ini) <- "mapper_initialization"
 

@@ -30,7 +30,7 @@ one_D_Mapper <- function(mapper_object_ini){
 
   #Clustering all levels.
   test_clust_all_levels <- clust_all_levels(data, samp_in_lev, mapper_object_ini[["distance_type"]], mapper_object_ini[["clustering_type"]],
-                                            mapper_object_ini[["linkage_type"]], mapper_object_ini[["optimal_clustering_mode"]],  mapper_object_ini[["num_bins_when_clustering"]])
+                                            mapper_object_ini[["linkage_type"]], mapper_object_ini[["optimal_clustering_mode"]],  mapper_object_ini[["silhouette_threshold"]],  mapper_object_ini[["num_bins_when_clustering"]])
   #Transforming levels into nodes.
   node_samples <- levels_to_nodes(test_clust_all_levels)
 

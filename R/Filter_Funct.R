@@ -2,7 +2,7 @@
 #' @description A filtering function for mapper that projects $$R$^n$ into $R$.
 #' It calculates for each column of the matrix (each patient), its value
 #' of the filtering function. Specifically, it computes
-#' the vector magnitude in the \[L_{p}\] norm (as well
+#' the vector magnitude in the Lp norm (as well
 #' as k powers of this magnitude) of the vector resulting of
 #' weighting each element of the column vector by the Z score obtained
 #' by fitting a cox proportional hazard model to the level of each gene.

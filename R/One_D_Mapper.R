@@ -73,6 +73,12 @@ samples_in_levels <- function(interval_data,filter_values){
 #' hierarchical. In this case, choose between "standard" (the method used
 #' in the original mapper article) or "silhouette". In the case of the PAM
 #' algorithm, the method will always be "silhouette".
+#' @param silhouette_threshold To select the optimum number of clusters within
+#'  each interval of the filter function, the average silhouette values\eqn{\overline{s}}{s-bar}
+#'   are computed for all possible partitions from \(2\) to \(n-1\), where \(n\)
+#'   is the number of samples within a specific interval. The threshold of \(0.25\)
+#'   for \eqn{\overline{s}}{s-bar} has been chosen based on standard practice, recognizing it
+#'   as a moderate value that reflects adequate separation and cohesion within clusters.
 #' @param num_bins_when_clustering Number of bins to generate the histogram
 #' employed by the standard optimal number of cluster finder method.
 #' Parameter not necessary if the "optimal_clust_mode" option is "silhouette"
@@ -84,7 +90,7 @@ samples_in_levels <- function(interval_data,filter_values){
 #' to which the individual belongs.
 #' @import cluster
 clust_lev <- function(data_i, distance_type, clustering_type, linkage_type,
-                      optimal_clustering_mode, num_bins_when_clustering, level_name){
+                      optimal_clustering_mode, silhouette_threshold = 0.25, num_bins_when_clustering, level_name){
   #Distance type
   if(distance_type == "correlation"){
     level_dist <- stats::as.dist(1-stats::cor(data_i))
@@ -108,7 +114,7 @@ clust_lev <- function(data_i, distance_type, clustering_type, linkage_type,
         n_clust <- c(n_clust,i)
       }
     }
-    if(max(av_sil) >= 0.25){
+    if(max(av_sil) >= silhouette_threshold){
       op_clust <- n_clust[which.max(av_sil)]
       cluster_indices_level <- cluster::pam(x =level_dist,diss = TRUE,k = op_clust)$clustering
       return(cluster_indices_level)
@@ -148,7 +154,7 @@ clust_lev <- function(data_i, distance_type, clustering_type, linkage_type,
         test <- cluster::silhouette(stats::cutree(level_hclust_out,i),level_dist)
         av_sil <- c(av_sil,mean(test[,3]))
       }
-      if(max(av_sil) >= 0.25){
+      if(max(av_sil) >= silhouette_threshold){
         op_clust <- n_clust[which.max(av_sil)]
         cluster_indices_level <- stats::cutree(level_hclust_out,op_clust)
         return(cluster_indices_level)
@@ -185,7 +191,13 @@ clust_lev <- function(data_i, distance_type, clustering_type, linkage_type,
 #' clusters. It is only necessary if the chosen type of algorithm is
 #' hierarchical. In this case, choose between "standard" (the method used
 #' in the original mapper article) or "silhouette". In the case of the
-#' PAM algorithm, the method will always be "silhouette". "silhouette"
+#' PAM algorithm, the method will always be "silhouette". "silhouette".
+#' @param silhouette_threshold To select the optimum number of clusters within
+#'  each interval of the filter function, the average silhouette values\eqn{\overline{s}}{s-bar}
+#'   are computed for all possible partitions from \(2\) to \(n-1\), where \(n\)
+#'   is the number of samples within a specific interval. The threshold of \(0.25\)
+#'   for \eqn{\overline{s}}{s-bar} has been chosen based on standard practice, recognizing it
+#'   as a moderate value that reflects adequate separation and cohesion within clusters.
 #' @param num_bins_when_clustering Number of bins to generate the
 #' histogram employed by the standard optimal number of cluster finder
 #' method. Parameter not necessary if the "optimal_clust_mode" option
@@ -195,13 +207,13 @@ clust_lev <- function(data_i, distance_type, clustering_type, linkage_type,
 #' names of the vector values are the names of the samples and the vector
 #' values are the node number of that level to which the individual belongs.
 clust_all_levels <- function(data, samp_in_lev, distance_type, clustering_type,
-                             linkage_type, optimal_clustering_mode, num_bins_when_clustering){
+                             linkage_type, optimal_clustering_mode, silhouette_threshold, num_bins_when_clustering){
 
   list_out <- base::list()
   for(i in 1:base::length(samp_in_lev)){
     if(length(samp_in_lev[[i]]) > 2){
       clust_level_temp <- clust_lev(data[,samp_in_lev[[i]]], distance_type, clustering_type,
-                                    linkage_type, optimal_clustering_mode, num_bins_when_clustering,
+                                    linkage_type, optimal_clustering_mode, silhouette_threshold, num_bins_when_clustering,
                                     base::paste("Level",i,sep="_"))
     }else{
       if(base::length(samp_in_lev[[i]]) < 3 & base::length(samp_in_lev[[i]]) > 0){

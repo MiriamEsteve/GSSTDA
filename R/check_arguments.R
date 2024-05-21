@@ -176,11 +176,18 @@ check_gene_selection <- function(num_genes, gen_select_type, percent_gen_select)
 #' hierarchical. In this case, choose between "standard" (the method used
 #' in the original mapper article) or "silhouette". In the case of the PAM
 #' algorithm, the method will always be "silhouette".
+#' @param silhouette_threshold To select the optimum number of clusters within
+#'  each interval of the filter function, the average silhouette values\eqn{\overline{s}}{s-bar}
+#'   are computed for all possible partitions from \(2\) to \(n-1\), where \(n\)
+#'   is the number of samples within a specific interval. The threshold of \(0.25\)
+#'   for \eqn{\overline{s}}{s-bar} has been chosen based on standard practice, recognizing it
+#'   as a moderate value that reflects adequate separation and cohesion within clusters.
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows.
 #'
 #' @return \code{optimal_clustering_mode}
-check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type, optimal_clustering_mode = NA, na.rm = TRUE){
+check_arg_mapper <- function(full_data, filter_values, distance_type, clustering_type, linkage_type,
+                             optimal_clustering_mode = NA, silhouette_threshold = 0.25, na.rm = TRUE){
   #Check distance_type
   distances <- c("correlation","euclidean")
   if(!distance_type %in% distances){
@@ -193,7 +200,6 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
     stop(paste("Invalid clustering method selected. Choose one of the folowing: ", paste(clust_types,collapse = ", ")))
   }
 
-  paste("optimal_clustering_mode = ", optimal_clustering_mode)
   if(is.na(optimal_clustering_mode)){
     optimal_clustering_mode <- "silhouette"
 
@@ -215,6 +221,15 @@ check_arg_mapper <- function(full_data, filter_values, distance_type, clustering
     }
   }
   message("The optimal clustering mode is '", optimal_clustering_mode, " '")
+
+
+  # Check
+  if (optimal_clustering_mode == "silhouette"){
+    if(silhouette_threshold != 0.25){
+      if(silhouette_threshold<0 || silhouette_threshold>1)
+        stop(paste("Invalid silhouette_threshold value. Choose one between 0 and 1"))
+    }
+  }
 
   #Check linkage_type
   link_types <- c("single","average","complete")
