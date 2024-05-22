@@ -2,7 +2,7 @@
 #'
 #' @description Computes the optimal SVHT coefficient for matrix denoising based on the noise level.
 #'
-#' @param beta A numeric vector representing the aspect ratio \( m/n \) of the matrix to be denoised, where \( 0 < \beta \leq 1 \).
+#' @param beta A numeric vector representing the aspect ratio \eqn{m/n} of the matrix to be denoised, where \eqn{0 < \beta \leq 1}.
 #' @param sigma_known A logical value indicating if the noise level is known (TRUE) or unknown (FALSE).
 #'
 #' @return A numeric vector containing the optimal SVHT coefficient for each aspect ratio in \code{beta}.
@@ -20,12 +20,11 @@ optimal_SVHT_coef <- function(beta, sigma_known) {
   return(coef)
 }
 
-
 #' @title Optimal SVHT Coefficient with Known Noise Level
 #'
 #' @description Computes the optimal SVHT coefficient when the noise level is known.
 #'
-#' @param beta A numeric vector representing the aspect ratio \( m/n \), where \( 0 < \beta \leq 1 \).
+#' @param beta A numeric vector representing the aspect ratio \eqn{m/n}, where \eqn{0 < \beta \leq 1}.
 #'
 #' @return A numeric vector of optimal SVHT coefficients corresponding to each aspect ratio in \code{beta}.
 #' @export
@@ -42,12 +41,11 @@ optimal_SVHT_coef_sigma_known <- function(beta) {
   return(lambda_star)
 }
 
-
 #' @title Optimal SVHT Coefficient with Unknown Noise Level
 #'
 #' @description Computes the optimal SVHT coefficient when the noise level is unknown.
 #'
-#' @param beta A numeric vector representing the aspect ratio \( m/n \), where \( 0 < \beta \leq 1 \).
+#' @param beta A numeric vector representing the aspect ratio \eqn{m/n}, where \eqn{0 < \beta \leq 1}.
 #'
 #' @return A numeric vector of optimal SVHT coefficients corresponding to each aspect ratio in \code{beta}.
 #' @export
@@ -67,13 +65,12 @@ optimal_SVHT_coef_sigma_unknown <- function(beta) {
   return(omega)
 }
 
-
 #' @title Marcenko-Pastur Integral
 #'
 #' @description Calculates the integral of the Marcenko-Pastur distribution from the lower bound to a specified value.
 #'
 #' @param x A numeric value representing the upper limit of the integral.
-#' @param beta A numeric value representing the aspect ratio \( m/n \), where \( 0 < \beta \leq 1 \).
+#' @param beta A numeric value representing the aspect ratio \eqn{m/n}, where \eqn{0 < \beta \leq 1}.
 #'
 #' @return A numeric value representing the integral of the Marcenko-Pastur distribution from the lower bound to \code{x}.
 #' @export
@@ -96,12 +93,11 @@ MarcenkoPasturIntegral <- function(x, beta) {
   return(I)
 }
 
-
 #' @title Median of the Marcenko-Pastur Distribution
 #'
 #' @description Calculates the median of the Marcenko-Pastur distribution for a given aspect ratio.
 #'
-#' @param beta A numeric value representing the aspect ratio \( m/n \), where \( 0 < \beta \leq 1 \).
+#' @param beta A numeric value representing the aspect ratio \eqn{m/n}, where \eqn{0 < \beta \leq 1}.
 #'
 #' @return A numeric value representing the median of the Marcenko-Pastur distribution for the specified \code{beta}.
 #' @export
@@ -130,14 +126,14 @@ MedianMarcenkoPastur <- function(beta) {
   return(med)
 }
 
-
 #' @title Incomplete Marcenko-Pastur Integral
 #'
 #' @description Calculates the incomplete Marcenko-Pastur integral from a lower limit to the upper bound of the distribution's support.
 #'
 #' @param x0 A numeric value representing the lower limit of the integral.
-#' @param beta A numeric value representing the aspect ratio \( m/n \), where \( 0 < \beta \leq 1 \).
+#' @param beta A numeric value representing the aspect ratio \eqn{m/n}, where \eqn{0 < \beta \leq 1}.
 #' @param gamma A numeric value representing an exponent parameter.
+#' @importFrom stats integrate
 #'
 #' @return A numeric value representing the incomplete Marcenko-Pastur integral.
 #' @export
@@ -166,7 +162,6 @@ incMarPas <- function(x0, beta, gamma) {
   return(I)
 }
 
-
 #' @title Example of Using Optimal SVHT Coefficient for Matrix Denoising
 #'
 #' @description Demonstrates how to use the optimal SVHT coefficient to denoise a matrix with known noise level.
@@ -192,4 +187,3 @@ incMarPas <- function(x0, beta, gamma) {
 #' D[D < coef] <- 0
 #' # Reconstruct the denoised matrix
 #' Xhat <- U %*% diag(D) %*% t(V)
-
