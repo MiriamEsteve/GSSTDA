@@ -134,6 +134,9 @@ get_omega <- function(bet){
 #' denoise_rectangular_matrix(matrix(c(1,2,3,4,5,2,3,1,2,3),ncol = 2))
 #' }
 denoise_rectangular_matrix <- function(matrix_flatten_normal_tiss){
+  #Transpose matrix_flatten_normal_tiss
+  matrix_flatten_normal_tiss <- transpose(matrix_flatten_normal_tiss)
+
   ### Model reduction ##
   # Find omega value
   omega_found <- get_omega(ncol(matrix_flatten_normal_tiss)/nrow(matrix_flatten_normal_tiss))

@@ -65,34 +65,6 @@ optimal_SVHT_coef_sigma_unknown <- function(beta) {
   return(omega)
 }
 
-#' @title Marcenko-Pastur Integral
-#'
-#' @description Calculates the integral of the Marcenko-Pastur distribution from the lower bound to a specified value.
-#'
-#' @param x A numeric value representing the upper limit of the integral.
-#' @param beta A numeric value representing the aspect ratio \eqn{m/n}, where \eqn{0 < \beta \leq 1}.
-#'
-#' @return A numeric value representing the integral of the Marcenko-Pastur distribution from the lower bound to \code{x}.
-#' @export
-#' @examples
-#' x <- 0.5
-#' beta <- 0.5
-#' MarcenkoPasturIntegral(x, beta)
-MarcenkoPasturIntegral <- function(x, beta) {
-  if (beta <= 0 || beta > 1) {
-    stop("beta beyond")
-  }
-  lobnd <- (1 - sqrt(beta))^2
-  hibnd <- (1 + sqrt(beta))^2
-  if (x < lobnd || x > hibnd) {
-    stop("x beyond")
-  }
-  dens <- function(t) sqrt((hibnd - t) * (t - lobnd)) / (2 * pi * beta * t)
-  I <- integrate(dens, lobnd, x)$value
-  cat(sprintf("x=%.3f, beta=%.3f, I=%.3f\n", x, beta, I))
-  return(I)
-}
-
 #' @title Median of the Marcenko-Pastur Distribution
 #'
 #' @description Calculates the median of the Marcenko-Pastur distribution for a given aspect ratio.
@@ -100,7 +72,6 @@ MarcenkoPasturIntegral <- function(x, beta) {
 #' @param beta A numeric value representing the aspect ratio \eqn{m/n}, where \eqn{0 < \beta \leq 1}.
 #'
 #' @return A numeric value representing the median of the Marcenko-Pastur distribution for the specified \code{beta}.
-#' @export
 #' @examples
 #' beta <- 0.5
 #' MedianMarcenkoPastur(beta)
