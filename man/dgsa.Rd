@@ -10,6 +10,7 @@ dgsa(
   survival_event,
   case_tag,
   control_tag = NA,
+  gamma = NA,
   na.rm = TRUE
 )
 }
@@ -41,6 +42,9 @@ The user will then be asked which one indicates whether the patient is
 healthy. Only two values are valid in the vector in total.}
 
 \item{control_tag}{Tag of the healthy sample.E.g. "T"}
+
+\item{gamma}{A parameter that indicates the magnitude of the noise.
+By default gamma is unknown.}
 
 \item{na.rm}{\code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default

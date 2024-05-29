@@ -50,9 +50,6 @@ optimal_SVHT_coef_gamma_unknown <- function(beta) {
 #' @param beta A numeric value representing the aspect ratio \eqn{m/n}, where \eqn{0 < \beta \leq 1}.
 #'
 #' @return A numeric value representing the median of the Marcenko-Pastur distribution for the specified \code{beta}.
-#' @examples
-#' beta <- 0.5
-#' MedianMarcenkoPastur(beta)
 MedianMarcenkoPastur <- function(beta) {
   MarPas <- function(x) 1 - incMarPas(x, beta, 0)
   lobnd <- (1 - sqrt(beta))^2
@@ -83,14 +80,7 @@ MedianMarcenkoPastur <- function(beta) {
 #' @param beta A numeric value representing the aspect ratio \eqn{m/n}, where \eqn{0 < \beta \leq 1}.
 #' @param gamma A numeric value representing an exponent parameter.
 #' @importFrom stats integrate
-#'
 #' @return A numeric value representing the incomplete Marcenko-Pastur integral.
-#' @export
-#' @examples
-#' x0 <- 0.5
-#' beta <- 0.5
-#' gamma <- 1
-#' incMarPas(x0, beta, gamma)
 incMarPas <- function(x0, beta, gamma) {
   if (beta > 1) {
     stop("beta beyond")
@@ -110,29 +100,3 @@ incMarPas <- function(x0, beta, gamma) {
   I <- integrate(fun, x0, topSpec)$value
   return(I)
 }
-
-#' @title Example of Using Optimal SVHT Coefficient for Matrix Denoising
-#'
-#' @description Demonstrates how to use the optimal SVHT coefficient to denoise a matrix with known noise level.
-#'
-#' @examples
-#' # Define dimensions
-#' m <- 50
-#' n <- 100
-#' # Create a noisy matrix
-#' Y <- matrix(rnorm(m * n), m, n)
-#' # Aspect ratio
-#' beta <- m / n
-#' # Known noise level
-#' gamma <- 1
-#' # Compute the threshold
-#' coef <- optimal_SVHT_coef(beta, TRUE) * sqrt(n) * gamma
-#' # Perform SVD
-#' svd_result <- svd(Y)
-#' U <- svd_result$u
-#' D <- svd_result$d
-#' V <- svd_result$v
-#' # Apply hard thresholding
-#' D[D < coef] <- 0
-#' # Reconstruct the denoised matrix
-#' Xhat <- U %*% diag(D) %*% t(V)

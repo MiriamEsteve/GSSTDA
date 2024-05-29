@@ -41,7 +41,7 @@ flatten_normal_tiss <- function(normal_tiss){
 #' \donttest{
 #' denoise_rectangular_matrix(matrix(c(1,2,3,4,5,2,3,1,2,3),ncol = 2))
 #' }
-denoise_rectangular_matrix <- function(matrix_flatten_normal_tiss, gamma){
+denoise_rectangular_matrix <- function(matrix_flatten_normal_tiss, gamma=NA){
   #Transpose matrix_flatten_normal_tiss
   matrix_flatten_normal_tiss <- t(matrix_flatten_normal_tiss)
   R <- nrow(matrix_flatten_normal_tiss)
@@ -60,14 +60,8 @@ denoise_rectangular_matrix <- function(matrix_flatten_normal_tiss, gamma){
 
   ## Gamma is observed
   if(!(is.na(gamma))){
-    if(R==l)
-      tau <- 4/(sqrt(3)) * sqrt(l) * gamma
-    else if(R<l)
       tau <- optimal_SVHT_coef_gamma_known(beta) * sqrt(l) * gamma
   }else{
-    if(R==l)
-      tau <- 2.858 * stats::median(d)
-    else if(R<l)
       tau <- optimal_SVHT_coef_gamma_unknown(beta) * stats::median(d)
   }
 

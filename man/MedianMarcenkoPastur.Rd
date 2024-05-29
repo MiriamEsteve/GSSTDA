@@ -15,7 +15,3 @@ A numeric value representing the median of the Marcenko-Pastur distribution for 
 \description{
 Calculates the median of the Marcenko-Pastur distribution for a given aspect ratio.
 }
-\examples{
-beta <- 0.5
-MedianMarcenkoPastur(beta)
-}

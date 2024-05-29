@@ -4,11 +4,14 @@
 \alias{denoise_rectangular_matrix}
 \title{Rectangular Matrix Denoiser.}
 \usage{
-denoise_rectangular_matrix(matrix_flatten_normal_tiss)
+denoise_rectangular_matrix(matrix_flatten_normal_tiss, gamma)
 }
 \arguments{
 \item{matrix_flatten_normal_tiss}{A rectangular noisy matrix to denoise. It is return by
 \code{flatten_normal_tiss} function.}
+
+\item{gamma}{A parameter that indicates the magnitude of the noise.
+By default gamma is unknown.}
 }
 \value{
 A the normal space which has the same dimension denoised version of the matrix

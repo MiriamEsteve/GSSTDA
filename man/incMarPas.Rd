@@ -19,9 +19,3 @@ A numeric value representing the incomplete Marcenko-Pastur integral.
 \description{
 Calculates the incomplete Marcenko-Pastur integral from a lower limit to the upper bound of the distribution's support.
 }
-\examples{
-x0 <- 0.5
-beta <- 0.5
-gamma <- 1
-incMarPas(x0, beta, gamma)
-}
