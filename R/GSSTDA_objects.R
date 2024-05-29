@@ -30,6 +30,8 @@
 #' The user will then be asked which one indicates whether the patient is
 #' healthy. Only two values are valid in the vector in total.
 #' @param control_tag Tag of the healthy sample.E.g. "T"
+#' @param gamma A parameter that indicates the magnitude of the noise.
+#' By default gamma is unknown.
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 #' option.
@@ -44,7 +46,7 @@
 #' @examples
 #' \donttest{
 #' dgsa_obj <- dgsa(full_data,  survival_time, survival_event, case_tag)}
-dgsa <- function(full_data, survival_time, survival_event, case_tag, control_tag = NA, na.rm = TRUE){
+dgsa <- function(full_data, survival_time, survival_event, case_tag, control_tag = NA, gamma = NA, na.rm = TRUE){
   ################################ Prepare data and check data ########################################
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data, na.rm)
@@ -65,7 +67,7 @@ dgsa <- function(full_data, survival_time, survival_event, case_tag, control_tag
   #   Obtain the gene expression matrix containing the flattened version of the vectors.
   matrix_flatten_normal_tiss <- flatten_normal_tiss(normal_tiss)
   #   Obtain the normal space
-  normal_space <- denoise_rectangular_matrix(matrix_flatten_normal_tiss)
+  normal_space <- denoise_rectangular_matrix(matrix_flatten_normal_tiss, gamma)
   #   Obtain the disease component of the normal_space
   matrix_disease_component <- generate_disease_component(full_data, normal_space)
 

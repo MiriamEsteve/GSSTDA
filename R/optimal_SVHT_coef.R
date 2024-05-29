@@ -1,25 +1,3 @@
-#' @title Optimal Singular Value Hard Threshold (SVHT) Coefficient
-#'
-#' @description Computes the optimal SVHT coefficient for matrix denoising based on the noise level.
-#'
-#' @param beta A numeric vector representing the aspect ratio \eqn{m/n} of the matrix to be denoised, where \eqn{0 < \beta \leq 1}.
-#' @param sigma_known A logical value indicating if the noise level is known (TRUE) or unknown (FALSE).
-#'
-#' @return A numeric vector containing the optimal SVHT coefficient for each aspect ratio in \code{beta}.
-#' @export
-#' @examples
-#' beta <- 0.5
-#' sigma_known <- TRUE
-#' optimal_SVHT_coef(beta, sigma_known)
-optimal_SVHT_coef <- function(beta, sigma_known) {
-  if (sigma_known) {
-    coef <- optimal_SVHT_coef_sigma_known(beta)
-  } else {
-    coef <- optimal_SVHT_coef_sigma_unknown(beta)
-  }
-  return(coef)
-}
-
 #' @title Optimal SVHT Coefficient with Known Noise Level
 #'
 #' @description Computes the optimal SVHT coefficient when the noise level is known.
@@ -30,8 +8,8 @@ optimal_SVHT_coef <- function(beta, sigma_known) {
 #' @export
 #' @examples
 #' beta <- 0.5
-#' optimal_SVHT_coef_sigma_known(beta)
-optimal_SVHT_coef_sigma_known <- function(beta) {
+#' optimal_SVHT_coef_gamma_known(beta)
+optimal_SVHT_coef_gamma_known <- function(beta) {
   stopifnot(all(beta > 0))
   stopifnot(all(beta <= 1))
   stopifnot(length(beta) == prod(dim(beta)))  # beta must be a vector
@@ -51,14 +29,14 @@ optimal_SVHT_coef_sigma_known <- function(beta) {
 #' @export
 #' @examples
 #' beta <- 0.5
-#' optimal_SVHT_coef_sigma_unknown(beta)
-optimal_SVHT_coef_sigma_unknown <- function(beta) {
+#' optimal_SVHT_coef_gamma_unknown(beta)
+optimal_SVHT_coef_gamma_unknown <- function(beta) {
   options(warn = -1)  # Suppress warnings
   stopifnot(all(beta > 0))
   stopifnot(all(beta <= 1))
   stopifnot(length(beta) == prod(dim(beta)))  # beta must be a vector
 
-  coef <- optimal_SVHT_coef_sigma_known(beta)
+  coef <- optimal_SVHT_coef_gamma_known(beta)
 
   MPmedian <- sapply(beta, function(b) MedianMarcenkoPastur(b))
   omega <- coef / sqrt(MPmedian)
@@ -146,9 +124,9 @@ incMarPas <- function(x0, beta, gamma) {
 #' # Aspect ratio
 #' beta <- m / n
 #' # Known noise level
-#' sigma <- 1
+#' gamma <- 1
 #' # Compute the threshold
-#' coef <- optimal_SVHT_coef(beta, TRUE) * sqrt(n) * sigma
+#' coef <- optimal_SVHT_coef(beta, TRUE) * sqrt(n) * gamma
 #' # Perform SVD
 #' svd_result <- svd(Y)
 #' U <- svd_result$u
