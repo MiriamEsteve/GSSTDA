@@ -39,9 +39,9 @@ flatten_normal_tiss <- function(normal_tiss){
 #' @export
 #' @examples
 #' \donttest{
-#' denoise_rectangular_matrix(matrix(c(1,2,3,4,5,2,3,1,2,3),ncol = 2))
+#' denoise_rectangular_matrix(matrix(c(1,2,3,4,5,2,3,1,2,3),ncol = 2, gamma = NA))
 #' }
-denoise_rectangular_matrix <- function(matrix_flatten_normal_tiss, gamma=NA){
+denoise_rectangular_matrix <- function(matrix_flatten_normal_tiss, gamma){
   #Transpose matrix_flatten_normal_tiss
   matrix_flatten_normal_tiss <- t(matrix_flatten_normal_tiss)
   R <- nrow(matrix_flatten_normal_tiss)

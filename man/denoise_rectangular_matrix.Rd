@@ -4,7 +4,7 @@
 \alias{denoise_rectangular_matrix}
 \title{Rectangular Matrix Denoiser.}
 \usage{
-denoise_rectangular_matrix(matrix_flatten_normal_tiss, gamma = NA)
+denoise_rectangular_matrix(matrix_flatten_normal_tiss, gamma)
 }
 \arguments{
 \item{matrix_flatten_normal_tiss}{A rectangular noisy matrix to denoise. It is return by
@@ -28,6 +28,6 @@ the function \code{flatten_normal_tiss}.
 }
 \examples{
 \donttest{
-denoise_rectangular_matrix(matrix(c(1,2,3,4,5,2,3,1,2,3),ncol = 2))
+denoise_rectangular_matrix(matrix(c(1,2,3,4,5,2,3,1,2,3),ncol = 2, gamma = NA))
 }
 }
