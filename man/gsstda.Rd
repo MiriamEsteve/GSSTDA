@@ -10,6 +10,7 @@ gsstda(
   survival_event,
   case_tag,
   control_tag = NA,
+  gamma = NA,
   gen_select_type = "Top_Bot",
   percent_gen_select = 10,
   num_intervals = 5,
@@ -51,6 +52,9 @@ The user will then be asked which one indicates whether the patient is
 healthy. Only two values are valid in the vector in total.}
 
 \item{control_tag}{Tag of the healthy sample.E.g. "T"}
+
+\item{gamma}{A parameter that indicates the magnitude of the noise.
+By default gamma is unknown.}
 
 \item{gen_select_type}{Option. Options on how to select the genes to be
 used in the mapper. Select the "Abs" option, which means that the
@@ -152,7 +156,7 @@ obtaining a combinatory graph.
 }
 \examples{
 \donttest{
-gsstda_object <- gsstda(full_data,  survival_time, survival_event, case_tag,
+gsstda_object <- gsstda(full_data,  survival_time, survival_event, case_tag, gamma=NA,
                  gen_select_type="Top_Bot", percent_gen_select=10,
                  num_intervals = 4, percent_overlap = 50,
                  distance_type = "euclidean", num_bins_when_clustering = 8,
