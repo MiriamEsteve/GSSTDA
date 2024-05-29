@@ -37,10 +37,6 @@ flatten_normal_tiss <- function(normal_tiss){
 #' @return A the normal space which has the same dimension denoised version of the matrix
 #' returned by \code{flatten_normal_tiss}.
 #' @export
-#' @examples
-#' \donttest{
-#' denoise_rectangular_matrix(matrix(c(1,2,3,4,5,2,3,1,2,3),ncol = 2, gamma = NA))
-#' }
 denoise_rectangular_matrix <- function(matrix_flatten_normal_tiss, gamma){
   #Transpose matrix_flatten_normal_tiss
   matrix_flatten_normal_tiss <- t(matrix_flatten_normal_tiss)
@@ -95,7 +91,7 @@ denoise_rectangular_matrix <- function(matrix_flatten_normal_tiss, gamma){
 #' full_data <- matrix(stats::rnorm(120),ncol=20)
 #' normal_tissue <- full_data[,11:20]
 #' normal_tissue_f <- flatten_normal_tiss(normal_tissue)
-#' normal_tissue_f_d <- denoise_rectangular_matrix(normal_tissue_f)
+#' normal_tissue_f_d <- denoise_rectangular_matrix(normal_tissue_f, gamma=NA)
 #' disease_component <- generate_disease_component(full_data,normal_tissue_f_d)}
 generate_disease_component <- function(full_data, normal_space){
   # calculate the distance of all points to the normal space by calculating the regression residuals
