@@ -4,7 +4,7 @@
 \alias{denoise_rectangular_matrix}
 \title{Rectangular Matrix Denoiser.}
 \usage{
-denoise_rectangular_matrix(matrix_flatten_normal_tiss, gamma)
+denoise_rectangular_matrix(matrix_flatten_normal_tiss, gamma = NA)
 }
 \arguments{
 \item{matrix_flatten_normal_tiss}{A rectangular noisy matrix to denoise. It is return by
