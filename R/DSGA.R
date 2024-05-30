@@ -134,7 +134,7 @@ plot_dsga <- function(selected_matrix_disease_component, case_tag){
                                                cluster_columns = T,col = col_fun,
                                                cluster_rows = F,
                                                heatmap_legend_param = list(
-                                                 title = "Expression",
+                                                 title = "Value of the\ndisease component",
                                                  at = c(-4, 0, 4)),
                                                row_names_gp = grid::gpar(fontsize = 5.25),
                                                column_names_gp = grid::gpar(fontsize = 0),

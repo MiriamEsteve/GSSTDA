@@ -76,7 +76,7 @@ Also, if the clustering type is hierarchical you can choose the type of linkage 
 
 ```{r}
 #Mapper information
-num_intervals <- 5
+num_intervals <- 10
 percent_overlap <- 40
 distance_type <- "correlation"
 clustering_type <- "hierarchical"
@@ -178,6 +178,7 @@ Plot the mapper graph.
 plot_mapper(mapper_object)
 ```
 
+Hovering the mouse over each node in the interactive graph displays the number of samples that form the node.
 
 ### OPTION #2 (all process integrate in the same function):
 
