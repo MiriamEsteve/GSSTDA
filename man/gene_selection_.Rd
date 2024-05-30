@@ -46,16 +46,16 @@ lowest value (negative value, i.e. best prognosis). "Top_Bot" default option.}
 \item{num_gen_select}{Number of genes to be selected to be used in mapper.}
 
 \item{matrix_disease_component}{Optional, only necessary in case of gene
-selection after DGSA has been performed. Matrix of the disease components
+selection after DSGA has been performed. Matrix of the disease components
 (the transformed \code{full_data} matrix from which the normal component has
-been removed) from the \code{dgsa_function}.}
+been removed) from the \code{dsga_function}.}
 }
 \value{
 A \code{gene_selection_object}. It contains:
 \itemize{
 \item the matrix with which the gene selection has been performed without NAN's
 values (\code{data}). It is the \code{matrix_disease_component} in case it has been
-performed from a \code{dgsa_object} or \code{full_data} in the opposite case.
+performed from a \code{dsga_object} or \code{full_data} in the opposite case.
 \item the \code{cox_all_matrix} (a matrix with the results of the application of
 proportional hazard models: with the regression coefficients, the odds ratios,
 the standard errors of each coefficient, the Z values (coef/se_coef) and

@@ -121,7 +121,7 @@ gsstda <- function(full_data, survival_time, survival_event, case_tag, control_t
   ################################ Prepare data and check data ########################################
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data, na.rm)
-  #Select the control_tag. This do it inside of the DGSA function
+  #Select the control_tag. This do it inside of the DSGA function
   #Check and obtain gene selection (we use in the gene_select_surv). It execute in Block II
   #num_gen_select <- check_gene_selection(nrow(full_data), gen_select_type, percent_gen_select)
 
@@ -135,17 +135,17 @@ gsstda <- function(full_data, survival_time, survival_event, case_tag, control_t
   optimal_clustering_mode <- check_return[[3]]
 
 
-  ################### BLOCK I: Pre-process. DGSA (using "NT" control_tag) ##############################
-  dgsa_obj <- dgsa(full_data, survival_time, survival_event, case_tag, control_tag, gamma, na.rm = "checked")
-  matrix_disease_component <- dgsa_obj[["matrix_disease_component"]]
-  control_tag <- dgsa_obj[["control_tag"]]
-  full_data <- dgsa_obj[["full_data"]]
-  survival_event <- dgsa_obj[["survival_event"]]
-  survival_time <- dgsa_obj[["survival_time"]]
-  case_tag <- dgsa_obj[["case_tag"]]
+  ################### BLOCK I: Pre-process. DSGA (using "NT" control_tag) ##############################
+  dsga_obj <- dsga(full_data, survival_time, survival_event, case_tag, control_tag, gamma, na.rm = "checked")
+  matrix_disease_component <- dsga_obj[["matrix_disease_component"]]
+  control_tag <- dsga_obj[["control_tag"]]
+  full_data <- dsga_obj[["full_data"]]
+  survival_event <- dsga_obj[["survival_event"]]
+  survival_time <- dsga_obj[["survival_time"]]
+  case_tag <- dsga_obj[["case_tag"]]
 
   ################### BLOCK II: Gene selection (using "T" control_tag) ##################################
-  gene_selection_object <- gene_selection(dgsa_obj, gen_select_type, percent_gen_select)
+  gene_selection_object <- gene_selection(dsga_obj, gen_select_type, percent_gen_select)
   cox_all_matrix <- gene_selection_object[["cox_all_matrix"]]
   genes_selected <- gene_selection_object[["genes_selected"]]
   genes_disease_component <- gene_selection_object[["genes_disease_component"]]
@@ -170,7 +170,7 @@ gsstda <- function(full_data, survival_time, survival_event, case_tag, control_t
 
 
   ############################################  Create the object #########################################
-  gsstda_object <- list("normal_space" = dgsa_obj[["normal_space"]],
+  gsstda_object <- list("normal_space" = dsga_obj[["normal_space"]],
                         "matrix_disease_component" = matrix_disease_component,
                         "cox_all_matrix" = cox_all_matrix,
                         "genes_selected" = genes_selected,

@@ -1,5 +1,5 @@
 #' @title Disease-Specific Genomic Analysis
-#' @description Disease-Specific Genomic Analysis (DGSA).
+#' @description Disease-Specific Genomic Analysis (DSGA).
 #' This analysis, developed by Nicolau *et al.*, allows the calculation of
 #' the "disease component" of a expression matrix which consists of, through
 #' linear models, eliminating the part of the data  that is considered normal
@@ -35,7 +35,7 @@
 #' @param na.rm \code{logical}. If \code{TRUE}, \code{NA} rows are omitted.
 #' If \code{FALSE}, an error occurs in case of \code{NA} rows. TRUE default
 #' option.
-#' @return A \code{dgsa} object. It contains: the \code{full_data} without
+#' @return A \code{dsga} object. It contains: the \code{full_data} without
 #' NAN's values, the label designated for healthy samples (\code{control_tag}),
 #' the \code{case_tag} vector without NAN's values, the \code{survival_event},
 #' the the \code{survival_time} the matrix with the normal space (linear space
@@ -45,8 +45,8 @@
 #' @export
 #' @examples
 #' \donttest{
-#' dgsa_obj <- dgsa(full_data,  survival_time, survival_event, case_tag)}
-dgsa <- function(full_data, survival_time, survival_event, case_tag, control_tag = NA, gamma = NA, na.rm = TRUE){
+#' dsga_obj <- dsga(full_data,  survival_time, survival_event, case_tag)}
+dsga <- function(full_data, survival_time, survival_event, case_tag, control_tag = NA, gamma = NA, na.rm = TRUE){
   ################################ Prepare data and check data ########################################
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data, na.rm)
@@ -59,8 +59,8 @@ dgsa <- function(full_data, survival_time, survival_event, case_tag, control_tag
   survival_time <- return_check[[4]]
   case_tag <- return_check[[5]]
 
-  ################### BLOCK I: Pre-process. DGSA (using "NT" control_tag) ##############################
-  message("\nBLOCK I: The pre-process DGSA is started")
+  ################### BLOCK I: Pre-process. DSGA (using "NT" control_tag) ##############################
+  message("\nBLOCK I: The pre-process DSGA is started")
   #   Select the normal tissue data gene expression matrix.
   normal_tiss <- full_data[,which(case_tag == control_tag)]
 
@@ -71,10 +71,10 @@ dgsa <- function(full_data, survival_time, survival_event, case_tag, control_tag
   #   Obtain the disease component of the normal_space
   matrix_disease_component <- generate_disease_component(full_data, normal_space)
 
-  message("\nBLOCK I: The pre-process DGSA is finished\n")
+  message("\nBLOCK I: The pre-process DSGA is finished\n")
 
   ############################################  Create the object #########################################
-  dgsa_object <- list("full_data" = full_data,
+  dsga_object <- list("full_data" = full_data,
                       "control_tag" = control_tag,
                       "case_tag" = case_tag,
                       "survival_event" = survival_event,
@@ -82,9 +82,9 @@ dgsa <- function(full_data, survival_time, survival_event, case_tag, control_tag
                       "normal_space" = normal_space,
                       "matrix_disease_component" = matrix_disease_component)
 
-  class(dgsa_object) <- "dgsa_object"
+  class(dsga_object) <- "dsga_object"
 
-  return(dgsa_object)
+  return(dsga_object)
 }
 
 
@@ -186,13 +186,13 @@ gene_selection <- function(data_object, gen_select_type,
 #' lowest value (negative value, i.e. best prognosis). "Top_Bot" default option.
 #' @param num_gen_select Number of genes to be selected to be used in mapper.
 #' @param matrix_disease_component Optional, only necessary in case of gene
-#' selection after DGSA has been performed. Matrix of the disease components
+#' selection after DSGA has been performed. Matrix of the disease components
 #' (the transformed \code{full_data} matrix from which the normal component has
-#' been removed) from the \code{dgsa_function}.
+#' been removed) from the \code{dsga_function}.
 #' @return A \code{gene_selection_object}. It contains:
 #' - the matrix with which the gene selection has been performed without NAN's
 #' values (\code{data}). It is the \code{matrix_disease_component} in case it has been
-#' performed from a \code{dgsa_object} or \code{full_data} in the opposite case.
+#' performed from a \code{dsga_object} or \code{full_data} in the opposite case.
 #' - the \code{cox_all_matrix} (a matrix with the results of the application of
 #' proportional hazard models: with the regression coefficients, the odds ratios,
 #' the standard errors of each coefficient, the Z values (coef/se_coef) and
@@ -252,10 +252,10 @@ gene_selection_ <- function(full_data, survival_time, survival_event,
   return(gene_selection_object)
 }
 
-#' @title gene_selection_classes.dgsa_object
+#' @title gene_selection_classes.dsga_object
 #'
-#' @description Private function to select Gene with DGSA object
-#' @param data_object DGSA object information
+#' @description Private function to select Gene with DSGA object
+#' @param data_object DSGA object information
 #' @param gen_select_type Option. Options on how to select the genes to be
 #' used in the mapper. Select the "Abs" option, which means that the
 #' genes with the highest absolute value are chosen, or the
@@ -274,11 +274,11 @@ gene_selection_ <- function(full_data, survival_time, survival_event,
 #' @export
 #' @examples
 #' \donttest{
-#' dgsa_obj <- dgsa(full_data, survival_time, survival_event, case_tag, na.rm = "checked")
+#' dsga_obj <- dsga(full_data, survival_time, survival_event, case_tag, na.rm = "checked")
 #'
-#' gene_selection_object <- gene_selection(dgsa_obj, gen_select_type ="top_bot",
+#' gene_selection_object <- gene_selection(dsga_obj, gen_select_type ="top_bot",
 #'                                       percent_gen_select = 10)}
-gene_selection.dgsa_object <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
+gene_selection.dsga_object <- function(data_object, gen_select_type, percent_gen_select, na.rm = TRUE){
   print(class(data_object))
 
   matrix_disease_component <- data_object[["matrix_disease_component"]]
@@ -302,7 +302,7 @@ gene_selection.dgsa_object <- function(data_object, gen_select_type, percent_gen
 
 #' @title gene_selection_classes.default
 #'
-#' @description Private function to select Gene without DGSA process
+#' @description Private function to select Gene without DSGA process
 #' @param data_object Object with:
 #' - full_data Input matrix whose columns correspond to the patients and
 #' rows to the genes.
@@ -358,7 +358,7 @@ gene_selection.default <- function(data_object, gen_select_type, percent_gen_sel
   ################################ Prepare data and check data ########################################
   #Check the arguments introduces in the function
   full_data <- check_full_data(full_data, na.rm)
-  #Select the control_tag. This do it inside of the DGSA function
+  #Select the control_tag. This do it inside of the DSGA function
   #Check and obtain gene selection (we use in the gene_select_surv)
   num_gen_select <- check_gene_selection(nrow(full_data), gen_select_type, percent_gen_select)
 
