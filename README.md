@@ -77,7 +77,7 @@ For hierarchical clustering only, you will be asked by the console to choose the
 
 ```{r}
 #Mapper information
-num_intervals <- 5
+num_intervals <- 10
 percent_overlap <- 40
 distance_type <- "correlation"
 clustering_type <- "hierarchical"
