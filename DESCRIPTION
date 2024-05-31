@@ -1,6 +1,6 @@
 Package: GSSTDA
-Title: Gene Structure Survival using Topological Data Analysis
-Version: 0.1.3
+Title: An R package for performing Progression Analysis of Disease with Survival using Topological Data Analysis
+Version: 1.0.0
 Authors@R: 
     c(
 	person(given = "Miriam", 
@@ -36,7 +36,6 @@ Description: Mapper-based survival analysis with transcriptomics data is designe
 License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
 LazyData: true
 LazyDataCompression: xz
 DependsNote: BioC (>= 3.2)
@@ -61,3 +60,4 @@ VignetteBuilder: knitr
 Config/testthat/edition: 3
 Depends: 
     R (>= 3.5.0)
+RoxygenNote: 7.2.3
