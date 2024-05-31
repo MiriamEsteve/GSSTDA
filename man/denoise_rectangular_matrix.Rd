@@ -10,7 +10,9 @@ denoise_rectangular_matrix(matrix_flatten_normal_tiss, gamma)
 \item{matrix_flatten_normal_tiss}{A rectangular noisy matrix to denoise. It is return by
 \code{flatten_normal_tiss} function.}
 
-\item{gamma}{A parameter that indicates the magnitude of the noise.
+\item{gamma}{A parameter that indicates the magnitude of the noise assumed in
+the flat data matrix for the generation of the Healthy State Model. If it
+takes the value \code{NA} the magnitude of the noise is assumed to be unknown.
 By default gamma is unknown.}
 }
 \value{
