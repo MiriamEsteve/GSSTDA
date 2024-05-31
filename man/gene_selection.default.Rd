@@ -54,7 +54,7 @@ the control tag of the healthy patient, the matrix with the normal space and
 the matrix of the disease components.
 }
 \description{
-Private function to select Gene without DSGA process
+Private function to select Gene without dgsa process
 }
 \examples{
 \donttest{

@@ -93,26 +93,26 @@ The package allows the various steps required for GSSTDA to be performed separat
 
 ### OPTION #1 (the three blocks of the G-SS-TDA process are in separate function):
 
-#### First step of the process: DSGA.
+#### First step of the process: dgsa.
 
 This analysis, developed by Nicolau *et al.* is independent of the rest of the process and can be used with the data for further analysis other than mapper. It allows the calculation of the "disease component" which consists of, through linear models, eliminating the part of the data that is considered normal or healthy and keeping only the component that is due to the disease.  
 
 ```{r}
-dsga_object <- dsga(full_data, survival_time, survival_event, case_tag)
+dgsa_object <- dgsa(full_data, survival_time, survival_event, case_tag)
 
 
 ```
 
-#### Second step of the process: Select the genes within the DSGA object created in the previous step and calcute the values of the filtering functions.
+#### Second step of the process: Select the genes within the dgsa object created in the previous step and calcute the values of the filtering functions.
 
 After performing a survival analysis of each gene, this function selects the genes to be used in the mapper according to both their variability within the database and their relationship with survival. Subsequently, with the genes selected, the values of the filtering functions are calculated for each patient. The filter function allows to summarise each vector of each individual in a single data. This function takes into account the survival associated with each gene.
 
 ```{r}
-gene_selection_object <- gene_selection(dsga_object, gen_select_type, percent_gen_select)
+gene_selection_object <- gene_selection(dgsa_object, gen_select_type, percent_gen_select)
 
 ```
 
-Another option to execute the second step of the process. Create a object "data_object" with the require information. This could be used when you do not want to apply DSGA.
+Another option to execute the second step of the process. Create a object "data_object" with the require information. This could be used when you do not want to apply dgsa.
 
 ```{r}
 # Create data object
@@ -132,7 +132,7 @@ gene_selection_object <- gene_selection(data_object, gen_select_type, percent_ge
 
 Mapper condenses the information of high-dimensional datasets into a combinatory graph that is referred to as the skeleton of the dataset. To do so, it divides the dataset into different levels according to its value of the filtering function. These levels overlap each other. Within each level, an independent clustering is performed using the input matrix and the indicated distance type. Subsequently, clusters from different levels that share patients with each other are joined by a vertex.
 
-This function is independent from the rest and could be used without having done DSGA and gene selection
+This function is independent from the rest and could be used without having done dgsa and gene selection
 
 ```{r}
 mapper_object <- mapper(data = gene_selection_object[["genes_disease_component"]], 
@@ -147,15 +147,15 @@ mapper_object <- mapper(data = gene_selection_object[["genes_disease_component"]
 ```
 
 
-Obtain information from the DSGA block created in the previous step.
+Obtain information from the dgsa block created in the previous step.
 
 This function returns the 100 genes with the highest variability within 
 the dataset and builds a heat map with them.
 ```{r}
-dsga_information <- results_dsga(dsga_object[["matrix_disease_component"]], case_tag)
-print(dsga_information)
+dgsa_information <- results_dgsa(dgsa_object[["matrix_disease_component"]], case_tag)
+print(dgsa_information)
 ```
-<img src="man/figures/print_DSGA_information.png" width="100%" />
+<img src="man/figures/print_dgsa_information.png" width="100%" />
 
 
 Obtain information from the mapper object created in the G-SS-TDA process.
@@ -172,7 +172,7 @@ plot_mapper(mapper_object)
 
 ### OPTION #2 (all process integrate in the same function):
 
-It creates the GSSTDA object with full data set, internally pre-process using the DSGA technique, and the mapper information.
+It creates the GSSTDA object with full data set, internally pre-process using the dgsa technique, and the mapper information.
 ```{r}
 gsstda_obj <- gsstda(full_data = full_data, survival_time = survival_time, 
                      survival_event = survival_event, case_tag = case_tag, 
@@ -188,14 +188,14 @@ gsstda_obj <- gsstda(full_data = full_data, survival_time = survival_time,
 
 ```
 
-Obtain information from the DSGA block created in the previous step.
+Obtain information from the dgsa block created in the previous step.
 
 This function returns the 100 genes with the highest variability within the dataset and builds a heat map with them.
 ```{r}
-dsga_information <- results_dsga(gsstda_obj[["matrix_disease_component"]], case_tag)
-print(dsga_information)
+dgsa_information <- results_dgsa(gsstda_obj[["matrix_disease_component"]], case_tag)
+print(dgsa_information)
 ```
-<img src="man/figures/print_DSGA_information.png" width="100%" />
+<img src="man/figures/print_dgsa_information.png" width="100%" />
 
 
 Obtain information from the mapper object created in the G-SS-TDA process.
