@@ -1,5 +1,5 @@
 Package: GSSTDA
-Title: An R package for performing Progression Analysis of Disease with Survival using Topological Data Analysis
+Title: Progression Analysis of Disease with Survival using Topological Data Analysis
 Version: 1.0.0
 Authors@R: 
     c(
